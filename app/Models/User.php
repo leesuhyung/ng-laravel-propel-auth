@@ -7,7 +7,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Propel\Runtime\Map\TableMap;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * Skeleton subclass for representing a row from the 'user' table.
@@ -19,12 +19,36 @@ use Propel\Runtime\Map\TableMap;
  * long as it does not already exist in the output directory.
  *
  */
-class User extends BaseUser implements AuthenticatableContract, CanResetPasswordContract
+class User extends BaseUser implements AuthenticatableContract, CanResetPasswordContract, JWTSubject
 {
     use Authenticatable, CanResetPassword;
 
     public function getAuthIdentifier()
     {
         return $this->id;
+    }
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [
+            'id' => $this->getId(),
+            'email' => $this->getEmail(),
+            'remember' => false,
+        ];
     }
 }

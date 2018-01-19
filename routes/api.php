@@ -19,7 +19,7 @@ Route::group([
     Route::post('login', 'LoginController@login');
     Route::post('logout', 'LoginController@logout');
     Route::post('refresh', 'LoginController@refresh');
-    Route::post('me', 'LoginController@me');
+    Route::get('me', 'LoginController@me');
 });
 
 Route::group([

@@ -26,7 +26,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'refresh']]);
     }
 
     /**
@@ -41,13 +41,23 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        if (! $token = Auth::attempt($credentials)) {
-            return $this->responseError();
+        if ($token = $this->guard()->attempt($credentials)) {
+            return $this->respondWithToken($token);
         }
 
         return response()->json([
-            'token' => $token,
-        ], 201, [], JSON_PRETTY_PRINT);
+            'message' => 'Unauthorized'
+        ], 401);
+    }
+
+    /**
+     * Get the authenticated User
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me()
+    {
+        return response()->json($this->guard()->user());
     }
 
     /**
@@ -59,12 +69,20 @@ class LoginController extends Controller
     {
         $this->guard()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Successfully logged out'], 204);
     }
 
-    public function responseError()
+    public function refresh()
     {
-        return response()->json(['message' => 'login Failed.']);
+        return $this->respondWithToken($this->guard()->refresh());
+    }
+
+    public function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+        ]);
     }
 
     public function guard()
