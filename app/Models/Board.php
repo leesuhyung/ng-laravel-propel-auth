@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Base\Board as BaseBoard;
+use Propel\Runtime\Exception\PropelException;
+use Propel\Runtime\Map\TableMap;
 
 /**
  * Skeleton subclass for representing a row from the 'board' table.
@@ -16,5 +18,18 @@ use App\Models\Base\Board as BaseBoard;
  */
 class Board extends BaseBoard
 {
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    {
+        $data = parent::toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, $includeForeignObjects);
+        if (is_array($data)) {
+            try {
+                if ($this->getUser()) {
+                    $data['User'] = $this->getUser()->toArray();
+                }
+            } catch (PropelException $e) {
+            }
+        }
 
+        return $data;
+    }
 }

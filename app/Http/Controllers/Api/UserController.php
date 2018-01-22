@@ -23,7 +23,7 @@ class UserController extends Controller
     {
         $users = UserQuery::create()
             ->orderById(Criteria::DESC)
-            ->paginate($request->get('page', 1), 10);
+            ->paginate($request->get('page', 1), $request->get('limit', env('DEFAULT_LIMIT')));
 
         return $this->successToJson(
             $request,

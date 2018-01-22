@@ -32,7 +32,3 @@ Route::group([
     Route::post('/', 'UserController@store');
     Route::delete('/', 'UserController@destroy');
 });
-
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/

@@ -16,5 +16,24 @@ use App\Models\Base\BoardQuery as BaseBoardQuery;
  */
 class BoardQuery extends BaseBoardQuery
 {
+    public function filters($filters)
+    {
+        if (empty($filters)) {
+            return $this;
+        }
 
+        $filters = json_decode($filters);
+
+        if (!is_object($filters) || count($filters) < 1) {
+            return $this;
+        }
+
+        foreach ($filters as $name => $value) {
+            if ($name == 'entity' && !empty($value)) {
+                $this->filterByEntity($value);
+            }
+        }
+
+        return $this;
+    }
 }

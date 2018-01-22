@@ -19,7 +19,9 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        TokenExpiredException::class,
+        TokenInvalidException::class,
+        JWTException::class,
     ];
 
     /**
