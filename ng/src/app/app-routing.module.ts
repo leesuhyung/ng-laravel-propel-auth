@@ -8,7 +8,7 @@ import {Error404Component} from "./component/error404/error404.component";
 import {RegisterComponent} from "./component/auth/register.component";
 
 const routes: Routes = [
-    { path: '', component: HomeComponent },
+    { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'user', component: UserComponent },

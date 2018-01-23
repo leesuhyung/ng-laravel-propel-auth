@@ -10,7 +10,10 @@ import {LoginComponent} from './component/auth/login.component';
 import {Error404Component} from './component/error404/error404.component';
 import {RegisterComponent} from './component/auth/register.component';
 import {AuthService} from "./services/auth.service";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {AddHeaderInterceptor} from "./add-header-interceptor";
+import {UserService} from "./services/user.service";
 
 @NgModule({
     declarations: [
@@ -27,9 +30,17 @@ import {HttpClientModule} from "@angular/common/http";
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
     ],
     providers: [
         AuthService,
+        UserService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AddHeaderInterceptor,
+            multi: true,
+        },
     ],
     bootstrap: [AppComponent]
 })

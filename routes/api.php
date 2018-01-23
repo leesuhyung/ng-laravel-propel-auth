@@ -17,13 +17,12 @@ Route::group([
     'namespace' => 'Auth'
 ], function () {
     Route::post('login', 'LoginController@login');
-    Route::post('logout', 'LoginController@logout');
+    Route::get('logout', 'LoginController@logout');
     Route::post('refresh', 'LoginController@refresh');
     Route::get('me', 'LoginController@me');
 });
 
 Route::group([
-    'middleware' => 'auth:api',
     'prefix' => 'user',
     'namespace' => 'Api'
 ], function () {

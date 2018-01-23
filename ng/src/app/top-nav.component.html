@@ -7,18 +7,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" routerLink="/">{{ env.appName }}</a>
+      <a class="navbar-brand" routerLink="/home">{{ env.appName }}</a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a routerLink="/">홈</a></li>
-        <li><a routerLink="/user">회원</a></li>
-        <li><a routerLink="/board">게시판</a></li>
+        <li routerLinkActive="active"><a routerLink="/home">홈</a></li>
+        <li routerLinkActive="active"><a routerLink="/user">회원</a></li>
+        <li routerLinkActive="active"><a routerLink="/board">게시판</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a routerLink="/login">로그인</a></li>
-        <li><a routerLink="/register">회원가입</a></li>
-        <li><a href="">로그아웃</a></li>
+        <li routerLinkActive="active" *ngIf="!authService.isLoggedIn()"><a routerLink="/login">로그인</a></li>
+        <li routerLinkActive="active" *ngIf="!authService.isLoggedIn()"><a routerLink="/register">회원가입</a></li>
+        <li *ngIf="authService.isLoggedIn()"><a (click)="authService.logout()">로그아웃</a></li>
       </ul>
     </div>
   </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class LoginController extends Controller
 {
@@ -30,9 +31,10 @@ class LoginController extends Controller
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function login(Request $request)
     {
@@ -45,9 +47,7 @@ class LoginController extends Controller
             return $this->respondWithToken($token);
         }
 
-        return response()->json([
-            'message' => 'Unauthorized'
-        ], 401);
+        return $this->sendFailedLoginResponse($request);
     }
 
     /**
@@ -68,8 +68,6 @@ class LoginController extends Controller
     public function logout()
     {
         $this->guard()->logout();
-
-        return response()->json(['message' => 'Successfully logged out'], 204);
     }
 
     public function refresh()
@@ -80,13 +78,23 @@ class LoginController extends Controller
     public function respondWithToken($token)
     {
         return response()->json([
-            'access_token' => $token,
+            'token' => $token,
             'token_type' => 'bearer',
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @throws \Exception
+     */
+    protected function sendFailedLoginResponse($request)
+    {
+        throw new \Exception('등록된 사용자가 아니거나 틀린 비밀번호 입니다.');
     }
 
     public function guard()
     {
         return Auth::guard();
     }
+
 }

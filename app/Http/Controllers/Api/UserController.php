@@ -14,6 +14,16 @@ class UserController extends Controller
     use ApiResponse;
 
     /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => 'store']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @param Request $request
@@ -53,7 +63,7 @@ class UserController extends Controller
             ->count();
 
         if ($count > 0) {
-            throw new \Exception('already exist email address.');
+            throw new \Exception('이미 가입되어있는 이메일 주소입니다.');
         }
 
         $user = new User();
