@@ -14,11 +14,21 @@ export class UserService {
         return this.http.post<any>(this.apiBaseUrl, user)
             .toPromise()
             .then(response => {
-                return response.data as User
+                return response.data as User;
             })
             .catch(errors => {
-                console.log(errors.error);
+                console.log(errors);
                 return Promise.reject(errors);
             });
     }
+
+    public profile(): Promise<any> {
+        return this.http.get<any>(this.apiBaseUrl + '/profile' )
+            .toPromise()
+            .then(response => {
+                return response.data;
+            })
+            .catch(errors => console.log(errors));
+    }
+
 }

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserQuery;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Propel\Runtime\ActiveQuery\Criteria;
 
 class UserController extends Controller
@@ -46,7 +47,7 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  Request $request
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      * @throws \Propel\Runtime\Exception\PropelException
      */
@@ -72,11 +73,19 @@ class UserController extends Controller
         $user->setPassword(bcrypt($request->get('password')));
         $user->save();
 
-        $this->successToJson(
+        return $this->successToJson(
             $request,
             $user->toArray()
         );
+    }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function profile(Request $request)
+    {
+        return $this->show($request, Auth::id());
     }
 
     /**

@@ -14,6 +14,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AddHeaderInterceptor} from "./add-header-interceptor";
 import {UserService} from "./services/user.service";
+import {AuthGuardService} from "./services/auth-guard.service";
 
 @NgModule({
     declarations: [
@@ -36,6 +37,7 @@ import {UserService} from "./services/user.service";
     providers: [
         AuthService,
         UserService,
+        AuthGuardService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AddHeaderInterceptor,

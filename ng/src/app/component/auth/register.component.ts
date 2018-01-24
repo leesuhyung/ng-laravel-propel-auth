@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
     selector: 'register',
@@ -21,10 +22,14 @@ export class RegisterComponent implements OnInit {
     });
 
     constructor(private router: Router,
-                private service: UserService) {
+                private service: UserService,
+                private authService: AuthService) {
     }
 
     ngOnInit() {
+        if (this.authService.isLoggedIn()) {
+            this.router.navigate(['/home']);
+        }
     }
 
     public submit() {

@@ -19,7 +19,6 @@ Route::group([
     Route::post('login', 'LoginController@login');
     Route::get('logout', 'LoginController@logout');
     Route::post('refresh', 'LoginController@refresh');
-    Route::get('me', 'LoginController@me');
 });
 
 Route::group([
@@ -28,6 +27,7 @@ Route::group([
 ], function () {
     Route::get('/', 'UserController@index');
     Route::get('/{id}', 'UserController@show');
+    Route::get('profile', 'UserController@profile');
     Route::post('/', 'UserController@store');
     Route::delete('/', 'UserController@destroy');
 });

@@ -7,6 +7,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Propel\Runtime\Map\TableMap;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -22,6 +23,15 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends BaseUser implements AuthenticatableContract, CanResetPasswordContract, JWTSubject
 {
     use Authenticatable, CanResetPassword;
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+      'Password', 'RememberToken'
+    ];
 
     public function getAuthIdentifier()
     {
@@ -51,4 +61,5 @@ class User extends BaseUser implements AuthenticatableContract, CanResetPassword
             'remember' => false,
         ];
     }
+
 }

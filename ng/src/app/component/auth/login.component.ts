@@ -19,21 +19,33 @@ export class LoginComponent implements OnInit {
     });
 
     constructor(private router: Router,
-                private service: AuthService,) {
+                private service: AuthService) {
     }
 
     ngOnInit() {
+        if (this.service.isLoggedIn()) {
+            this.router.navigate(['/home']);
+        }
     }
 
     public submit() {
         if (this.formGroup.valid) {
             this.service.login(this.formGroup.controls.email.value, this.formGroup.controls.password.value)
                 .then(response => {
-                    this.router.navigate(['/home']);
+                    let returnUrl = this.service.getReturnUrl();
+
+                    if (returnUrl) {
+                        this.service.removeReturnUrl();
+                        this.router.navigate([returnUrl]);
+                    }
+                    else {
+                        this.router.navigate(['/home']);
+                    }
                 })
                 .catch(errors => {
                     this.errorResponse = errors.error;
                 });
         }
     }
+
 }
