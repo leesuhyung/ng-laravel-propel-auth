@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Base\User as BaseUser;
+use App\Models\Traits\HiddenCol;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -22,7 +23,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class User extends BaseUser implements AuthenticatableContract, CanResetPasswordContract, JWTSubject
 {
-    use Authenticatable, CanResetPassword;
+    use Authenticatable, CanResetPassword, HiddenCol {
+        toArray as protected toArrayHiddenCol;
+    }
 
     /**
      * The attributes that should be hidden for arrays.
@@ -30,7 +33,7 @@ class User extends BaseUser implements AuthenticatableContract, CanResetPassword
      * @var array
      */
     protected $hidden = [
-      'Password', 'RememberToken'
+        'Password', 'RememberToken'
     ];
 
     public function getAuthIdentifier()

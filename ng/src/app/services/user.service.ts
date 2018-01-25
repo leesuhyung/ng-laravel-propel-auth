@@ -10,6 +10,27 @@ export class UserService {
     constructor(private http: HttpClient) {
     }
 
+    public index(page: number, limit?: number): Promise<any> {
+        let params: string[] = [];
+
+        params.push(`page=${page}`);
+
+        if (limit) {
+            params.push(`limit=${limit}`);
+        }
+
+        return this.http.get<any>(this.apiBaseUrl + '?' + params.join('&'))
+            .toPromise()
+            .then(response => {
+                console.log(response);
+                return response;
+            })
+            .catch(errors => {
+                console.log(errors);
+                return Promise.reject(errors);
+            });
+    }
+
     public create(user: User): Promise<User> {
         return this.http.post<any>(this.apiBaseUrl, user)
             .toPromise()

@@ -17,15 +17,15 @@
       </li>
     </ul>
     <ul class="navbar-nav ml-md-auto">
-      <li class="nav-item" routerLinkActive="active" *ngIf="!authService.isLoggedIn()">
+      <li class="nav-item" routerLinkActive="active" *ngIf="!user">
         <a class="nav-link" routerLink="/login">로그인</a>
       </li>
-      <li class="nav-item" routerLinkActive="active" *ngIf="!authService.isLoggedIn()">
+      <li class="nav-item" routerLinkActive="active" *ngIf="!user">
         <a class="nav-link" routerLink="/register">회원가입</a>
       </li>
-      <li class="nav-item dropdown" *ngIf="authService.isLoggedIn()">
+      <li class="nav-item dropdown" *ngIf="user">
         <button class="btn btn-warning nav-link dropdown-toggle text-dark" id="dropdownButton"
-           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">이수형</button>
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.Name }}</button>
         <div class="dropdown-menu" aria-labelledby="dropdownButton">
           <a class="dropdown-item" (click)="authService.logout()" style="cursor: pointer;">로그아웃</a>
         </div>

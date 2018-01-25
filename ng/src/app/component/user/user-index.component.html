@@ -1,0 +1,39 @@
+<div class="d-flex align-items-center p-3 my-3 text-white-50 bg-primary rounded box-shadow">
+  <div class="lh-100">
+    <h5 class="mb-0 text-white lh-100">회원</h5>
+    <small class="text-light">사이트의 회원 목록</small>
+  </div>
+</div>
+
+<div *ngIf="errorResponse?.message" class="alert alert-danger">
+  {{errorResponse?.message}}
+</div>
+
+<table class="table table-sm table-bordered small">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">이름</th>
+    <th scope="col">이메일</th>
+    <th scope="col">가입일자</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of items">
+    <th scope="row">{{item.Id}}</th>
+    <td>{{item.Name}}</td>
+    <td>{{item.Email}}</td>
+    <td>{{item.CreatedAt}}</td>
+  </tr>
+  </tbody>
+</table>
+<div class="d-flex justify-content-center">
+  <ngb-pagination
+          [(collectionSize)]="paginate.nbResults"
+          [pageSize]="limit"
+          [(page)]="paginate.page"
+          [maxSize]="7"
+          [rotate]="true"
+          (pageChange)="loadPage($event)"
+          size="sm"></ngb-pagination>
+</div>

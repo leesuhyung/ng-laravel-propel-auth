@@ -36,10 +36,10 @@ export class LoginComponent implements OnInit {
 
                     if (returnUrl) {
                         this.service.removeReturnUrl();
-                        this.router.navigate([returnUrl]);
+                        window.location.href = returnUrl;
                     }
                     else {
-                        this.router.navigate(['/home']);
+                        window.location.href = '/home';
                     }
                 })
                 .catch(errors => {

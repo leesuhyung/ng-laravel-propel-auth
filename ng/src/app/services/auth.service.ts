@@ -28,7 +28,16 @@ export class AuthService {
             .toPromise()
             .then(response => {
                 localStorage.removeItem('token');
-                this.router.navigate(['/home']);
+                window.location.href = '/home';
+            })
+            .catch(errors => console.log(errors));
+    }
+
+    public refresh(): Promise<any> {
+        return this.http.get<any>(this.apiBaseUrl + '/refresh')
+            .toPromise()
+            .then(response => {
+                localStorage.setItem('token', response.token);
             })
             .catch(errors => console.log(errors));
     }
@@ -49,6 +58,26 @@ export class AuthService {
 
     public removeReturnUrl() {
         localStorage.removeItem('returnUrl');
+    }
+
+    public parseJwt() {
+        let token = localStorage.getItem('token');
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
+
+    public checkJwtExp() {
+        let exp = this.parseJwt().exp;
+        let exp_time = exp*1000 - new Date().getTime();
+
+        console.log('남은 만료시간 : '+exp_time/1000/60);
+
+        if(exp_time < 0) {
+            return false;
+        }
+
+        return true;
     }
 
 }
