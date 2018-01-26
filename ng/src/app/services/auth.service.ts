@@ -2,6 +2,10 @@ import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {Observable} from "rxjs/Observable";
+import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/catch'
+import 'rxjs/add/observable/throw'
 
 @Injectable()
 export class AuthService {
@@ -9,37 +13,27 @@ export class AuthService {
 
     constructor(private http: HttpClient,
                 private router: Router) {
+        if (this.isLoggedIn()) {
+            setInterval(() => {
+                console.log('로그인되었습니다.')
+            }, 3000);
+        }
     }
 
-    public login(email: string, password: string): Promise<any> {
-        return this.http.post<any>(`${this.apiBaseUrl}/login`, {email: email, password: password})
-            .toPromise()
-            .then(response => {
-                localStorage.setItem('token', response.token);
-            })
-            .catch(errors => {
-                console.log(errors);
-                return Promise.reject(errors);
-            });
+    public login(email: string, password: string): Observable<any> {
+        return this.http.post(`${this.apiBaseUrl}/login`, {email: email, password: password})
+            .map(response => response)
+            .catch(this.handleError)
     }
 
-    public logout(): Promise<any> {
-        return this.http.get<any>(this.apiBaseUrl + '/logout')
-            .toPromise()
-            .then(response => {
-                localStorage.removeItem('token');
-                window.location.href = '/home';
-            })
-            .catch(errors => console.log(errors));
+    public logout() {
+        localStorage.removeItem('token');
     }
 
-    public refresh(): Promise<any> {
-        return this.http.get<any>(this.apiBaseUrl + '/refresh')
-            .toPromise()
-            .then(response => {
-                localStorage.setItem('token', response.token);
-            })
-            .catch(errors => console.log(errors));
+    public refresh(): Observable<any> {
+        return this.http.get(this.apiBaseUrl + '/refresh')
+            .map(response => response)
+            .catch(this.handleError)
     }
 
     public isLoggedIn(): boolean {
@@ -68,16 +62,21 @@ export class AuthService {
     }
 
     public checkJwtExp() {
+        // TODO: Jwt 파서, 게터를 angular2-jwt 라이브러리로 대체하기.
         let exp = this.parseJwt().exp;
-        let exp_time = exp*1000 - new Date().getTime();
+        let exp_time = exp * 1000 - new Date().getTime();
 
-        console.log('남은 만료시간 : '+exp_time/1000/60);
+        console.log('남은 만료시간 : ' + exp_time / 1000 / 60);
 
-        if(exp_time < 0) {
+        if (exp_time < 0) {
             return false;
         }
 
         return true;
     }
 
+    public handleError(error: any) {
+        console.error(error);
+        return Observable.throw(error.error || 'Server error');
+    }
 }

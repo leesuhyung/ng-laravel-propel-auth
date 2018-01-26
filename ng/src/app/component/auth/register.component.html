@@ -1,24 +1,58 @@
-<form class="form-signin" [formGroup]="formGroup" (ngSubmit)="submit()">
+<form class="form-signin" [formGroup]="formGroup" (ngSubmit)="submit()" #form="ngForm">
   <h2 class="form-signin-heading">{{ env.appName }} 회원가입</h2>
   <div *ngIf="errorResponse?.message" class="alert alert-danger">
     {{errorResponse?.message}}
   </div>
   <div class="form-group">
     <label for="inputEmail">이메일</label>
-    <input type="email" id="inputEmail" formControlName="email" class="form-control" placeholder="이메일 주소" autofocus>
+    <input type="email" id="inputEmail" formControlName="email" class="form-control"
+           [ngClass]="{
+              'is-invalid': formGroup.controls.email.invalid && form.submitted,
+              'is-valid': formGroup.controls.email.valid
+            }"
+           placeholder="username@example.com"
+           autofocus>
+    <div class="invalid-feedback">
+      이메일이 입력되지 않았거나 형식이 올바르지 않습니다.
+    </div>
   </div>
   <div class="form-group">
     <label for="inputName">이름</label>
-    <input type="text" id="inputName" formControlName="name" class="form-control" placeholder="이름">
+    <input type="text" id="inputName" formControlName="name" class="form-control"
+           [ngClass]="{
+              'is-invalid': formGroup.controls.name.invalid && form.submitted,
+              'is-valid': formGroup.controls.name.valid
+            }"
+           placeholder="username">
+    <div class="invalid-feedback">
+      이름이 입력되지 않았습니다.
+    </div>
   </div>
   <div class="form-group">
     <label for="inputPassword">비밀번호</label>
-    <input type="password" id="inputPassword" formControlName="password" class="form-control" placeholder="비밀번호">
+    <input type="password" id="inputPassword" formControlName="password" class="form-control"
+           [ngClass]="{
+              'is-invalid': formGroup.controls.password.invalid && form.submitted,
+              'is-valid': formGroup.controls.password.valid
+            }"
+           placeholder="your password">
+    <div class="invalid-feedback">
+      비밀번호가 입력되지 않았습니다.
+    </div>
   </div>
   <div class="form-group">
     <label for="inputPasswordConfirmation">비밀번호 확인</label>
     <input type="password" id="inputPasswordConfirmation" formControlName="password_confirmation" class="form-control"
-           placeholder="비밀번호 확인">
+           [ngClass]="{
+              'is-invalid': formGroup.controls.password_confirmation.invalid && form.submitted,
+              'is-invalid': formGroup.controls.password.value !== formGroup.controls.password_confirmation.value,
+              'is-valid': formGroup.controls.password_confirmation.valid
+                          && formGroup.controls.password.value == formGroup.controls.password_confirmation.value
+            }"
+           placeholder="your password confirmation">
+    <div class="invalid-feedback">
+      비밀번호가 입력되지 않았거나 일치하지 않습니다.
+    </div>
   </div>
   <button class="btn btn-lg btn-primary btn-block" type="submit">가입하기</button>
 </form>

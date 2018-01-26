@@ -2,6 +2,10 @@ import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
+import {Observable} from "rxjs/Observable";
+import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/catch'
+import 'rxjs/add/observable/throw'
 
 @Injectable()
 export class UserService {
@@ -10,7 +14,7 @@ export class UserService {
     constructor(private http: HttpClient) {
     }
 
-    public index(page: number, limit?: number): Promise<any> {
+    public index(page: number, limit?: number): Observable<any> {
         let params: string[] = [];
 
         params.push(`page=${page}`);
@@ -19,37 +23,26 @@ export class UserService {
             params.push(`limit=${limit}`);
         }
 
-        return this.http.get<any>(this.apiBaseUrl + '?' + params.join('&'))
-            .toPromise()
-            .then(response => {
-                console.log(response);
-                return response;
-            })
-            .catch(errors => {
-                console.log(errors);
-                return Promise.reject(errors);
-            });
+        return this.http.get(this.apiBaseUrl + '?' + params.join('&'))
+            .map(response => response)
+            .catch(this.handleError)
     }
 
-    public create(user: User): Promise<User> {
-        return this.http.post<any>(this.apiBaseUrl, user)
-            .toPromise()
-            .then(response => {
-                return response.data as User;
-            })
-            .catch(errors => {
-                console.log(errors);
-                return Promise.reject(errors);
-            });
+    public create(user: User): Observable<User> {
+        return this.http.post(this.apiBaseUrl, user)
+            .map(response => response)
+            .catch(this.handleError)
     }
 
-    public profile(): Promise<any> {
-        return this.http.get<any>(this.apiBaseUrl + '/profile' )
-            .toPromise()
-            .then(response => {
-                return response.data;
-            })
-            .catch(errors => console.log(errors));
+    public profile(): Observable<any> {
+        return this.http.get(this.apiBaseUrl + '/profile' )
+            .map(response => response)
+            .catch(this.handleError)
+    }
+
+    public handleError(error: any) {
+        console.error(error);
+        return Observable.throw(error.error || 'Server error');
     }
 
 }

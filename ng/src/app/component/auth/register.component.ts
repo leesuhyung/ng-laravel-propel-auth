@@ -15,7 +15,7 @@ export class RegisterComponent implements OnInit {
     errorResponse: string;
     env: any = environment;
     formGroup: FormGroup = new FormGroup({
-        'email': new FormControl('', Validators.email),
+        'email': new FormControl('', [Validators.required, Validators.pattern("[^ @]*@[^ @]*")]),
         'name': new FormControl('', Validators.required),
         'password': new FormControl('', Validators.required),
         'password_confirmation': new FormControl('', Validators.required),
@@ -35,12 +35,19 @@ export class RegisterComponent implements OnInit {
     public submit() {
         if (this.formGroup.valid) {
             this.service.create(this.formGroup.getRawValue())
-                .then(response => {
-                    this.router.navigate(['/home']);
-                })
-                .catch(errors => {
-                    this.errorResponse = errors.error;
-                });
+                .subscribe(
+                    response => this.successful(response),
+                    error => this.failure(error),
+                    () => console.log('register::submit done.')
+                )
         }
+    }
+
+    public successful(response: any): void {
+        this.router.navigate(['/home']);
+    }
+
+    public failure(error: any): void {
+        this.errorResponse = error;
     }
 }

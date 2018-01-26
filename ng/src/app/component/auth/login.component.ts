@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
     errorResponse: string;
     env: any = environment;
     formGroup: FormGroup = new FormGroup({
-        'email': new FormControl('', Validators.required),
+        'email': new FormControl('', [Validators.required, Validators.pattern("[^ @]*@[^ @]*")]),
         'password': new FormControl('', Validators.required),
     });
 
@@ -31,21 +31,30 @@ export class LoginComponent implements OnInit {
     public submit() {
         if (this.formGroup.valid) {
             this.service.login(this.formGroup.controls.email.value, this.formGroup.controls.password.value)
-                .then(response => {
-                    let returnUrl = this.service.getReturnUrl();
-
-                    if (returnUrl) {
-                        this.service.removeReturnUrl();
-                        window.location.href = returnUrl;
-                    }
-                    else {
-                        window.location.href = '/home';
-                    }
-                })
-                .catch(errors => {
-                    this.errorResponse = errors.error;
-                });
+                .subscribe(
+                    response => this.successful(response),
+                    error => this.failure(error),
+                    () => console.log('login::submit done.')
+                )
         }
+    }
+
+    public successful(response: any): void {
+        localStorage.setItem('token', response.token);
+
+        let returnUrl = this.service.getReturnUrl();
+
+        if (returnUrl) {
+            this.service.removeReturnUrl();
+            window.location.href = returnUrl;
+        }
+        else {
+            window.location.href = '/home';
+        }
+    }
+
+    public failure(error: any): void {
+        this.errorResponse = error;
     }
 
 }

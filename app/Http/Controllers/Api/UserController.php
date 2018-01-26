@@ -56,7 +56,8 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'password_confirmation' => 'required|same:password'
         ]);
 
         $count = UserQuery::create()

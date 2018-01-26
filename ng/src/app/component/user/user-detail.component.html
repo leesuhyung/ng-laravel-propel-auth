@@ -1,3 +1,10 @@
-<p>
-  user-detail works!
-</p>
+<div class="d-flex align-items-center p-3 my-3 text-white-50 bg-primary rounded box-shadow">
+  <div class="lh-100">
+    <h5 class="mb-0 text-white lh-100">회원상세</h5>
+    <small class="text-light">사이트의 회원 목록</small>
+  </div>
+</div>
+
+<div *ngIf="errorResponse?.message" class="alert alert-danger">
+  {{errorResponse?.message}}
+</div>

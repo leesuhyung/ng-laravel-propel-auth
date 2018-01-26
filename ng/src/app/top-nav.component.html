@@ -27,9 +27,13 @@
         <button class="btn btn-warning nav-link dropdown-toggle text-dark" id="dropdownButton"
            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.Name }}</button>
         <div class="dropdown-menu" aria-labelledby="dropdownButton">
-          <a class="dropdown-item" (click)="authService.logout()" style="cursor: pointer;">로그아웃</a>
+          <a class="dropdown-item" (click)="logout()" style="cursor: pointer;">로그아웃</a>
         </div>
       </li>
     </ul>
   </div>
 </nav>
+
+<div *ngIf="errorResponse?.message" class="mx-md-5 alert alert-danger small">
+  {{errorResponse?.message}}
+</div>

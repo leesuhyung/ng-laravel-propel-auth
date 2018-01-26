@@ -55,16 +55,6 @@ class LoginController extends Controller
         return $this->guard()->user();
     }
 
-    /**
-     * Log the user out (Invalidate the token)
-     *
-     * @return void
-     */
-    public function logout()
-    {
-        $this->guard()->logout();
-    }
-
     public function refresh()
     {
         return $this->respondWithToken($this->guard()->refresh());

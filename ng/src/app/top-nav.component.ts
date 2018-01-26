@@ -10,6 +10,7 @@ import {UserService} from "./services/user.service";
 })
 export class TopNavComponent implements OnInit {
 
+    errorResponse: string;
     env: any = environment;
     user: User;
 
@@ -20,10 +21,25 @@ export class TopNavComponent implements OnInit {
     ngOnInit() {
         if (this.authService.isLoggedIn()) {
             this.userService.profile()
-                .then(response => {
-                    this.user = response;
-                })
+                .subscribe(
+                    response => this.successful(response),
+                    error => this.failure(error),
+                    () => console.log('register::submit done.')
+                )
         }
+    }
+
+    public logout() {
+        this.authService.logout();
+        window.location.href = '/home';
+    }
+
+    public successful(response: any): void {
+        this.user = response.data;
+    }
+
+    public failure(error: any): void {
+        this.errorResponse = error;
     }
 
 }

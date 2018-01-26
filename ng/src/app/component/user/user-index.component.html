@@ -9,7 +9,7 @@
   {{errorResponse?.message}}
 </div>
 
-<table class="table table-sm table-bordered small">
+<table class="table table-sm table-bordered">
   <thead>
   <tr>
     <th scope="col">#</th>
@@ -20,9 +20,9 @@
   </thead>
   <tbody>
   <tr *ngFor="let item of items">
-    <th scope="row">{{item.Id}}</th>
-    <td>{{item.Name}}</td>
-    <td>{{item.Email}}</td>
+      <td scope="row"><a style="cursor: pointer" routerLink="/user/{{item.Id}}" queryParamsHandling="merge">{{item.Id}}</a></td>
+    <td><a style="cursor: pointer" routerLink="/user/{{item.Id}}" queryParamsHandling="merge">{{item.Name}}</a></td>
+    <td><a style="cursor: pointer" routerLink="/user/{{item.Id}}" queryParamsHandling="merge">{{item.Email}}</a></td>
     <td>{{item.CreatedAt}}</td>
   </tr>
   </tbody>
@@ -34,6 +34,6 @@
           [(page)]="paginate.page"
           [maxSize]="7"
           [rotate]="true"
-          (pageChange)="loadPage($event)"
+          (pageChange)="loadPage($event?$event:1)"
           size="sm"></ngb-pagination>
 </div>

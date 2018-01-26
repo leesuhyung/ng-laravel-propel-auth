@@ -15,7 +15,6 @@ Route::group([
     'namespace' => 'Auth'
 ], function () {
     Route::post('login', 'LoginController@login');
-    Route::get('logout', 'LoginController@logout');
     Route::get('refresh', 'LoginController@refresh');
 });
 
