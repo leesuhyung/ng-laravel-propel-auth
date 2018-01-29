@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable, Output} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable";
+import {JwtHelperService} from '@auth0/angular-jwt'
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch'
 import 'rxjs/add/observable/throw'
@@ -11,12 +12,37 @@ import 'rxjs/add/observable/throw'
 export class AuthService {
     private apiBaseUrl = `${environment.apiBaseUrl}/auth`;
 
+    @Output() tokenExpireTime = new EventEmitter<any>();
+
     constructor(private http: HttpClient,
-                private router: Router) {
+                private router: Router,
+                private jwtHelperService: JwtHelperService) {
         if (this.isLoggedIn()) {
+            this.checkTokenExpired();
+
             setInterval(() => {
-                console.log('로그인되었습니다.')
-            }, 3000);
+                this.checkTokenExpired();
+            }, 1000);
+        }
+    }
+
+    public checkTokenExpired() {
+        let exp = this.jwtHelperService.decodeToken(this.getToken()).exp;
+        let sec = (exp * 1000) - (new Date()).getTime();
+
+        let sec_date_set = new Date(sec);
+        let timer = sec_date_set.getMinutes()+'분'+sec_date_set.getSeconds()+'초';
+
+        // console.log('토큰 만료 시간 :'+sec/60/1000+'분 남았습니다.');
+        // console.log('토큰 만료시간 : '+timer);
+
+        this.tokenExpireTime.emit(timer);
+
+        if (sec < 1 * 60 * 1000) {
+            this.logout();
+        }
+        else if (sec < 2 * 60 * 1000) {
+            this.tokenExpireTime.emit(timer);
         }
     }
 
@@ -28,6 +54,7 @@ export class AuthService {
 
     public logout() {
         localStorage.removeItem('token');
+        window.location.reload();
     }
 
     public refresh(): Observable<any> {
@@ -37,9 +64,19 @@ export class AuthService {
     }
 
     public isLoggedIn(): boolean {
-        let token = localStorage.getItem('token');
-        if (token && token !== 'undefined') return true;
-        else return false;
+        // console.log('생성된토큰: '+this.jwtHelperService.decodeToken(this.getToken()));
+        // console.log('만료여부: '+this.jwtHelperService.isTokenExpired());
+        // console.log('만료일시: '+this.jwtHelperService.getTokenExpirationDate());
+        // console.log('현재시간: '+new Date());
+        if (this.getToken() && this.getToken() !== 'undefined') {
+            return !this.jwtHelperService.isTokenExpired();
+        }
+
+        return false;
+    }
+
+    public getToken(): string {
+        return localStorage.getItem('token');
     }
 
     public setReturnUrl(url: string) {
@@ -52,27 +89,6 @@ export class AuthService {
 
     public removeReturnUrl() {
         localStorage.removeItem('returnUrl');
-    }
-
-    public parseJwt() {
-        let token = localStorage.getItem('token');
-        let base64Url = token.split('.')[1];
-        let base64 = base64Url.replace('-', '+').replace('_', '/');
-        return JSON.parse(window.atob(base64));
-    }
-
-    public checkJwtExp() {
-        // TODO: Jwt 파서, 게터를 angular2-jwt 라이브러리로 대체하기.
-        let exp = this.parseJwt().exp;
-        let exp_time = exp * 1000 - new Date().getTime();
-
-        console.log('남은 만료시간 : ' + exp_time / 1000 / 60);
-
-        if (exp_time < 0) {
-            return false;
-        }
-
-        return true;
     }
 
     public handleError(error: any) {

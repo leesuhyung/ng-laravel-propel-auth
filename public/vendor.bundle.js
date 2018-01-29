@@ -1,5 +1,283 @@
 webpackJsonp(["vendor"],{
 
+/***/ "../../../../@auth0/angular-jwt/index.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return JwtModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_jwt_interceptor__ = __webpack_require__("../../../../@auth0/angular-jwt/src/jwt.interceptor.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_jwthelper_service__ = __webpack_require__("../../../../@auth0/angular-jwt/src/jwthelper.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_jwtoptions_token__ = __webpack_require__("../../../../@auth0/angular-jwt/src/jwtoptions.token.js");
+/* unused harmony namespace reexport */
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__src_jwthelper_service__["a"]; });
+/* unused harmony namespace reexport */
+
+
+
+
+
+
+
+
+var JwtModule = (function () {
+    function JwtModule(parentModule) {
+        if (parentModule) {
+            throw new Error('JwtModule is already loaded. It should only be imported in your application\'s main module.');
+        }
+    }
+    JwtModule.forRoot = function (options) {
+        return {
+            ngModule: JwtModule,
+            providers: [
+                {
+                    provide: __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HTTP_INTERCEPTORS */],
+                    useClass: __WEBPACK_IMPORTED_MODULE_1__src_jwt_interceptor__["a" /* JwtInterceptor */],
+                    multi: true
+                },
+                options.jwtOptionsProvider ||
+                    {
+                        provide: __WEBPACK_IMPORTED_MODULE_4__src_jwtoptions_token__["a" /* JWT_OPTIONS */],
+                        useValue: options.config
+                    },
+                __WEBPACK_IMPORTED_MODULE_2__src_jwthelper_service__["a" /* JwtHelperService */]
+            ]
+        };
+    };
+    return JwtModule;
+}());
+
+JwtModule.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["J" /* NgModule */] },
+];
+/** @nocollapse */
+JwtModule.ctorParameters = function () { return [
+    { type: JwtModule, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_4" /* SkipSelf */] },] },
+]; };
+
+
+/***/ }),
+
+/***/ "../../../../@auth0/angular-jwt/src/jwt.interceptor.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return JwtInterceptor; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jwthelper_service__ = __webpack_require__("../../../../@auth0/angular-jwt/src/jwthelper.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__jwtoptions_token__ = __webpack_require__("../../../../@auth0/angular-jwt/src/jwtoptions.token.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__("../../../../rxjs/_esm5/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_fromPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/observable/fromPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_mergeMap__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/mergeMap.js");
+
+
+
+
+
+
+var JwtInterceptor = (function () {
+    function JwtInterceptor(config, jwtHelper) {
+        this.jwtHelper = jwtHelper;
+        this.tokenGetter = config.tokenGetter;
+        this.headerName = config.headerName || 'Authorization';
+        this.authScheme =
+            config.authScheme || config.authScheme === ''
+                ? config.authScheme
+                : 'Bearer ';
+        this.whitelistedDomains = config.whitelistedDomains || [];
+        this.throwNoTokenError = config.throwNoTokenError || false;
+        this.skipWhenExpired = config.skipWhenExpired;
+    }
+    JwtInterceptor.prototype.isWhitelistedDomain = function (request) {
+        var requestUrl;
+        try {
+            requestUrl = new URL(request.url);
+            return (this.whitelistedDomains.findIndex(function (domain) {
+                return typeof domain === 'string'
+                    ? domain === requestUrl.host
+                    : domain instanceof RegExp ? domain.test(requestUrl.host) : false;
+            }) > -1);
+        }
+        catch (err) {
+            // if we're here, the request is made
+            // to the same domain as the Angular app
+            // so it's safe to proceed
+            return true;
+        }
+    };
+    JwtInterceptor.prototype.handleInterception = function (token, request, next) {
+        var tokenIsExpired;
+        if (!token && this.throwNoTokenError) {
+            throw new Error('Could not get token from tokenGetter function.');
+        }
+        if (this.skipWhenExpired) {
+            tokenIsExpired = token ? this.jwtHelper.isTokenExpired(token) : true;
+        }
+        if (token && tokenIsExpired && this.skipWhenExpired) {
+            request = request.clone();
+        }
+        else if (token && this.isWhitelistedDomain(request)) {
+            request = request.clone({
+                setHeaders: (_a = {},
+                    _a[this.headerName] = "" + this.authScheme + token,
+                    _a)
+            });
+        }
+        return next.handle(request);
+        var _a;
+    };
+    JwtInterceptor.prototype.intercept = function (request, next) {
+        var _this = this;
+        var token = this.tokenGetter();
+        if (token instanceof Promise) {
+            return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */].fromPromise(token).mergeMap(function (asyncToken) {
+                return _this.handleInterception(asyncToken, request, next);
+            });
+        }
+        else {
+            return this.handleInterception(token, request, next);
+        }
+    };
+    return JwtInterceptor;
+}());
+
+JwtInterceptor.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */] },
+];
+/** @nocollapse */
+JwtInterceptor.ctorParameters = function () { return [
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_2__jwtoptions_token__["a" /* JWT_OPTIONS */],] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__jwthelper_service__["a" /* JwtHelperService */], },
+]; };
+
+
+/***/ }),
+
+/***/ "../../../../@auth0/angular-jwt/src/jwthelper.service.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return JwtHelperService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jwtoptions_token__ = __webpack_require__("../../../../@auth0/angular-jwt/src/jwtoptions.token.js");
+
+
+var JwtHelperService = (function () {
+    function JwtHelperService(config) {
+        this.tokenGetter = config.tokenGetter;
+    }
+    JwtHelperService.prototype.urlBase64Decode = function (str) {
+        var output = str.replace(/-/g, '+').replace(/_/g, '/');
+        switch (output.length % 4) {
+            case 0: {
+                break;
+            }
+            case 2: {
+                output += '==';
+                break;
+            }
+            case 3: {
+                output += '=';
+                break;
+            }
+            default: {
+                throw 'Illegal base64url string!';
+            }
+        }
+        return this.b64DecodeUnicode(output);
+    };
+    // credits for decoder goes to https://github.com/atk
+    JwtHelperService.prototype.b64decode = function (str) {
+        var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+        var output = '';
+        str = String(str).replace(/=+$/, '');
+        if (str.length % 4 === 1) {
+            throw new Error("'atob' failed: The string to be decoded is not correctly encoded.");
+        }
+        for (
+        // initialize result and counters
+        var bc = 0, bs = void 0, buffer = void 0, idx = 0; 
+        // get next character
+        (buffer = str.charAt(idx++)); 
+        // character found in table? initialize bit storage and add its ascii value;
+        ~buffer &&
+            ((bs = bc % 4 ? bs * 64 + buffer : buffer),
+                // and if not first of each 4 characters,
+                // convert the first 8 bits to one ascii character
+                bc++ % 4)
+            ? (output += String.fromCharCode(255 & (bs >> ((-2 * bc) & 6))))
+            : 0) {
+            // try to find character in table (0-63, not found => -1)
+            buffer = chars.indexOf(buffer);
+        }
+        return output;
+    };
+    JwtHelperService.prototype.b64DecodeUnicode = function (str) {
+        return decodeURIComponent(Array.prototype.map
+            .call(this.b64decode(str), function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+            .join(''));
+    };
+    JwtHelperService.prototype.decodeToken = function (token) {
+        if (token === void 0) { token = this.tokenGetter(); }
+        var parts = token.split('.');
+        if (parts.length !== 3) {
+            throw new Error('The inspected token doesn\'t appear to be a JWT. Check to make sure it has three parts and see https://jwt.io for more.');
+        }
+        var decoded = this.urlBase64Decode(parts[1]);
+        if (!decoded) {
+            throw new Error('Cannot decode the token.');
+        }
+        return JSON.parse(decoded);
+    };
+    JwtHelperService.prototype.getTokenExpirationDate = function (token) {
+        if (token === void 0) { token = this.tokenGetter(); }
+        var decoded;
+        decoded = this.decodeToken(token);
+        if (!decoded.hasOwnProperty('exp')) {
+            return null;
+        }
+        var date = new Date(0);
+        date.setUTCSeconds(decoded.exp);
+        return date;
+    };
+    JwtHelperService.prototype.isTokenExpired = function (token, offsetSeconds) {
+        if (token === void 0) { token = this.tokenGetter(); }
+        var date = this.getTokenExpirationDate(token);
+        offsetSeconds = offsetSeconds || 0;
+        if (date === null) {
+            return false;
+        }
+        return !(date.valueOf() > new Date().valueOf() + offsetSeconds * 1000);
+    };
+    return JwtHelperService;
+}());
+
+JwtHelperService.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */] },
+];
+/** @nocollapse */
+JwtHelperService.ctorParameters = function () { return [
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__jwtoptions_token__["a" /* JWT_OPTIONS */],] },] },
+]; };
+
+
+/***/ }),
+
+/***/ "../../../../@auth0/angular-jwt/src/jwtoptions.token.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return JWT_OPTIONS; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+
+var JWT_OPTIONS = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* InjectionToken */]('JWT_OPTIONS');
+
+
+/***/ }),
+
 /***/ "../../../../@ng-bootstrap/ng-bootstrap/accordion/accordion-config.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8331,6 +8609,21 @@ function flattenUnsubscriptionErrors(errors) {
 
 /***/ }),
 
+/***/ "../../../../rxjs/_esm5/add/observable/fromPromise.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Observable__ = __webpack_require__("../../../../rxjs/_esm5/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__observable_fromPromise__ = __webpack_require__("../../../../rxjs/_esm5/observable/fromPromise.js");
+/** PURE_IMPORTS_START .._.._Observable,.._.._observable_fromPromise PURE_IMPORTS_END */
+
+
+__WEBPACK_IMPORTED_MODULE_0__Observable__["a" /* Observable */].fromPromise = __WEBPACK_IMPORTED_MODULE_1__observable_fromPromise__["a" /* fromPromise */];
+//# sourceMappingURL=fromPromise.js.map 
+
+
+/***/ }),
+
 /***/ "../../../../rxjs/_esm5/add/observable/throw.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8373,6 +8666,22 @@ __WEBPACK_IMPORTED_MODULE_0__Observable__["a" /* Observable */].prototype._catch
 
 __WEBPACK_IMPORTED_MODULE_0__Observable__["a" /* Observable */].prototype.map = __WEBPACK_IMPORTED_MODULE_1__operator_map__["a" /* map */];
 //# sourceMappingURL=map.js.map 
+
+
+/***/ }),
+
+/***/ "../../../../rxjs/_esm5/add/operator/mergeMap.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Observable__ = __webpack_require__("../../../../rxjs/_esm5/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__operator_mergeMap__ = __webpack_require__("../../../../rxjs/_esm5/operator/mergeMap.js");
+/** PURE_IMPORTS_START .._.._Observable,.._.._operator_mergeMap PURE_IMPORTS_END */
+
+
+__WEBPACK_IMPORTED_MODULE_0__Observable__["a" /* Observable */].prototype.mergeMap = __WEBPACK_IMPORTED_MODULE_1__operator_mergeMap__["a" /* mergeMap */];
+__WEBPACK_IMPORTED_MODULE_0__Observable__["a" /* Observable */].prototype.flatMap = __WEBPACK_IMPORTED_MODULE_1__operator_mergeMap__["a" /* mergeMap */];
+//# sourceMappingURL=mergeMap.js.map 
 
 
 /***/ }),

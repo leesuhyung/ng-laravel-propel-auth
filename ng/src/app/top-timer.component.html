@@ -1,0 +1,7 @@
+<span style="padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;">님 <i class="fa fa-clock-o text-warning" aria-hidden="true"></i> 남은시간 {{timer}}</span>
+<div class="btn-group btn-group-sm" role="group" *ngIf="timer">
+  <button type="button" class="btn btn-warning" (click)="refresh()">시간연장</button>
+  <button type="button" class="btn btn-warning" (click)="logout()">로그아웃</button>
+</div>

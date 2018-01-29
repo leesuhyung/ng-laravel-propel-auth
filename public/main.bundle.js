@@ -17,29 +17,6 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy re
 
 /***/ }),
 
-/***/ "../../../../../src/app/add-header-interceptor.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddHeaderInterceptor; });
-var AddHeaderInterceptor = /** @class */ (function () {
-    function AddHeaderInterceptor() {
-    }
-    AddHeaderInterceptor.prototype.intercept = function (req, next) {
-        var newReq = req.clone({
-            setHeaders: {
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
-        });
-        return next.handle(newReq);
-    };
-    return AddHeaderInterceptor;
-}());
-
-
-
-/***/ }),
-
 /***/ "../../../../../src/app/app-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -113,7 +90,6 @@ module.exports = "<top-nav></top-nav>\n\n<main role=\"main\" class=\"container\"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -124,32 +100,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
 var AppComponent = /** @class */ (function () {
-    function AppComponent(authService) {
-        this.authService = authService;
+    function AppComponent() {
     }
-    AppComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        // TODO: 페이지가 새로고침되지 않으면 리플래시가 실행되지 않는다. (라우트 이동시 새로고침 안됨) => auth service 생성자에 적용하길..
-        if (this.authService.isLoggedIn() && !this.authService.checkJwtExp()) {
-            this.authService.refresh()
-                .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('app-root(ngOnInit)::refresh done.'); });
-        }
-    };
-    AppComponent.prototype.successful = function (response) {
-        localStorage.setItem('token', response.token);
-        console.log('JWT token 이 만료되어 재발급 되었습니다.');
-    };
-    AppComponent.prototype.failure = function (error) {
-        //
-    };
     AppComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-root',
             template: __webpack_require__("../../../../../src/app/app.component.html")
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_auth_service__["a" /* AuthService */]])
+        __metadata("design:paramtypes", [])
     ], AppComponent);
     return AppComponent;
 }());
@@ -167,15 +126,15 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__top_nav_component__ = __webpack_require__("../../../../../src/app/top-nav.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__home_component__ = __webpack_require__("../../../../../src/app/home.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__component_auth_login_component__ = __webpack_require__("../../../../../src/app/component/auth/login.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__component_error404_error404_component__ = __webpack_require__("../../../../../src/app/component/error404/error404.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__component_auth_register_component__ = __webpack_require__("../../../../../src/app/component/auth/register.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__add_header_interceptor__ = __webpack_require__("../../../../../src/app/add-header-interceptor.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__top_timer_component__ = __webpack_require__("../../../../../src/app/top-timer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__home_component__ = __webpack_require__("../../../../../src/app/home.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__component_auth_login_component__ = __webpack_require__("../../../../../src/app/component/auth/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__component_error404_error404_component__ = __webpack_require__("../../../../../src/app/component/error404/error404.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__component_auth_register_component__ = __webpack_require__("../../../../../src/app/component/auth/register.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__services_auth_guard_service__ = __webpack_require__("../../../../../src/app/services/auth-guard.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__component_user_user_index_component__ = __webpack_require__("../../../../../src/app/component/user/user-index.component.ts");
@@ -185,12 +144,14 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__component_board_board_create_form_component__ = __webpack_require__("../../../../../src/app/component/board/board-create-form.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__component_board_board_edit_form_component__ = __webpack_require__("../../../../../src/app/component/board/board-edit-form.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__auth0_angular_jwt__ = __webpack_require__("../../../../@auth0/angular-jwt/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -221,10 +182,11 @@ var AppModule = /** @class */ (function () {
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_2__app_component__["a" /* AppComponent */],
                 __WEBPACK_IMPORTED_MODULE_3__top_nav_component__["a" /* TopNavComponent */],
-                __WEBPACK_IMPORTED_MODULE_5__home_component__["a" /* HomeComponent */],
-                __WEBPACK_IMPORTED_MODULE_6__component_auth_login_component__["a" /* LoginComponent */],
-                __WEBPACK_IMPORTED_MODULE_7__component_error404_error404_component__["a" /* Error404Component */],
-                __WEBPACK_IMPORTED_MODULE_8__component_auth_register_component__["a" /* RegisterComponent */],
+                __WEBPACK_IMPORTED_MODULE_4__top_timer_component__["a" /* TopTimerComponent */],
+                __WEBPACK_IMPORTED_MODULE_6__home_component__["a" /* HomeComponent */],
+                __WEBPACK_IMPORTED_MODULE_7__component_auth_login_component__["a" /* LoginComponent */],
+                __WEBPACK_IMPORTED_MODULE_8__component_error404_error404_component__["a" /* Error404Component */],
+                __WEBPACK_IMPORTED_MODULE_9__component_auth_register_component__["a" /* RegisterComponent */],
                 __WEBPACK_IMPORTED_MODULE_15__component_user_user_index_component__["a" /* UserIndexComponent */],
                 __WEBPACK_IMPORTED_MODULE_16__component_user_user_detail_component__["a" /* UserDetailComponent */],
                 __WEBPACK_IMPORTED_MODULE_17__component_board_board_index_component__["a" /* BoardIndexComponent */],
@@ -234,21 +196,24 @@ var AppModule = /** @class */ (function () {
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-                __WEBPACK_IMPORTED_MODULE_4__app_routing_module__["a" /* AppRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_10__angular_common_http__["c" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_11__angular_forms__["c" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_11__angular_forms__["f" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_5__app_routing_module__["a" /* AppRoutingModule */],
+                __WEBPACK_IMPORTED_MODULE_11__angular_common_http__["c" /* HttpClientModule */],
+                __WEBPACK_IMPORTED_MODULE_12__angular_forms__["c" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_12__angular_forms__["f" /* ReactiveFormsModule */],
                 __WEBPACK_IMPORTED_MODULE_21__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_22__auth0_angular_jwt__["b" /* JwtModule */].forRoot({
+                    config: {
+                        tokenGetter: function () {
+                            return localStorage.getItem('token');
+                        },
+                        whitelistedDomains: ['localhost:4200', 'scv.local']
+                    }
+                })
             ],
             providers: [
-                __WEBPACK_IMPORTED_MODULE_9__services_auth_service__["a" /* AuthService */],
+                __WEBPACK_IMPORTED_MODULE_10__services_auth_service__["a" /* AuthService */],
                 __WEBPACK_IMPORTED_MODULE_13__services_user_service__["a" /* UserService */],
                 __WEBPACK_IMPORTED_MODULE_14__services_auth_guard_service__["a" /* AuthGuardService */],
-                {
-                    provide: __WEBPACK_IMPORTED_MODULE_10__angular_common_http__["a" /* HTTP_INTERCEPTORS */],
-                    useClass: __WEBPACK_IMPORTED_MODULE_12__add_header_interceptor__["a" /* AddHeaderInterceptor */],
-                    multi: true,
-                },
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_2__app_component__["a" /* AppComponent */]]
         })
@@ -903,9 +868,10 @@ var AuthGuardService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__ = __webpack_require__("../../../../rxjs/_esm5/Observable.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_catch__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/catch.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_observable_throw__ = __webpack_require__("../../../../rxjs/_esm5/add/observable/throw.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__auth0_angular_jwt__ = __webpack_require__("../../../../@auth0/angular-jwt/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_catch__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/catch.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_observable_throw__ = __webpack_require__("../../../../rxjs/_esm5/add/observable/throw.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -923,17 +889,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var AuthService = /** @class */ (function () {
-    function AuthService(http, router) {
+    function AuthService(http, router, jwtHelperService) {
+        var _this = this;
         this.http = http;
         this.router = router;
+        this.jwtHelperService = jwtHelperService;
         this.apiBaseUrl = __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */].apiBaseUrl + "/auth";
+        this.tokenExpireTime = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */]();
         if (this.isLoggedIn()) {
+            this.checkTokenExpired();
             setInterval(function () {
-                console.log('로그인되었습니다.');
-            }, 3000);
+                _this.checkTokenExpired();
+            }, 1000);
         }
     }
+    AuthService.prototype.checkTokenExpired = function () {
+        var exp = this.jwtHelperService.decodeToken(this.getToken()).exp;
+        var sec = (exp * 1000) - (new Date()).getTime();
+        var sec_date_set = new Date(sec);
+        var timer = sec_date_set.getMinutes() + '분' + sec_date_set.getSeconds() + '초';
+        // console.log('토큰 만료 시간 :'+sec/60/1000+'분 남았습니다.');
+        // console.log('토큰 만료시간 : '+timer);
+        this.tokenExpireTime.emit(timer);
+        if (sec < 1 * 60 * 1000) {
+            this.logout();
+        }
+        else if (sec < 2 * 60 * 1000) {
+            this.tokenExpireTime.emit(timer);
+        }
+    };
     AuthService.prototype.login = function (email, password) {
         return this.http.post(this.apiBaseUrl + "/login", { email: email, password: password })
             .map(function (response) { return response; })
@@ -941,6 +927,7 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.logout = function () {
         localStorage.removeItem('token');
+        window.location.reload();
     };
     AuthService.prototype.refresh = function () {
         return this.http.get(this.apiBaseUrl + '/refresh')
@@ -948,11 +935,17 @@ var AuthService = /** @class */ (function () {
             .catch(this.handleError);
     };
     AuthService.prototype.isLoggedIn = function () {
-        var token = localStorage.getItem('token');
-        if (token && token !== 'undefined')
-            return true;
-        else
-            return false;
+        // console.log('생성된토큰: '+this.jwtHelperService.decodeToken(this.getToken()));
+        // console.log('만료여부: '+this.jwtHelperService.isTokenExpired());
+        // console.log('만료일시: '+this.jwtHelperService.getTokenExpirationDate());
+        // console.log('현재시간: '+new Date());
+        if (this.getToken() && this.getToken() !== 'undefined') {
+            return !this.jwtHelperService.isTokenExpired();
+        }
+        return false;
+    };
+    AuthService.prototype.getToken = function () {
+        return localStorage.getItem('token');
     };
     AuthService.prototype.setReturnUrl = function (url) {
         localStorage.setItem('returnUrl', url);
@@ -963,30 +956,19 @@ var AuthService = /** @class */ (function () {
     AuthService.prototype.removeReturnUrl = function () {
         localStorage.removeItem('returnUrl');
     };
-    AuthService.prototype.parseJwt = function () {
-        var token = localStorage.getItem('token');
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace('-', '+').replace('_', '/');
-        return JSON.parse(window.atob(base64));
-    };
-    AuthService.prototype.checkJwtExp = function () {
-        // TODO: Jwt 파서, 게터를 angular2-jwt 라이브러리로 대체하기.
-        var exp = this.parseJwt().exp;
-        var exp_time = exp * 1000 - new Date().getTime();
-        console.log('남은 만료시간 : ' + exp_time / 1000 / 60);
-        if (exp_time < 0) {
-            return false;
-        }
-        return true;
-    };
     AuthService.prototype.handleError = function (error) {
         console.error(error);
         return __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__["a" /* Observable */].throw(error.error || 'Server error');
     };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Q" /* Output */])(),
+        __metadata("design:type", Object)
+    ], AuthService.prototype, "tokenExpireTime", void 0);
     AuthService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_common_http__["b" /* HttpClient */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]])
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_5__auth0_angular_jwt__["a" /* JwtHelperService */]])
     ], AuthService);
     return AuthService;
 }());
@@ -1066,7 +1048,7 @@ var UserService = /** @class */ (function () {
 /***/ "../../../../../src/app/top-nav.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark fixed-top\">\n  <a class=\"navbar-brand\" routerLink=\"/home\">{{ env.appName }}</a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarsExampleDefault\" aria-controls=\"navbarsExampleDefault\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarsExampleDefault\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/home\">홈</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/user\">회원</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/board\">게시판</a>\n      </li>\n    </ul>\n    <ul class=\"navbar-nav ml-md-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/login\">로그인</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/register\">회원가입</a>\n      </li>\n      <li class=\"nav-item dropdown\" *ngIf=\"user\">\n        <button class=\"btn btn-warning nav-link dropdown-toggle text-dark\" id=\"dropdownButton\"\n           data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">{{ user.Name }}</button>\n        <div class=\"dropdown-menu\" aria-labelledby=\"dropdownButton\">\n          <a class=\"dropdown-item\" (click)=\"logout()\" style=\"cursor: pointer;\">로그아웃</a>\n        </div>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div *ngIf=\"errorResponse?.message\" class=\"mx-md-5 alert alert-danger small\">\n  {{errorResponse?.message}}\n</div>"
+module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark fixed-top\">\n  <a class=\"navbar-brand\" routerLink=\"/home\"><i class=\"fa fa-gavel\" aria-hidden=\"true\"></i> {{ env.appName }}</a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarsExampleDefault\" aria-controls=\"navbarsExampleDefault\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarsExampleDefault\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/home\">홈</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/user\">회원</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/board\">게시판</a>\n      </li>\n    </ul>\n    <ul class=\"navbar-nav ml-md-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/login\">로그인</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/register\">회원가입</a>\n      </li>\n      <li class=\"nav-item text-light\" *ngIf=\"user\">\n        <span class=\"text-warning\">{{ user.Name }}</span><top-timer></top-timer>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div *ngIf=\"errorResponse?.message\" class=\"mx-md-5 alert alert-danger small\">\n  {{errorResponse?.message}}\n</div>"
 
 /***/ }),
 
@@ -1124,6 +1106,62 @@ var TopNavComponent = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_3__services_user_service__["a" /* UserService */]])
     ], TopNavComponent);
     return TopNavComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/top-timer.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<span style=\"padding: .25rem .5rem;\n    font-size: .875rem;\n    line-height: 1.5;\">님 <i class=\"fa fa-clock-o text-warning\" aria-hidden=\"true\"></i> 남은시간 {{timer}}</span>\n<div class=\"btn-group btn-group-sm\" role=\"group\" *ngIf=\"timer\">\n  <button type=\"button\" class=\"btn btn-warning\" (click)=\"refresh()\">시간연장</button>\n  <button type=\"button\" class=\"btn btn-warning\" (click)=\"logout()\">로그아웃</button>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/top-timer.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TopTimerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TopTimerComponent = /** @class */ (function () {
+    function TopTimerComponent(authService) {
+        var _this = this;
+        this.authService = authService;
+        this.authService.tokenExpireTime.subscribe(function (response) {
+            _this.timer = response;
+        });
+    }
+    TopTimerComponent.prototype.refresh = function () {
+        this.authService.refresh().subscribe(function (response) {
+            localStorage.setItem('token', response.token);
+        }, function (error) { return null; }, function () { return console.log('top-timer::refresh done.'); });
+    };
+    TopTimerComponent.prototype.logout = function () {
+        this.authService.logout();
+        window.location.href = '/home';
+    };
+    TopTimerComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'top-timer',
+            template: __webpack_require__("../../../../../src/app/top-timer.component.html")
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_auth_service__["a" /* AuthService */]])
+    ], TopTimerComponent);
+    return TopTimerComponent;
 }());
 
 
