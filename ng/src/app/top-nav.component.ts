@@ -24,7 +24,7 @@ export class TopNavComponent implements OnInit {
                 .subscribe(
                     response => this.successful(response),
                     error => this.failure(error),
-                    () => console.log('register::submit done.')
+                    () => console.log('top-nav::profile done.')
                 )
         }
     }

@@ -50,11 +50,6 @@ class LoginController extends Controller
         return $this->sendFailedLoginResponse($request);
     }
 
-    public function profile(Request $request)
-    {
-        return $this->guard()->user();
-    }
-
     public function refresh()
     {
         return $this->respondWithToken($this->guard()->refresh());

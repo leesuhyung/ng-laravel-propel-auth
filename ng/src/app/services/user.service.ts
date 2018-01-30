@@ -28,6 +28,12 @@ export class UserService {
             .catch(this.handleError)
     }
 
+    public detail(id: number): Observable<any> {
+        return this.http.get(`${this.apiBaseUrl}/${id}`)
+            .map(response => response)
+            .catch(this.handleError)
+    }
+
     public create(user: User): Observable<User> {
         return this.http.post(this.apiBaseUrl, user)
             .map(response => response)

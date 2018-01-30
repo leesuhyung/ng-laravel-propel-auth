@@ -22,6 +22,7 @@ import {BoardCreateFormComponent} from './component/board/board-create-form.comp
 import {BoardEditFormComponent} from './component/board/board-edit-form.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {JwtModule} from '@auth0/angular-jwt';
+import { NgModalComponent } from './component/ng-modal/ng-modal.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import {JwtModule} from '@auth0/angular-jwt';
         BoardDetailComponent,
         BoardCreateFormComponent,
         BoardEditFormComponent,
+        NgModalComponent,
     ],
     imports: [
         BrowserModule,

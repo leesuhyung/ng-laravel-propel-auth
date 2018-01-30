@@ -19,7 +19,6 @@ export class AuthService {
                 private jwtHelperService: JwtHelperService) {
         if (this.isLoggedIn()) {
             this.checkTokenExpired();
-
             setInterval(() => {
                 this.checkTokenExpired();
             }, 1000);
@@ -38,11 +37,8 @@ export class AuthService {
 
         this.tokenExpireTime.emit(timer);
 
-        if (sec < 1 * 60 * 1000) {
+        if (sec < 0) {
             this.logout();
-        }
-        else if (sec < 2 * 60 * 1000) {
-            this.tokenExpireTime.emit(timer);
         }
     }
 
