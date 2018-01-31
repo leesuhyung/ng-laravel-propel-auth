@@ -29,7 +29,7 @@ class BoardController extends Controller
 
         return $this->successToJson(
             $request,
-            $this->toArray(),
+            $boards->toArray(),
             $boards
         );
     }

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: '[ng-modal]',
@@ -7,10 +7,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 })
 export class NgModalComponent {
 
-    constructor(private modalService: NgbModal) {
+    constructor(public modalService: NgbModal,
+                public activeModal: NgbActiveModal) {
     }
 
-    public open() {
-        console.log('modal 실행');
-    }
 }

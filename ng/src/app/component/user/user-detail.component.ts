@@ -3,6 +3,7 @@ import {User} from "../../models/user";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
 import {environment} from "../../../environments/environment";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: 'app-user-detail',
@@ -17,7 +18,8 @@ export class UserDetailComponent implements OnInit {
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
-                private service: UserService) {
+                private service: UserService,
+                private modalService: NgbModal) {
         if (this.route.snapshot.url.length > 0) {
             this.routerLink = '/' + this.route.snapshot.url[0].path;
         }
@@ -42,11 +44,23 @@ export class UserDetailComponent implements OnInit {
             )
     }
 
+    public goToList() {
+        this.router.navigate([this.routerLink], { queryParamsHandling: 'merge' });
+    }
+
     public successful(response: any): void {
         this.item = response.data;
     }
 
     public failure(error: any): void {
         this.errorResponse = error;
+    }
+
+    public open(content) {
+        this.modalService.open(content);
+    }
+
+    public resetItem(item: User) {
+        this.item = item;
     }
 }

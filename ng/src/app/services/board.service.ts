@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {User} from "../models/user";
+import {Board} from "../models/board";
 import {Observable} from "rxjs/Observable";
 
 @Injectable()
-export class UserService {
-    private apiBaseUrl = `${environment.apiBaseUrl}/user`;
+export class BoardService {
+    private apiBaseUrl = `${environment.apiBaseUrl}/board`;
 
     constructor(private http: HttpClient) {
     }
@@ -31,26 +31,20 @@ export class UserService {
             .catch(this.handleError)
     }
 
-    public create(user: User): Observable<any> {
-        return this.http.post(this.apiBaseUrl, user)
+    public create(board: Board): Observable<any> {
+        return this.http.post(this.apiBaseUrl, board)
             .map(response => response)
             .catch(this.handleError)
     }
 
-    public update(user: User): Observable<any> {
-        return this.http.put(`${this.apiBaseUrl}/${user.Id}`, user)
+    public update(board: Board): Observable<any> {
+        return this.http.put(`${this.apiBaseUrl}/${board.Id}`, board)
             .map(response => response)
             .catch(this.handleError)
     }
 
-    public delete(user: User): Observable<any> {
-        return this.http.delete(`${this.apiBaseUrl}/${user.Id}`)
-            .map(response => response)
-            .catch(this.handleError)
-    }
-
-    public profile(): Observable<any> {
-        return this.http.get(this.apiBaseUrl + '/profile' )
+    public delete(board: Board): Observable<any> {
+        return this.http.delete(`${this.apiBaseUrl}/${board.Id}`)
             .map(response => response)
             .catch(this.handleError)
     }
@@ -59,5 +53,4 @@ export class UserService {
         console.error(error);
         return Observable.throw(error.error || 'Server error');
     }
-
 }

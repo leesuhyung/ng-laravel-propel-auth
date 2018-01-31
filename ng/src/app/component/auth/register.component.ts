@@ -15,10 +15,10 @@ export class RegisterComponent implements OnInit {
     errorResponse: string;
     env: any = environment;
     formGroup: FormGroup = new FormGroup({
-        'email': new FormControl('', [Validators.required, Validators.pattern("[^ @]*@[^ @]*")]),
-        'name': new FormControl('', Validators.required),
-        'password': new FormControl('', Validators.required),
-        'password_confirmation': new FormControl('', Validators.required),
+        'Email': new FormControl('', [Validators.required, Validators.pattern("[^ @]*@[^ @]*")]),
+        'Name': new FormControl('', Validators.required),
+        'Password': new FormControl('', Validators.required),
+        'Password_confirmation': new FormControl('', Validators.required),
     });
 
     constructor(private router: Router,

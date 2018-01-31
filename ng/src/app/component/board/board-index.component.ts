@@ -1,14 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {environment} from "../../../environments/environment";
+import {Paginate} from "../../models/paginate";
+import {Board} from "../../models/board";
+import {BoardService} from "../../services/board.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-  selector: 'app-board-index',
-  templateUrl: './board-index.component.html'
+    selector: 'app-board-index',
+    templateUrl: './board-index.component.html'
 })
 export class BoardIndexComponent implements OnInit {
 
-  constructor() { }
+    env: any = environment;
+    errorResponse: string;
+    page: number = 1;
+    limit: number = 7;
+    paginate: Paginate = new Paginate;
+    items: Board[] = [];
 
-  ngOnInit() {
-  }
+    constructor(private service: BoardService,
+                private route: ActivatedRoute,
+                private router: Router,
+                private modalService: NgbModal) {
+    }
 
+    ngOnInit() {
+        this.route
+            .queryParams
+            .subscribe(params => {
+                this.page = +params['page'] || this.page;
+                this.limit = +params['limit'] || this.limit;
+                this.loadList();
+            });
+    }
+
+    public loadList() {
+        this.service.index(this.page, this.limit)
+            .subscribe(
+                response => this.successful(response),
+                error => this.failure(error),
+                () => console.log('board-index::loadList done.')
+            )
+    }
+
+    public loadPage(page?: number) {
+        let routeLink = '/' + this.route.snapshot.url[0].path;
+        this.router.navigate([routeLink], {queryParams: {page: page, limit: this.limit}});
+    }
+
+    public open(content) {
+        this.modalService.open(content);
+    }
+
+    public successful(response: any): void {
+        this.items = response.data;
+        this.paginate = response.paginate;
+    }
+
+    public failure(error: any): void {
+        this.errorResponse = error;
+    }
 }

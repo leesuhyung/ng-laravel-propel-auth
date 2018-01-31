@@ -54,14 +54,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'password' => 'required',
-            'password_confirmation' => 'required|same:password'
+            'Name' => 'required|string',
+            'Email' => 'required|email',
+            'Password' => 'required',
+            'Password_confirmation' => 'required|same:Password'
         ]);
 
         $count = UserQuery::create()
-            ->filterByEmail($request->get('email'))
+            ->filterByEmail($request->get('Email'))
             ->count();
 
         if ($count > 0) {
@@ -69,9 +69,9 @@ class UserController extends Controller
         }
 
         $user = new User();
-        $user->setName($request->get('name'));
-        $user->setEmail($request->get('email'));
-        $user->setPassword(bcrypt($request->get('password')));
+        $user->setName($request->get('Name'));
+        $user->setEmail($request->get('Email'));
+        $user->setPassword(bcrypt($request->get('Password')));
         $user->save();
 
         return $this->successToJson(
@@ -104,6 +104,33 @@ class UserController extends Controller
         if (is_null($user)) {
             return abort(404);
         }
+
+        return $this->successToJson(
+            $request,
+            $user->toArray()
+        );
+    }
+
+    /**
+     * Update the specified resource.
+     *
+     * @param Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
+    public function update(Request $request, $id)
+    {
+        $user = UserQuery::create()
+            ->findOneById($id);
+
+        if (is_null($user)) {
+            return abort(404);
+        }
+
+        $user->setName($request->get('Name'));
+        $user->setEmail($request->get('Email'));
+        $user->save();
 
         return $this->successToJson(
             $request,

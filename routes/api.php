@@ -24,7 +24,19 @@ Route::group([
 ], function () {
     Route::get('/', 'UserController@index');
     Route::get('/{id}', 'UserController@show')->where('id', '[0-9]+');
+    Route::put('/{id}', 'UserController@update')->where('id', '[0-9]+');
     Route::get('/profile', 'UserController@profile');
     Route::post('/', 'UserController@store');
-    Route::delete('/', 'UserController@destroy');
+    Route::delete('/{id}', 'UserController@destroy');
+});
+
+Route::group([
+    'prefix' => 'board',
+    'namespace' => 'Api'
+], function () {
+    Route::get('/', 'BoardController@index');
+    Route::get('/{id}', 'BoardController@show')->where('id', '[0-9]+');
+    Route::put('/{id}', 'BoardController@update')->where('id', '[0-9]+');
+    Route::post('/', 'BoardController@store');
+    Route::delete('/{id}', 'BoardController@destroy');
 });

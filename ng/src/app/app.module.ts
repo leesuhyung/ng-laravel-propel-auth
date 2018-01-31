@@ -22,7 +22,9 @@ import {BoardCreateFormComponent} from './component/board/board-create-form.comp
 import {BoardEditFormComponent} from './component/board/board-edit-form.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {JwtModule} from '@auth0/angular-jwt';
-import { NgModalComponent } from './component/ng-modal/ng-modal.component';
+import {BoardService} from "./services/board.service";
+import {UserEditFormComponent} from "./component/user/user-edit-form.component";
+import {UserDeleteFormComponent} from "./component/user/user-delete-form.component";
 
 
 @NgModule({
@@ -36,11 +38,12 @@ import { NgModalComponent } from './component/ng-modal/ng-modal.component';
         RegisterComponent,
         UserIndexComponent,
         UserDetailComponent,
+        UserEditFormComponent,
+        UserDeleteFormComponent,
         BoardIndexComponent,
         BoardDetailComponent,
         BoardCreateFormComponent,
         BoardEditFormComponent,
-        NgModalComponent,
     ],
     imports: [
         BrowserModule,
@@ -61,6 +64,7 @@ import { NgModalComponent } from './component/ng-modal/ng-modal.component';
     providers: [
         AuthService,
         UserService,
+        BoardService,
         AuthGuardService,
         /*{
             provide: HTTP_INTERCEPTORS,

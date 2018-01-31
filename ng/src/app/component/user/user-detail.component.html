@@ -33,30 +33,40 @@
 
   <small class="row mt-3">
     <div class="col-sm-6 text-left">
-      <button class="btn btn-outline-secondary btn-sm" routerLink="{{routerLink}}" queryParamsHandling="merge">목록</button>
+      <button class="btn btn-outline-secondary btn-sm" (click)="goToList();">목록</button>
     </div>
     <div class="col-sm-6 text-right">
-      <button class="btn btn-outline-primary btn-sm" (click)="editUserModal.open()">수정</button>
-      <button class="btn btn-outline-danger btn-sm">삭제</button>
+      <button class="btn btn-outline-primary btn-sm" (click)="open(editUserModal);">수정</button>
+      <button class="btn btn-outline-danger btn-sm" (click)="open(deleteUserModal);">삭제</button>
     </div>
   </small>
 </div>
 
-<!--
-  TODO: 템플릿을 만들고 이를 NgbModalService.open(template) 으로 엽니다.
-  TODO: 아니면 <user-edit #editUserModal> 으로 컴포넌트를 연결해서 컴포넌트에서 직접 열어보기.
--->
-<div ng-modal #editUserModal>
+<ng-template #editUserModal let-closeModal="close">
   <div class="modal-header">
     <h4 class="modal-title">회원 정보수정</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <!--<div class="modal-body">
-    <p>One fine body&hellip;</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
-  </div>-->
-</div>
+  <user-edit-form
+          [user]="item"
+          (success)="closeModal(); resetItem($event)"></user-edit-form>
+</ng-template>
+
+<ng-template #deleteUserModal let-closeModal="close">
+    <div class="modal-header">
+        <h4 class="modal-title">회원 삭제</h4>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <user-delete-form
+            #deleteModal
+            [user]="item"
+            (success)="closeModal(); goToList();"></user-delete-form>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="closeModal();">취소</button>
+        <button type="button" class="btn btn-danger" (click)="deleteModal.submit();">삭제</button>
+    </div>
+</ng-template>
