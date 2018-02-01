@@ -25,7 +25,9 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {BoardService} from "./services/board.service";
 import {UserEditFormComponent} from "./component/user/user-edit-form.component";
 import {UserDeleteFormComponent} from "./component/user/user-delete-form.component";
-
+import {FindBoardEntityPipe} from "./pipes/find-board-entity.pipe";
+import {BoardDeleteFormComponent} from './component/board/board-delete-form.component';
+import {QuillEditorModule} from 'ng2-quill-editor';
 
 @NgModule({
     declarations: [
@@ -44,6 +46,8 @@ import {UserDeleteFormComponent} from "./component/user/user-delete-form.compone
         BoardDetailComponent,
         BoardCreateFormComponent,
         BoardEditFormComponent,
+        FindBoardEntityPipe,
+        BoardDeleteFormComponent
     ],
     imports: [
         BrowserModule,
@@ -59,7 +63,8 @@ import {UserDeleteFormComponent} from "./component/user/user-delete-form.compone
                 },
                 whitelistedDomains: ['localhost:4200', 'scv.local']
             }
-        })
+        }),
+        QuillEditorModule
     ],
     providers: [
         AuthService,

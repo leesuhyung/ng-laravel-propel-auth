@@ -45,9 +45,9 @@ class BoardController extends Controller
     {
         $board = new Board();
         $board->setUser(Auth::user());
-        $board->setEntity($request->get('entity'));
-        $board->setTitle($request->get('title'));
-        $board->setContents($request->get('contents'));
+        $board->setEntity($request->get('Entity'));
+        $board->setTitle($request->get('Title'));
+        $board->setContents($request->get('Contents'));
         $board->save();
 
         return $this->successToJson(
@@ -94,9 +94,9 @@ class BoardController extends Controller
             return abort(404);
         }
 
-        $board->setEntity($request->get('entity'));
-        $board->setTitle($request->get('title'));
-        $board->setContents($request->get('contents'));
+        $board->setEntity($request->get('Entity'));
+        $board->setTitle($request->get('Title'));
+        $board->setContents($request->get('Contents'));
         $board->save();
 
         return $this->successToJson(

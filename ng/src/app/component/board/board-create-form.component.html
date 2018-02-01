@@ -18,9 +18,17 @@
     </div>
     <div class="form-group">
       <label for="selectEntity">글 유형</label>
-      <select id="selectEntity" formControlName="Entity" class="form-control">
+      <select id="selectEntity" class="form-control" formControlName="Entity"
+            [ngClass]="{
+            'is-invalid': formGroup.controls.Entity.invalid && form.submitted,
+            'is-valid': formGroup.controls.Entity.valid
+          }">
+        <option value="">유형 선택</option>
         <option *ngFor="let board of entities" value="{{board.Value}}">{{board.Text}}</option>
       </select>
+      <div class="invalid-feedback">
+        글 유형이 선택되지 않았습니다.
+      </div>
     </div>
     <div class="form-group">
       <label for="inputContents">글 내용</label>

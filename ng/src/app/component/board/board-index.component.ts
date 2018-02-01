@@ -46,7 +46,12 @@ export class BoardIndexComponent implements OnInit {
 
     public loadPage(page?: number) {
         let routeLink = '/' + this.route.snapshot.url[0].path;
-        this.router.navigate([routeLink], {queryParams: {page: page, limit: this.limit}});
+        this.router.navigate([routeLink], {queryParams: {page: page, limit: this.limit}})
+            .then((success) => {
+                if (success !== true) {
+                    this.loadList();
+                }
+            });
     }
 
     public open(content) {

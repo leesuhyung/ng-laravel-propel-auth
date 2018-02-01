@@ -1,3 +1,54 @@
-<p>
-  board-edit-form works!
-</p>
+<form class="form-group" [formGroup]="formGroup" (ngSubmit)="submit()" #form="ngForm">
+  <div class="modal-body">
+    <div *ngIf="errorResponse?.message" class="alert alert-danger">
+      {{errorResponse?.message}}
+    </div>
+    <div class="form-group">
+      <label for="inputTitle">제목</label>
+      <input type="text" id="inputTitle" formControlName="Title" class="form-control"
+             [ngClass]="{
+            'is-invalid': formGroup.controls.Title.invalid && form.submitted,
+            'is-valid': formGroup.controls.Title.valid
+          }"
+             placeholder="제목을 입력해주세요."
+             autofocus>
+      <div class="invalid-feedback">
+        제목이 입력되지 않았습니다.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="selectEntity">글 유형</label>
+      <select id="selectEntity" class="form-control" formControlName="Entity"
+              [ngClass]="{
+            'is-invalid': formGroup.controls.Entity.invalid && form.submitted,
+            'is-valid': formGroup.controls.Entity.valid
+          }">
+        <option value="">유형 선택</option>
+        <option *ngFor="let board of entities" value="{{board.Value}}">{{board.Text}}</option>
+      </select>
+      <div class="invalid-feedback">
+        글 유형이 선택되지 않았습니다.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputContents">글 내용</label>
+      <!--<textarea id="inputContents" rows="10" formControlName="Contents" class="form-control"
+                [ngClass]="{
+            'is-invalid': formGroup.controls.Contents.invalid && form.submitted,
+            'is-valid': formGroup.controls.Contents.valid
+          }"
+                placeholder="내용을 입력해주세요."></textarea>
+      <div class="invalid-feedback">
+        내용이 입력되지 않았습니다.
+      </div>-->
+      <quill-editor formControlName="Contents"
+                    id="inputContents"
+                    (ready)="onEditorCreated($event)"
+                    (change)="onContentChanged($event)"
+                    ></quill-editor>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark">저장</button>
+  </div>
+</form>

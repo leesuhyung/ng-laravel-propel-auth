@@ -12,7 +12,7 @@ export class Board {
 }
 
 export const BOARD_ENTITY_LIST: any[] = [
-    {Text: '테란', Value: 'Terran'},
-    {Text: '저그', Value: 'Protoss'},
-    {Text: '프로토스', Value: 'Zerg'},
+    {Text: '유형1', Value: '1'},
+    {Text: '유형2', Value: '2'},
+    {Text: '유형3', Value: '3'},
 ];

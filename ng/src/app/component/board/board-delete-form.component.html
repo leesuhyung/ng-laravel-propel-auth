@@ -1,0 +1,11 @@
+<div class="modal-body">
+  <div *ngIf="errorResponse?.message" class="alert alert-danger">
+    {{errorResponse?.message}}
+  </div>
+  <div class="alert alert-danger" role="alert">
+    <h5 class="alert-heading">위험!</h5>
+    <p>{{board.User.Name}}({{board.User.Email}}) 님의 글을 삭제할까요?</p>
+    <hr>
+    <p class="mb-0 text-danger text-right small">이 작업은 되돌릴 수 없습니다.</p>
+  </div>
+</div>
