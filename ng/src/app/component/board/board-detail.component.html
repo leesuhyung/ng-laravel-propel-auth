@@ -53,7 +53,7 @@
       <div class="media text-muted pt-3">
         <div class="media-body pb-3 mb-0 small lh-150 border-bottom border-gray">
           <strong class="d-block text-gray-dark">내용</strong>
-          <div [innerHTML]="item.Contents"></div>
+          <markdown [data]="item.Contents"></markdown>
         </div>
       </div>
 

@@ -27,7 +27,7 @@ import {UserEditFormComponent} from "./component/user/user-edit-form.component";
 import {UserDeleteFormComponent} from "./component/user/user-delete-form.component";
 import {FindBoardEntityPipe} from "./pipes/find-board-entity.pipe";
 import {BoardDeleteFormComponent} from './component/board/board-delete-form.component';
-import {QuillEditorModule} from 'ng2-quill-editor';
+import {MarkdownModule} from "angular2-markdown";
 
 @NgModule({
     declarations: [
@@ -64,7 +64,7 @@ import {QuillEditorModule} from 'ng2-quill-editor';
                 whitelistedDomains: ['localhost:4200', 'scv.local']
             }
         }),
-        QuillEditorModule
+        MarkdownModule.forRoot(),
     ],
     providers: [
         AuthService,

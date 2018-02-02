@@ -32,20 +32,20 @@
     </div>
     <div class="form-group">
       <label for="inputContents">글 내용</label>
-      <!--<textarea id="inputContents" rows="10" formControlName="Contents" class="form-control"
+      <button type="button" class="btn btn-sm btn-primary float-right" (click)="togglePreview();">
+        <i class="fa fa-eye"></i> 미리보기
+      </button>
+      <textarea id="inputContents" rows="17" formControlName="Contents" class="form-control" *ngIf="!toggle"
                 [ngClass]="{
             'is-invalid': formGroup.controls.Contents.invalid && form.submitted,
             'is-valid': formGroup.controls.Contents.valid
           }"
-                placeholder="내용을 입력해주세요."></textarea>
+                [(ngModel)]="board.Contents"
+                placeholder="내용을 입력해주세요. Markdown 사용이 가능합니다."></textarea>
+      <markdown [data]="board.Contents" *ngIf="toggle"></markdown>
       <div class="invalid-feedback">
         내용이 입력되지 않았습니다.
-      </div>-->
-      <quill-editor formControlName="Contents"
-                    id="inputContents"
-                    (ready)="onEditorCreated($event)"
-                    (change)="onContentChanged($event)"
-                    ></quill-editor>
+      </div>
     </div>
   </div>
   <div class="modal-footer">

@@ -21,7 +21,7 @@ export class BoardEditFormComponent implements OnInit {
 
     entities: any[] = BOARD_ENTITY_LIST;
     errorResponse: string;
-    editor;
+    toggle: boolean = false;
 
     constructor(private service: BoardService) {
     }
@@ -45,14 +45,6 @@ export class BoardEditFormComponent implements OnInit {
         }
     }
 
-    public onEditorCreated(quill) {
-        this.editor = quill;
-    }
-
-    public onContentChanged({quill, html, text}) {
-        console.log(this.editor.getContents(quill));
-    }
-
     public successful(response: any): void {
         this.reset();
         this.success.emit(response.data);
@@ -61,5 +53,9 @@ export class BoardEditFormComponent implements OnInit {
     public failure(error: any): void {
         this.errorResponse = error;
         console.log(this.errorResponse);
+    }
+
+    public togglePreview() {
+        this.toggle = !this.toggle;
     }
 }

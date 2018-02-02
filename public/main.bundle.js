@@ -145,12 +145,24 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__component_board_board_edit_form_component__ = __webpack_require__("../../../../../src/app/component/board/board-edit-form.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__auth0_angular_jwt__ = __webpack_require__("../../../../@auth0/angular-jwt/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__services_board_service__ = __webpack_require__("../../../../../src/app/services/board.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__component_user_user_edit_form_component__ = __webpack_require__("../../../../../src/app/component/user/user-edit-form.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__component_user_user_delete_form_component__ = __webpack_require__("../../../../../src/app/component/user/user-delete-form.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pipes_find_board_entity_pipe__ = __webpack_require__("../../../../../src/app/pipes/find-board-entity.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__component_board_board_delete_form_component__ = __webpack_require__("../../../../../src/app/component/board/board-delete-form.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_angular2_markdown__ = __webpack_require__("../../../../angular2-markdown/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
+
+
+
 
 
 
@@ -189,10 +201,14 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_9__component_auth_register_component__["a" /* RegisterComponent */],
                 __WEBPACK_IMPORTED_MODULE_15__component_user_user_index_component__["a" /* UserIndexComponent */],
                 __WEBPACK_IMPORTED_MODULE_16__component_user_user_detail_component__["a" /* UserDetailComponent */],
+                __WEBPACK_IMPORTED_MODULE_24__component_user_user_edit_form_component__["a" /* UserEditFormComponent */],
+                __WEBPACK_IMPORTED_MODULE_25__component_user_user_delete_form_component__["a" /* UserDeleteFormComponent */],
                 __WEBPACK_IMPORTED_MODULE_17__component_board_board_index_component__["a" /* BoardIndexComponent */],
                 __WEBPACK_IMPORTED_MODULE_18__component_board_board_detail_component__["a" /* BoardDetailComponent */],
                 __WEBPACK_IMPORTED_MODULE_19__component_board_board_create_form_component__["a" /* BoardCreateFormComponent */],
                 __WEBPACK_IMPORTED_MODULE_20__component_board_board_edit_form_component__["a" /* BoardEditFormComponent */],
+                __WEBPACK_IMPORTED_MODULE_26__pipes_find_board_entity_pipe__["a" /* FindBoardEntityPipe */],
+                __WEBPACK_IMPORTED_MODULE_27__component_board_board_delete_form_component__["a" /* BoardDeleteFormComponent */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -200,7 +216,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_11__angular_common_http__["c" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_12__angular_forms__["c" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_12__angular_forms__["f" /* ReactiveFormsModule */],
-                __WEBPACK_IMPORTED_MODULE_21__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_21__ng_bootstrap_ng_bootstrap__["b" /* NgbModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_22__auth0_angular_jwt__["b" /* JwtModule */].forRoot({
                     config: {
                         tokenGetter: function () {
@@ -208,11 +224,13 @@ var AppModule = /** @class */ (function () {
                         },
                         whitelistedDomains: ['localhost:4200', 'scv.local']
                     }
-                })
+                }),
+                __WEBPACK_IMPORTED_MODULE_28_angular2_markdown__["a" /* MarkdownModule */].forRoot(),
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_10__services_auth_service__["a" /* AuthService */],
                 __WEBPACK_IMPORTED_MODULE_13__services_user_service__["a" /* UserService */],
+                __WEBPACK_IMPORTED_MODULE_23__services_board_service__["a" /* BoardService */],
                 __WEBPACK_IMPORTED_MODULE_14__services_auth_guard_service__["a" /* AuthGuardService */],
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_2__app_component__["a" /* AppComponent */]]
@@ -347,7 +365,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/component/auth/register.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form-signin\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\">\n  <h2 class=\"form-signin-heading\">{{ env.appName }} 회원가입</h2>\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputEmail\">이메일</label>\n    <input type=\"email\" id=\"inputEmail\" formControlName=\"email\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.email.invalid && form.submitted,\n              'is-valid': formGroup.controls.email.valid\n            }\"\n           placeholder=\"username@example.com\"\n           autofocus>\n    <div class=\"invalid-feedback\">\n      이메일이 입력되지 않았거나 형식이 올바르지 않습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputName\">이름</label>\n    <input type=\"text\" id=\"inputName\" formControlName=\"name\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.name.invalid && form.submitted,\n              'is-valid': formGroup.controls.name.valid\n            }\"\n           placeholder=\"username\">\n    <div class=\"invalid-feedback\">\n      이름이 입력되지 않았습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputPassword\">비밀번호</label>\n    <input type=\"password\" id=\"inputPassword\" formControlName=\"password\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.password.invalid && form.submitted,\n              'is-valid': formGroup.controls.password.valid\n            }\"\n           placeholder=\"your password\">\n    <div class=\"invalid-feedback\">\n      비밀번호가 입력되지 않았습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputPasswordConfirmation\">비밀번호 확인</label>\n    <input type=\"password\" id=\"inputPasswordConfirmation\" formControlName=\"password_confirmation\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.password_confirmation.invalid && form.submitted,\n              'is-invalid': formGroup.controls.password.value !== formGroup.controls.password_confirmation.value,\n              'is-valid': formGroup.controls.password_confirmation.valid\n                          && formGroup.controls.password.value == formGroup.controls.password_confirmation.value\n            }\"\n           placeholder=\"your password confirmation\">\n    <div class=\"invalid-feedback\">\n      비밀번호가 입력되지 않았거나 일치하지 않습니다.\n    </div>\n  </div>\n  <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">가입하기</button>\n</form>"
+module.exports = "<form class=\"form-signin\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\">\n  <h2 class=\"form-signin-heading\">{{ env.appName }} 회원가입</h2>\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputEmail\">이메일</label>\n    <input type=\"email\" id=\"inputEmail\" formControlName=\"Email\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Email.invalid && form.submitted,\n              'is-valid': formGroup.controls.Email.valid\n            }\"\n           placeholder=\"username@example.com\"\n           autofocus>\n    <div class=\"invalid-feedback\">\n      이메일이 입력되지 않았거나 형식이 올바르지 않습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputName\">이름</label>\n    <input type=\"text\" id=\"inputName\" formControlName=\"Name\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Name.invalid && form.submitted,\n              'is-valid': formGroup.controls.Name.valid\n            }\"\n           placeholder=\"username\">\n    <div class=\"invalid-feedback\">\n      이름이 입력되지 않았습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputPassword\">비밀번호</label>\n    <input type=\"password\" id=\"inputPassword\" formControlName=\"Password\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Password.invalid && form.submitted,\n              'is-valid': formGroup.controls.Password.valid\n            }\"\n           placeholder=\"your password\">\n    <div class=\"invalid-feedback\">\n      비밀번호가 입력되지 않았습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputPasswordConfirmation\">비밀번호 확인</label>\n    <input type=\"password\" id=\"inputPasswordConfirmation\" formControlName=\"Password_confirmation\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Password_confirmation.invalid && form.submitted,\n              'is-invalid': formGroup.controls.Password.value !== formGroup.controls.Password_confirmation.value,\n              'is-valid': formGroup.controls.Password_confirmation.valid\n                          && formGroup.controls.Password.value == formGroup.controls.Password_confirmation.value\n            }\"\n           placeholder=\"your password confirmation\">\n    <div class=\"invalid-feedback\">\n      비밀번호가 입력되지 않았거나 일치하지 않습니다.\n    </div>\n  </div>\n  <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">가입하기</button>\n</form>"
 
 /***/ }),
 
@@ -384,10 +402,10 @@ var RegisterComponent = /** @class */ (function () {
         this.authService = authService;
         this.env = __WEBPACK_IMPORTED_MODULE_4__environments_environment__["a" /* environment */];
         this.formGroup = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
-            'email': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].pattern("[^ @]*@[^ @]*")]),
-            'name': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
-            'password': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
-            'password_confirmation': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+            'Email': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].pattern("[^ @]*@[^ @]*")]),
+            'Name': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+            'Password': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+            'Password_confirmation': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
         });
     }
     RegisterComponent.prototype.ngOnInit = function () {
@@ -428,7 +446,7 @@ var RegisterComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/board/board-create-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  board-create-form works!\n</p>\n"
+module.exports = "<form class=\"form-group\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\">\n  <div class=\"modal-body\">\n    <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n      {{errorResponse?.message}}\n    </div>\n    <div class=\"form-group\">\n      <label for=\"inputTitle\">제목</label>\n      <input type=\"text\" id=\"inputTitle\" formControlName=\"Title\" class=\"form-control\"\n             [ngClass]=\"{\n            'is-invalid': formGroup.controls.Title.invalid && form.submitted,\n            'is-valid': formGroup.controls.Title.valid\n          }\"\n             placeholder=\"제목을 입력해주세요.\"\n             autofocus>\n      <div class=\"invalid-feedback\">\n        제목이 입력되지 않았습니다.\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"selectEntity\">글 유형</label>\n      <select id=\"selectEntity\" class=\"form-control\" formControlName=\"Entity\"\n            [ngClass]=\"{\n            'is-invalid': formGroup.controls.Entity.invalid && form.submitted,\n            'is-valid': formGroup.controls.Entity.valid\n          }\">\n        <option value=\"\">유형 선택</option>\n        <option *ngFor=\"let board of entities\" value=\"{{board.Value}}\">{{board.Text}}</option>\n      </select>\n      <div class=\"invalid-feedback\">\n        글 유형이 선택되지 않았습니다.\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"inputContents\">글 내용</label>\n      <textarea id=\"inputContents\" rows=\"10\" formControlName=\"Contents\" class=\"form-control\"\n             [ngClass]=\"{\n            'is-invalid': formGroup.controls.Contents.invalid && form.submitted,\n            'is-valid': formGroup.controls.Contents.valid\n          }\"\n             placeholder=\"내용을 입력해주세요.\"></textarea>\n      <div class=\"invalid-feedback\">\n        내용이 입력되지 않았습니다.\n      </div>\n    </div>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"submit\" class=\"btn btn-outline-dark\">저장</button>\n  </div>\n</form>"
 
 /***/ }),
 
@@ -438,6 +456,9 @@ module.exports = "<p>\n  board-create-form works!\n</p>\n"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BoardCreateFormComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_board__ = __webpack_require__("../../../../../src/app/models/board.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_board_service__ = __webpack_require__("../../../../../src/app/services/board.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -448,19 +469,127 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
 var BoardCreateFormComponent = /** @class */ (function () {
-    function BoardCreateFormComponent() {
+    function BoardCreateFormComponent(service) {
+        this.service = service;
+        this.success = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */]();
+        this.formGroup = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
+            'Entity': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+            'Title': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+            'Contents': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+        });
+        this.entities = __WEBPACK_IMPORTED_MODULE_2__models_board__["a" /* BOARD_ENTITY_LIST */];
     }
-    BoardCreateFormComponent.prototype.ngOnInit = function () {
+    BoardCreateFormComponent.prototype.submit = function () {
+        var _this = this;
+        if (this.formGroup.valid) {
+            this.service.create(this.formGroup.getRawValue())
+                .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('board-create-form::submit done.'); });
+        }
     };
+    BoardCreateFormComponent.prototype.successful = function (response) {
+        this.success.emit(response.data);
+    };
+    BoardCreateFormComponent.prototype.failure = function (error) {
+        this.errorResponse = error;
+        console.log(this.errorResponse);
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Q" /* Output */])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */])
+    ], BoardCreateFormComponent.prototype, "success", void 0);
     BoardCreateFormComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'app-board-create-form',
+            selector: 'board-create-form',
             template: __webpack_require__("../../../../../src/app/component/board/board-create-form.component.html")
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__services_board_service__["a" /* BoardService */]])
     ], BoardCreateFormComponent);
     return BoardCreateFormComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/component/board/board-delete-form.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-body\">\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"alert alert-danger\" role=\"alert\">\n    <h5 class=\"alert-heading\">위험!</h5>\n    <p>{{board.User.Name}}({{board.User.Email}}) 님의 글을 삭제할까요?</p>\n    <hr>\n    <p class=\"mb-0 text-danger text-right small\">이 작업은 되돌릴 수 없습니다.</p>\n  </div>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/component/board/board-delete-form.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BoardDeleteFormComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_board_service__ = __webpack_require__("../../../../../src/app/services/board.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_board__ = __webpack_require__("../../../../../src/app/models/board.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var BoardDeleteFormComponent = /** @class */ (function () {
+    function BoardDeleteFormComponent(service) {
+        this.service = service;
+        this.board = new __WEBPACK_IMPORTED_MODULE_3__models_board__["b" /* Board */];
+        this.success = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */]();
+        this.formGroup = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
+            'Id': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+        });
+    }
+    BoardDeleteFormComponent.prototype.ngOnInit = function () {
+        this.reset();
+    };
+    BoardDeleteFormComponent.prototype.reset = function () {
+        this.formGroup.reset(this.board);
+    };
+    BoardDeleteFormComponent.prototype.submit = function () {
+        var _this = this;
+        if (this.formGroup.valid) {
+            this.service.delete(this.formGroup.getRawValue())
+                .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('board-delete-form::submit done.'); });
+        }
+    };
+    BoardDeleteFormComponent.prototype.successful = function (response) {
+        this.reset();
+        this.success.emit(response.data);
+    };
+    BoardDeleteFormComponent.prototype.failure = function (error) {
+        this.errorResponse = error;
+        console.log(this.errorResponse);
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])('board'),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_3__models_board__["b" /* Board */])
+    ], BoardDeleteFormComponent.prototype, "board", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Q" /* Output */])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */])
+    ], BoardDeleteFormComponent.prototype, "success", void 0);
+    BoardDeleteFormComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'board-delete-form',
+            template: __webpack_require__("../../../../../src/app/component/board/board-delete-form.component.html")
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_board_service__["a" /* BoardService */]])
+    ], BoardDeleteFormComponent);
+    return BoardDeleteFormComponent;
 }());
 
 
@@ -470,7 +599,7 @@ var BoardCreateFormComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/board/board-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  board-detail works!\n</p>\n"
+module.exports = "<div class=\"d-flex align-items-center p-3 mt-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>게시판</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"d-flex p-3 row\">\n  <div class=\"mb-3 col-md-3 pl-0\">\n    <div class=\"p-3 bg-white rounded box-shadow\">\n      <h6 class=\"border-bottom border-gray pb-2 mb-0\">작성자 정보</h6>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">이메일</strong>\n          {{item.User.Email}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">이름</strong>\n          {{item.User.Name}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body mb-0 small lh-150\">\n          <strong class=\"d-block text-gray-dark\">가입일자</strong>\n          {{item.User.CreatedAt}}\n        </p>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"col-md-9 pl-0 pr-0\">\n    <div class=\"p-3 bg-white rounded box-shadow\">\n      <h6 class=\"border-bottom border-gray pb-2 mb-0\">게시판 정보</h6>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">글 유형</strong>\n          {{item.Entity | findBoardEntity: item.Entity}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">제목</strong>\n          {{item.Title}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <div class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">내용</strong>\n          <markdown [data]=\"item.Contents\"></markdown>\n        </div>\n      </div>\n\n      <small class=\"row mt-3\">\n        <div class=\"col-sm-6 text-left\">\n          <button class=\"btn btn-outline-secondary btn-sm\" (click)=\"goToList();\">목록</button>\n        </div>\n        <div class=\"col-sm-6 text-right\">\n          <button class=\"btn btn-outline-primary btn-sm\" (click)=\"open(editBoardModal, 'lg');\">수정</button>\n          <button class=\"btn btn-outline-danger btn-sm\" (click)=\"open(deleteBoardModal, 'sm');\">삭제</button>\n        </div>\n      </small>\n    </div>\n  </div>\n</div>\n\n<ng-template #editBoardModal let-closeModal=\"close\">\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">게시판 글 수정</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <board-edit-form\n          [board]=\"item\"\n          (success)=\"closeModal(); resetItem($event)\"></board-edit-form>\n</ng-template>\n\n<ng-template #deleteBoardModal let-closeModal=\"close\">\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">게시판 글 삭제</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <board-delete-form\n          #deleteModal\n          [board]=\"item\"\n          (success)=\"closeModal(); goToList();\"></board-delete-form>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"closeModal();\">취소</button>\n    <button type=\"button\" class=\"btn btn-danger\" (click)=\"deleteModal.submit();\">삭제</button>\n  </div>\n</ng-template>"
 
 /***/ }),
 
@@ -480,6 +609,11 @@ module.exports = "<p>\n  board-detail works!\n</p>\n"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BoardDetailComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_board__ = __webpack_require__("../../../../../src/app/models/board.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_board_service__ = __webpack_require__("../../../../../src/app/services/board.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -490,17 +624,67 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+
+
 var BoardDetailComponent = /** @class */ (function () {
-    function BoardDetailComponent() {
+    function BoardDetailComponent(route, router, service, modalService) {
+        this.route = route;
+        this.router = router;
+        this.service = service;
+        this.modalService = modalService;
+        this.routerLink = '';
+        this.env = __WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */];
+        this.item = new __WEBPACK_IMPORTED_MODULE_4__models_board__["b" /* Board */];
+        if (this.route.snapshot.url.length > 0) {
+            this.routerLink = '/' + this.route.snapshot.url[0].path;
+        }
     }
     BoardDetailComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route
+            .params
+            .subscribe(function (params) {
+            if (params.id) {
+                _this.loadDetail(params.id);
+            }
+        });
+    };
+    BoardDetailComponent.prototype.loadDetail = function (id) {
+        var _this = this;
+        this.service.detail(id)
+            .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('board-detail::loadDetail done.'); });
+    };
+    BoardDetailComponent.prototype.goToList = function () {
+        this.router.navigate([this.routerLink], { queryParamsHandling: 'merge' });
+    };
+    BoardDetailComponent.prototype.successful = function (response) {
+        this.item = response.data;
+    };
+    BoardDetailComponent.prototype.failure = function (error) {
+        this.errorResponse = error;
+    };
+    BoardDetailComponent.prototype.open = function (content, size) {
+        if (size == 'lg')
+            this.modalService.open(content, { size: size });
+        else
+            this.modalService.open(content);
+    };
+    BoardDetailComponent.prototype.resetItem = function (item) {
+        this.item = item;
     };
     BoardDetailComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-board-detail',
-            template: __webpack_require__("../../../../../src/app/component/board/board-detail.component.html")
+            template: __webpack_require__("../../../../../src/app/component/board/board-detail.component.html"),
+            styles: ['@media (max-width: 767.98px) {.col-md-3 {padding-right: 0px;}}']
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_5__services_board_service__["a" /* BoardService */],
+            __WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__["a" /* NgbModal */]])
     ], BoardDetailComponent);
     return BoardDetailComponent;
 }());
@@ -512,7 +696,7 @@ var BoardDetailComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/board/board-edit-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  board-edit-form works!\n</p>\n"
+module.exports = "<form class=\"form-group\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\">\n  <div class=\"modal-body\">\n    <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n      {{errorResponse?.message}}\n    </div>\n    <div class=\"form-group\">\n      <label for=\"inputTitle\">제목</label>\n      <input type=\"text\" id=\"inputTitle\" formControlName=\"Title\" class=\"form-control\"\n             [ngClass]=\"{\n            'is-invalid': formGroup.controls.Title.invalid && form.submitted,\n            'is-valid': formGroup.controls.Title.valid\n          }\"\n             placeholder=\"제목을 입력해주세요.\"\n             autofocus>\n      <div class=\"invalid-feedback\">\n        제목이 입력되지 않았습니다.\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"selectEntity\">글 유형</label>\n      <select id=\"selectEntity\" class=\"form-control\" formControlName=\"Entity\"\n              [ngClass]=\"{\n            'is-invalid': formGroup.controls.Entity.invalid && form.submitted,\n            'is-valid': formGroup.controls.Entity.valid\n          }\">\n        <option value=\"\">유형 선택</option>\n        <option *ngFor=\"let board of entities\" value=\"{{board.Value}}\">{{board.Text}}</option>\n      </select>\n      <div class=\"invalid-feedback\">\n        글 유형이 선택되지 않았습니다.\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"inputContents\">글 내용</label>\n      <button type=\"button\" class=\"btn btn-sm btn-primary float-right\" (click)=\"togglePreview();\">\n        <i class=\"fa fa-eye\"></i> 미리보기\n      </button>\n      <textarea id=\"inputContents\" rows=\"17\" formControlName=\"Contents\" class=\"form-control\" *ngIf=\"!toggle\"\n                [ngClass]=\"{\n            'is-invalid': formGroup.controls.Contents.invalid && form.submitted,\n            'is-valid': formGroup.controls.Contents.valid\n          }\"\n                [(ngModel)]=\"board.Contents\"\n                placeholder=\"내용을 입력해주세요. Markdown 사용이 가능합니다.\"></textarea>\n      <markdown [data]=\"board.Contents\" *ngIf=\"toggle\"></markdown>\n      <div class=\"invalid-feedback\">\n        내용이 입력되지 않았습니다.\n      </div>\n    </div>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"submit\" class=\"btn btn-outline-dark\">저장</button>\n  </div>\n</form>"
 
 /***/ }),
 
@@ -522,6 +706,9 @@ module.exports = "<p>\n  board-edit-form works!\n</p>\n"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BoardEditFormComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_board__ = __webpack_require__("../../../../../src/app/models/board.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_board_service__ = __webpack_require__("../../../../../src/app/services/board.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -532,17 +719,61 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
 var BoardEditFormComponent = /** @class */ (function () {
-    function BoardEditFormComponent() {
+    function BoardEditFormComponent(service) {
+        this.service = service;
+        this.board = new __WEBPACK_IMPORTED_MODULE_2__models_board__["b" /* Board */];
+        this.success = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */]();
+        this.formGroup = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
+            'Id': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+            'Entity': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+            'Title': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+            'Contents': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+        });
+        this.entities = __WEBPACK_IMPORTED_MODULE_2__models_board__["a" /* BOARD_ENTITY_LIST */];
+        this.toggle = false;
     }
     BoardEditFormComponent.prototype.ngOnInit = function () {
+        this.reset();
     };
+    BoardEditFormComponent.prototype.reset = function () {
+        this.formGroup.reset(this.board);
+    };
+    BoardEditFormComponent.prototype.submit = function () {
+        var _this = this;
+        if (this.formGroup.valid) {
+            this.service.update(this.formGroup.getRawValue())
+                .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('board-edit-form::submit done.'); });
+        }
+    };
+    BoardEditFormComponent.prototype.successful = function (response) {
+        this.reset();
+        this.success.emit(response.data);
+    };
+    BoardEditFormComponent.prototype.failure = function (error) {
+        this.errorResponse = error;
+        console.log(this.errorResponse);
+    };
+    BoardEditFormComponent.prototype.togglePreview = function () {
+        this.toggle = !this.toggle;
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])('board'),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_2__models_board__["b" /* Board */])
+    ], BoardEditFormComponent.prototype, "board", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Q" /* Output */])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */])
+    ], BoardEditFormComponent.prototype, "success", void 0);
     BoardEditFormComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'app-board-edit-form',
+            selector: 'board-edit-form',
             template: __webpack_require__("../../../../../src/app/component/board/board-edit-form.component.html")
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__services_board_service__["a" /* BoardService */]])
     ], BoardEditFormComponent);
     return BoardEditFormComponent;
 }());
@@ -554,7 +785,7 @@ var BoardEditFormComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/board/board-index.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  board-index works!\n</p>\n"
+module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>게시판</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"my-3 p-3 bg-white rounded box-shadow\">\n  <h6 class=\"pb-2 mb-0\">게시판 목록</h6>\n  <table class=\"table border-bottom border-gray small\">\n    <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">글 유형</th>\n      <th scope=\"col\">제목</th>\n      <th scope=\"col\">작성자</th>\n      <th scope=\"col\">등록일자</th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr *ngFor=\"let item of items\">\n      <td scope=\"row\"><a style=\"cursor: pointer\" routerLink=\"/board/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Id}}</a></td>\n      <td>{{item.Entity | findBoardEntity: item.Entity}}</td>\n      <td><a style=\"cursor: pointer\" routerLink=\"/board/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Title}}</a></td>\n      <td>{{item.User.Name}}</td>\n      <td>{{item.CreatedAt}}</td>\n    </tr>\n    </tbody>\n  </table>\n  <div class=\"text-right\">\n    <button class=\"btn btn-sm btn-outline-primary\" (click)=\"open(createBoardModal);\">글 쓰기</button>\n  </div>\n</div>\n\n<div class=\"d-flex justify-content-center\">\n  <ngb-pagination\n          [(collectionSize)]=\"paginate.nbResults\"\n          [pageSize]=\"limit\"\n          [(page)]=\"paginate.page\"\n          [maxSize]=\"7\"\n          [rotate]=\"true\"\n          (pageChange)=\"loadPage($event?$event:page)\"\n          size=\"sm\"></ngb-pagination>\n</div>\n\n<ng-template #createBoardModal let-closeModal=\"close\">\n    <div class=\"modal-header\">\n        <h4 class=\"modal-title\">글 쓰기</h4>\n        <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n            <span aria-hidden=\"true\">&times;</span>\n        </button>\n    </div>\n    <board-create-form\n            (success)=\"closeModal(); loadPage(1);\"></board-create-form>\n</ng-template>"
 
 /***/ }),
 
@@ -564,6 +795,11 @@ module.exports = "<p>\n  board-index works!\n</p>\n"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BoardIndexComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_paginate__ = __webpack_require__("../../../../../src/app/models/paginate.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_board_service__ = __webpack_require__("../../../../../src/app/services/board.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -574,17 +810,67 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+
+
 var BoardIndexComponent = /** @class */ (function () {
-    function BoardIndexComponent() {
+    function BoardIndexComponent(service, route, router, modalService) {
+        this.service = service;
+        this.route = route;
+        this.router = router;
+        this.modalService = modalService;
+        this.env = __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */];
+        this.page = 1;
+        this.limit = 7;
+        this.paginate = new __WEBPACK_IMPORTED_MODULE_2__models_paginate__["a" /* Paginate */];
+        this.items = [];
     }
     BoardIndexComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route
+            .queryParams
+            .subscribe(function (params) {
+            _this.page = +params['page'] || _this.page;
+            _this.limit = +params['limit'] || _this.limit;
+            _this.loadList();
+        });
+    };
+    BoardIndexComponent.prototype.loadList = function () {
+        var _this = this;
+        this.service.index(this.page, this.limit)
+            .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('board-index::loadList done.'); });
+    };
+    BoardIndexComponent.prototype.loadPage = function (page) {
+        var _this = this;
+        var routeLink = '/' + this.route.snapshot.url[0].path;
+        this.router.navigate([routeLink], { queryParams: { page: page, limit: this.limit } })
+            .then(function (success) {
+            if (success !== true) {
+                _this.loadList();
+            }
+        });
+    };
+    BoardIndexComponent.prototype.open = function (content) {
+        this.modalService.open(content);
+    };
+    BoardIndexComponent.prototype.successful = function (response) {
+        this.items = response.data;
+        this.paginate = response.paginate;
+    };
+    BoardIndexComponent.prototype.failure = function (error) {
+        this.errorResponse = error;
     };
     BoardIndexComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-board-index',
             template: __webpack_require__("../../../../../src/app/component/board/board-index.component.html")
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__services_board_service__["a" /* BoardService */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__["a" /* NgbModal */]])
     ], BoardIndexComponent);
     return BoardIndexComponent;
 }());
@@ -635,19 +921,22 @@ var Error404Component = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/component/user/user-detail.component.html":
+/***/ "../../../../../src/app/component/user/user-delete-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-primary rounded box-shadow\">\n  <div class=\"lh-100\">\n    <h5 class=\"mb-0 text-white lh-100\">회원상세</h5>\n    <small class=\"text-light\">사이트의 회원 목록</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>"
+module.exports = "<div class=\"modal-body\">\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"alert alert-danger\" role=\"alert\">\n    <h5 class=\"alert-heading\">위험!</h5>\n    <p>{{user.Name}}({{user.Email}}) 님의 정보를 삭제할까요?</p>\n    <hr>\n    <p class=\"mb-0 text-danger text-right small\">이 작업은 되돌릴 수 없습니다.</p>\n  </div>\n</div>"
 
 /***/ }),
 
-/***/ "../../../../../src/app/component/user/user-detail.component.ts":
+/***/ "../../../../../src/app/component/user/user-delete-form.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserDetailComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserDeleteFormComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_user__ = __webpack_require__("../../../../../src/app/models/user.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -658,19 +947,231 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+var UserDeleteFormComponent = /** @class */ (function () {
+    function UserDeleteFormComponent(service) {
+        this.service = service;
+        this.user = new __WEBPACK_IMPORTED_MODULE_3__models_user__["a" /* User */];
+        this.success = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */]();
+        this.formGroup = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
+            'Id': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+        });
+    }
+    UserDeleteFormComponent.prototype.ngOnInit = function () {
+        this.reset();
+    };
+    UserDeleteFormComponent.prototype.reset = function () {
+        this.formGroup.reset(this.user);
+    };
+    UserDeleteFormComponent.prototype.submit = function () {
+        var _this = this;
+        if (this.formGroup.valid) {
+            this.service.delete(this.formGroup.getRawValue())
+                .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('user-delete-form::submit done.'); });
+        }
+    };
+    UserDeleteFormComponent.prototype.successful = function (response) {
+        this.reset();
+        this.success.emit(response.data);
+    };
+    UserDeleteFormComponent.prototype.failure = function (error) {
+        this.errorResponse = error;
+        console.log(this.errorResponse);
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])('user'),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_3__models_user__["a" /* User */])
+    ], UserDeleteFormComponent.prototype, "user", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Q" /* Output */])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */])
+    ], UserDeleteFormComponent.prototype, "success", void 0);
+    UserDeleteFormComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'user-delete-form',
+            template: __webpack_require__("../../../../../src/app/component/user/user-delete-form.component.html")
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */]])
+    ], UserDeleteFormComponent);
+    return UserDeleteFormComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/component/user/user-detail.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>회원</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"my-3 p-3 bg-white rounded box-shadow\">\n  <h6 class=\"border-bottom border-gray pb-2 mb-0\">회원 정보</h6>\n  <div class=\"media text-muted pt-3\">\n    <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n      <strong class=\"d-block text-gray-dark\">이메일</strong>\n      {{item.Email}}\n    </p>\n  </div>\n  <div class=\"media text-muted pt-3\">\n    <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n      <strong class=\"d-block text-gray-dark\">이름</strong>\n      {{item.Name}}\n    </p>\n  </div>\n  <div class=\"media text-muted pt-3\">\n    <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n      <strong class=\"d-block text-gray-dark\">가입일자</strong>\n      {{item.CreatedAt}}\n    </p>\n  </div>\n\n  <small class=\"row mt-3\">\n    <div class=\"col-sm-6 text-left\">\n      <button class=\"btn btn-outline-secondary btn-sm\" (click)=\"goToList();\">목록</button>\n    </div>\n    <div class=\"col-sm-6 text-right\">\n      <button class=\"btn btn-outline-primary btn-sm\" (click)=\"open(editUserModal);\">수정</button>\n      <button class=\"btn btn-outline-danger btn-sm\" (click)=\"open(deleteUserModal);\">삭제</button>\n    </div>\n  </small>\n</div>\n\n<ng-template #editUserModal let-closeModal=\"close\">\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">회원 정보수정</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <user-edit-form\n          [user]=\"item\"\n          (success)=\"closeModal(); resetItem($event)\"></user-edit-form>\n</ng-template>\n\n<ng-template #deleteUserModal let-closeModal=\"close\">\n    <div class=\"modal-header\">\n        <h4 class=\"modal-title\">회원 삭제</h4>\n        <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n            <span aria-hidden=\"true\">&times;</span>\n        </button>\n    </div>\n    <user-delete-form\n            #deleteModal\n            [user]=\"item\"\n            (success)=\"closeModal(); goToList();\"></user-delete-form>\n    <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"closeModal();\">취소</button>\n        <button type=\"button\" class=\"btn btn-danger\" (click)=\"deleteModal.submit();\">삭제</button>\n    </div>\n</ng-template>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/component/user/user-detail.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserDetailComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_user__ = __webpack_require__("../../../../../src/app/models/user.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
 var UserDetailComponent = /** @class */ (function () {
-    function UserDetailComponent() {
+    function UserDetailComponent(route, router, service, modalService) {
+        this.route = route;
+        this.router = router;
+        this.service = service;
+        this.modalService = modalService;
+        this.routerLink = '';
+        this.env = __WEBPACK_IMPORTED_MODULE_4__environments_environment__["a" /* environment */];
+        this.item = new __WEBPACK_IMPORTED_MODULE_1__models_user__["a" /* User */];
+        if (this.route.snapshot.url.length > 0) {
+            this.routerLink = '/' + this.route.snapshot.url[0].path;
+        }
     }
     UserDetailComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route
+            .params
+            .subscribe(function (params) {
+            if (params.id) {
+                _this.loadDetail(params.id);
+            }
+        });
+    };
+    UserDetailComponent.prototype.loadDetail = function (id) {
+        var _this = this;
+        this.service.detail(id)
+            .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('user-detail::loadDetail done.'); });
+    };
+    UserDetailComponent.prototype.goToList = function () {
+        this.router.navigate([this.routerLink], { queryParamsHandling: 'merge' });
+    };
+    UserDetailComponent.prototype.successful = function (response) {
+        this.item = response.data;
+    };
+    UserDetailComponent.prototype.failure = function (error) {
+        this.errorResponse = error;
+    };
+    UserDetailComponent.prototype.open = function (content) {
+        this.modalService.open(content);
+    };
+    UserDetailComponent.prototype.resetItem = function (item) {
+        this.item = item;
     };
     UserDetailComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-user-detail',
             template: __webpack_require__("../../../../../src/app/component/user/user-detail.component.html")
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_3__services_user_service__["a" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__["a" /* NgbModal */]])
     ], UserDetailComponent);
     return UserDetailComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/component/user/user-edit-form.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<form class=\"form-group\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\">\n<div class=\"modal-body\">\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputEmail\">이메일</label>\n    <input type=\"email\" id=\"inputEmail\" formControlName=\"Email\" class=\"form-control\"\n           [ngClass]=\"{\n            'is-invalid': formGroup.controls.Email.invalid && form.submitted,\n            'is-valid': formGroup.controls.Email.valid\n          }\"\n           placeholder=\"username@example.com\"\n           autofocus>\n    <div class=\"invalid-feedback\">\n      이메일이 입력되지 않았거나 형식이 올바르지 않습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputName\">이름</label>\n    <input type=\"text\" id=\"inputName\" formControlName=\"Name\" class=\"form-control\"\n           [ngClass]=\"{\n            'is-invalid': formGroup.controls.Name.invalid && form.submitted,\n            'is-valid': formGroup.controls.Name.valid\n          }\"\n           placeholder=\"username\">\n    <div class=\"invalid-feedback\">\n      이름이 입력되지 않았습니다.\n    </div>\n  </div>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"submit\" class=\"btn btn-outline-dark\">저장</button>\n</div>\n</form>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/component/user/user-edit-form.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserEditFormComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_user__ = __webpack_require__("../../../../../src/app/models/user.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var UserEditFormComponent = /** @class */ (function () {
+    function UserEditFormComponent(service) {
+        this.service = service;
+        this.user = new __WEBPACK_IMPORTED_MODULE_2__models_user__["a" /* User */];
+        this.success = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */]();
+        this.formGroup = new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* FormGroup */]({
+            'Id': new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_3__angular_forms__["g" /* Validators */].required),
+            'Email': new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormControl */]('', [__WEBPACK_IMPORTED_MODULE_3__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["g" /* Validators */].pattern("[^ @]*@[^ @]*")]),
+            'Name': new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_3__angular_forms__["g" /* Validators */].required),
+        });
+    }
+    UserEditFormComponent.prototype.ngOnInit = function () {
+        this.reset();
+    };
+    UserEditFormComponent.prototype.reset = function () {
+        this.formGroup.reset(this.user);
+    };
+    UserEditFormComponent.prototype.submit = function () {
+        var _this = this;
+        if (this.formGroup.valid) {
+            this.service.update(this.formGroup.getRawValue())
+                .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('user-edit-form::submit done.'); });
+        }
+    };
+    UserEditFormComponent.prototype.successful = function (response) {
+        this.reset();
+        this.success.emit(response.data);
+    };
+    UserEditFormComponent.prototype.failure = function (error) {
+        this.errorResponse = error;
+        console.log(this.errorResponse);
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])('user'),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_2__models_user__["a" /* User */])
+    ], UserEditFormComponent.prototype, "user", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Q" /* Output */])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */])
+    ], UserEditFormComponent.prototype, "success", void 0);
+    UserEditFormComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'user-edit-form',
+            template: __webpack_require__("../../../../../src/app/component/user/user-edit-form.component.html")
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_user_service__["a" /* UserService */]])
+    ], UserEditFormComponent);
+    return UserEditFormComponent;
 }());
 
 
@@ -680,7 +1181,7 @@ var UserDetailComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/user/user-index.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-primary rounded box-shadow\">\n  <div class=\"lh-100\">\n    <h5 class=\"mb-0 text-white lh-100\">회원</h5>\n    <small class=\"text-light\">사이트의 회원 목록</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<table class=\"table table-sm table-bordered\">\n  <thead>\n  <tr>\n    <th scope=\"col\">#</th>\n    <th scope=\"col\">이름</th>\n    <th scope=\"col\">이메일</th>\n    <th scope=\"col\">가입일자</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let item of items\">\n      <td scope=\"row\"><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Id}}</a></td>\n    <td><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Name}}</a></td>\n    <td><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Email}}</a></td>\n    <td>{{item.CreatedAt}}</td>\n  </tr>\n  </tbody>\n</table>\n<div class=\"d-flex justify-content-center\">\n  <ngb-pagination\n          [(collectionSize)]=\"paginate.nbResults\"\n          [pageSize]=\"limit\"\n          [(page)]=\"paginate.page\"\n          [maxSize]=\"7\"\n          [rotate]=\"true\"\n          (pageChange)=\"loadPage($event?$event:1)\"\n          size=\"sm\"></ngb-pagination>\n</div>"
+module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>회원</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"my-3 p-3 bg-white rounded box-shadow\">\n  <h6 class=\"pb-2 mb-0\">회원 목록</h6>\n  <table class=\"table border-bottom border-gray small\">\n    <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">이름</th>\n      <th scope=\"col\">이메일</th>\n      <th scope=\"col\">가입일자</th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr *ngFor=\"let item of items\">\n      <td scope=\"row\"><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Id}}</a></td>\n      <td><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Name}}</a></td>\n      <td><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Email}}</a></td>\n      <td>{{item.CreatedAt}}</td>\n    </tr>\n    </tbody>\n  </table>\n</div>\n\n<div class=\"d-flex justify-content-center\">\n  <ngb-pagination\n          [(collectionSize)]=\"paginate.nbResults\"\n          [pageSize]=\"limit\"\n          [(page)]=\"paginate.page\"\n          [maxSize]=\"7\"\n          [rotate]=\"true\"\n          (pageChange)=\"loadPage($event?$event:page)\"\n          size=\"sm\"></ngb-pagination>\n</div>"
 
 /***/ }),
 
@@ -693,6 +1194,7 @@ module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_paginate__ = __webpack_require__("../../../../../src/app/models/paginate.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -706,24 +1208,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var UserIndexComponent = /** @class */ (function () {
     function UserIndexComponent(service, route, router) {
-        var _this = this;
         this.service = service;
         this.route = route;
         this.router = router;
+        this.env = __WEBPACK_IMPORTED_MODULE_4__environments_environment__["a" /* environment */];
         this.page = 1;
         this.limit = 7;
         this.paginate = new __WEBPACK_IMPORTED_MODULE_2__models_paginate__["a" /* Paginate */];
         this.items = [];
+    }
+    UserIndexComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.route
             .queryParams
             .subscribe(function (params) {
-            _this.page = +params['page'] || 1;
+            _this.page = +params['page'] || _this.page;
             _this.limit = +params['limit'] || _this.limit;
             _this.loadList();
         });
-    }
+    };
     UserIndexComponent.prototype.loadList = function () {
         var _this = this;
         this.service.index(this.page, this.limit)
@@ -759,7 +1265,7 @@ var UserIndexComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Scv project</h1>\n<p class=\"lead\">Laravel REST API, Angular/bootstrap 으로 구성된 사이트 입니다.</p>\n<p class=\"lead\">로그인, 회원가입, 회원, 게시판 기능 등이 있습니다.</p>\n<p>소스파일은 <a href=\"https://github.com/navystyle/scv\" target=\"_blank\">Git</a>을 참고해주세요.</p>"
+module.exports = "<div class=\"py-5 text-center\">\n    <img class=\"d-block mx-auto mb-1\" src=\"../assets/image/scv.png\" alt=\"\" width=\"92\" height=\"92\">\n    <h2>Scv</h2>\n    <p class=\"lead mt-3\">Laravel API, Angular/bootstrap 으로 구성된 사이트 입니다.</p>\n    <hr>\n    <p>shlee <a href=\"https://github.com/navystyle/scv\" target=\"_blank\">Git</a></p>\n</div>\n"
 
 /***/ }),
 
@@ -798,6 +1304,30 @@ var HomeComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/models/board.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Board; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BOARD_ENTITY_LIST; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__("../../../../../src/app/models/user.ts");
+
+var Board = /** @class */ (function () {
+    function Board() {
+        this.User = new __WEBPACK_IMPORTED_MODULE_0__user__["a" /* User */];
+    }
+    return Board;
+}());
+
+var BOARD_ENTITY_LIST = [
+    { Text: '유형1', Value: '1' },
+    { Text: '유형2', Value: '2' },
+    { Text: '유형3', Value: '3' },
+];
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/models/paginate.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -807,6 +1337,64 @@ var Paginate = /** @class */ (function () {
     function Paginate() {
     }
     return Paginate;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/models/user.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return User; });
+var User = /** @class */ (function () {
+    function User() {
+    }
+    return User;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/pipes/find-board-entity.pipe.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FindBoardEntityPipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_board__ = __webpack_require__("../../../../../src/app/models/board.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var FindBoardEntityPipe = /** @class */ (function () {
+    function FindBoardEntityPipe() {
+    }
+    FindBoardEntityPipe.prototype.transform = function (value) {
+        if (value) {
+            var item = __WEBPACK_IMPORTED_MODULE_1__models_board__["a" /* BOARD_ENTITY_LIST */].find(function (item) {
+                return item.Value === value;
+            });
+            if (item) {
+                return item.Text || '-';
+            }
+            return value;
+        }
+        else
+            return null;
+    };
+    FindBoardEntityPipe = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["U" /* Pipe */])({
+            name: 'findBoardEntity'
+        })
+    ], FindBoardEntityPipe);
+    return FindBoardEntityPipe;
 }());
 
 
@@ -913,11 +1501,8 @@ var AuthService = /** @class */ (function () {
         // console.log('토큰 만료 시간 :'+sec/60/1000+'분 남았습니다.');
         // console.log('토큰 만료시간 : '+timer);
         this.tokenExpireTime.emit(timer);
-        if (sec < 1 * 60 * 1000) {
+        if (sec < 0) {
             this.logout();
-        }
-        else if (sec < 2 * 60 * 1000) {
-            this.tokenExpireTime.emit(timer);
         }
     };
     AuthService.prototype.login = function (email, password) {
@@ -977,18 +1562,15 @@ var AuthService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/services/user.service.ts":
+/***/ "../../../../../src/app/services/board.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BoardService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__("../../../../rxjs/_esm5/Observable.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/catch.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_observable_throw__ = __webpack_require__("../../../../rxjs/_esm5/add/observable/throw.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1001,6 +1583,75 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+var BoardService = /** @class */ (function () {
+    function BoardService(http) {
+        this.http = http;
+        this.apiBaseUrl = __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */].apiBaseUrl + "/board";
+    }
+    BoardService.prototype.index = function (page, limit) {
+        var params = [];
+        params.push("page=" + page);
+        if (limit) {
+            params.push("limit=" + limit);
+        }
+        return this.http.get(this.apiBaseUrl + '?' + params.join('&'))
+            .map(function (response) { return response; })
+            .catch(this.handleError);
+    };
+    BoardService.prototype.detail = function (id) {
+        return this.http.get(this.apiBaseUrl + "/" + id)
+            .map(function (response) { return response; })
+            .catch(this.handleError);
+    };
+    BoardService.prototype.create = function (board) {
+        return this.http.post(this.apiBaseUrl, board)
+            .map(function (response) { return response; })
+            .catch(this.handleError);
+    };
+    BoardService.prototype.update = function (board) {
+        return this.http.put(this.apiBaseUrl + "/" + board.Id, board)
+            .map(function (response) { return response; })
+            .catch(this.handleError);
+    };
+    BoardService.prototype.delete = function (board) {
+        return this.http.delete(this.apiBaseUrl + "/" + board.Id)
+            .map(function (response) { return response; })
+            .catch(this.handleError);
+    };
+    BoardService.prototype.handleError = function (error) {
+        console.error(error);
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */].throw(error.error || 'Server error');
+    };
+    BoardService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_common_http__["b" /* HttpClient */]])
+    ], BoardService);
+    return BoardService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/user.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__("../../../../rxjs/_esm5/Observable.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
 
 
@@ -1020,8 +1671,23 @@ var UserService = /** @class */ (function () {
             .map(function (response) { return response; })
             .catch(this.handleError);
     };
+    UserService.prototype.detail = function (id) {
+        return this.http.get(this.apiBaseUrl + "/" + id)
+            .map(function (response) { return response; })
+            .catch(this.handleError);
+    };
     UserService.prototype.create = function (user) {
         return this.http.post(this.apiBaseUrl, user)
+            .map(function (response) { return response; })
+            .catch(this.handleError);
+    };
+    UserService.prototype.update = function (user) {
+        return this.http.put(this.apiBaseUrl + "/" + user.Id, user)
+            .map(function (response) { return response; })
+            .catch(this.handleError);
+    };
+    UserService.prototype.delete = function (user) {
+        return this.http.delete(this.apiBaseUrl + "/" + user.Id)
             .map(function (response) { return response; })
             .catch(this.handleError);
     };
@@ -1048,7 +1714,7 @@ var UserService = /** @class */ (function () {
 /***/ "../../../../../src/app/top-nav.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark fixed-top\">\n  <a class=\"navbar-brand\" routerLink=\"/home\"><i class=\"fa fa-gavel\" aria-hidden=\"true\"></i> {{ env.appName }}</a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarsExampleDefault\" aria-controls=\"navbarsExampleDefault\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarsExampleDefault\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/home\">홈</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/user\">회원</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/board\">게시판</a>\n      </li>\n    </ul>\n    <ul class=\"navbar-nav ml-md-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/login\">로그인</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/register\">회원가입</a>\n      </li>\n      <li class=\"nav-item text-light\" *ngIf=\"user\">\n        <span class=\"text-warning\">{{ user.Name }}</span><top-timer></top-timer>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div *ngIf=\"errorResponse?.message\" class=\"mx-md-5 alert alert-danger small\">\n  {{errorResponse?.message}}\n</div>"
+module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark fixed-top\">\n  <a class=\"navbar-brand\" routerLink=\"/home\">\n    <i class=\"fa fa-gavel\" aria-hidden=\"true\"></i>\n    {{ env.appName }}\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarsExampleDefault\" aria-controls=\"navbarsExampleDefault\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarsExampleDefault\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/home\">홈</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/user\">회원</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/board\">게시판</a>\n      </li>\n    </ul>\n    <ul class=\"navbar-nav ml-md-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/login\">로그인</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/register\">회원가입</a>\n      </li>\n      <li class=\"nav-item text-light\" *ngIf=\"user\">\n        <span class=\"text-warning\">{{ user.Name }}</span><top-timer></top-timer>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div *ngIf=\"errorResponse?.message\" class=\"mx-md-5 alert alert-danger small\">\n  {{errorResponse?.message}}\n</div>"
 
 /***/ }),
 
@@ -1084,7 +1750,7 @@ var TopNavComponent = /** @class */ (function () {
         var _this = this;
         if (this.authService.isLoggedIn()) {
             this.userService.profile()
-                .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('register::submit done.'); });
+                .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('top-nav::profile done.'); });
         }
     };
     TopNavComponent.prototype.logout = function () {
