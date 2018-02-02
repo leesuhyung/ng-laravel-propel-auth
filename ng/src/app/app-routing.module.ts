@@ -9,6 +9,7 @@ import {UserIndexComponent} from "./component/user/user-index.component";
 import {UserDetailComponent} from "./component/user/user-detail.component";
 import {BoardIndexComponent} from "./component/board/board-index.component";
 import {BoardDetailComponent} from "./component/board/board-detail.component";
+import {ChartsComponent} from "./component/charts/charts.component";
 
 const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -19,6 +20,7 @@ const routes: Routes = [
     {path: 'user/:id', component: UserDetailComponent, canActivate: [AuthGuardService]},
     {path: 'board', component: BoardIndexComponent, canActivate: [AuthGuardService]},
     {path: 'board/:id', component: BoardDetailComponent, canActivate: [AuthGuardService]},
+    {path: 'charts', component: ChartsComponent, canActivate: [AuthGuardService]},
     {path: '**', component: Error404Component}
 ];
 

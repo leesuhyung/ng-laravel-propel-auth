@@ -40,3 +40,11 @@ Route::group([
     Route::post('/', 'BoardController@store');
     Route::delete('/{id}', 'BoardController@destroy');
 });
+
+Route::group([
+    'prefix' => 'charts',
+    'namespace' => 'Api'
+], function () {
+    Route::get('/', 'ChartController@index');
+    Route::get('/data', 'ChartController@data');
+});

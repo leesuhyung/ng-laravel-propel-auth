@@ -1800,7 +1800,7 @@ var TopNavComponent = /** @class */ (function () {
     };
     TopNavComponent.prototype.logout = function () {
         this.authService.logout();
-        window.location.href = '/home';
+        // window.location.href = '/home';
     };
     TopNavComponent.prototype.successful = function (response) {
         this.loading = false;

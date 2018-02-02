@@ -29,6 +29,8 @@ import {FindBoardEntityPipe} from "./pipes/find-board-entity.pipe";
 import {BoardDeleteFormComponent} from './component/board/board-delete-form.component';
 import {MarkdownModule} from "angular2-markdown";
 import {LoadingModule} from "ngx-loading";
+import {ChartsComponent} from './component/charts/charts.component';
+import {ChartsService} from "./services/charts.service";
 
 @NgModule({
     declarations: [
@@ -48,7 +50,8 @@ import {LoadingModule} from "ngx-loading";
         BoardCreateFormComponent,
         BoardEditFormComponent,
         FindBoardEntityPipe,
-        BoardDeleteFormComponent
+        BoardDeleteFormComponent,
+        ChartsComponent
     ],
     imports: [
         BrowserModule,
@@ -73,6 +76,7 @@ import {LoadingModule} from "ngx-loading";
         UserService,
         BoardService,
         AuthGuardService,
+        ChartsService
         /*{
             provide: HTTP_INTERCEPTORS,
             useClass: AddHeaderInterceptor,

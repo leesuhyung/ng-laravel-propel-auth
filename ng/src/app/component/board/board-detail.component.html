@@ -39,7 +39,11 @@
     <div class="p-3 bg-white rounded box-shadow">
       <h6 class="border-bottom border-gray pb-2 mb-0">게시판 정보</h6>
       <div class="media text-muted pt-3">
-        <p class="media-body pb-3 mb-0 small lh-150 border-bottom border-gray">
+        <p class="media-body pb-3 mb-0 small lh-150 border-bottom border-gray float-left">
+          <strong class="d-block text-gray-dark">등록일자</strong>
+          {{item.CreatedAt}}
+        </p>
+        <p class="media-body pb-3 mb-0 small lh-150 border-bottom border-gray float-right">
           <strong class="d-block text-gray-dark">글 유형</strong>
           {{item.Entity | findBoardEntity: item.Entity}}
         </p>

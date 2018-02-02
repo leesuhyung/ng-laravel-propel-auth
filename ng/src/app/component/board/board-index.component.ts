@@ -56,8 +56,11 @@ export class BoardIndexComponent implements OnInit {
             });
     }
 
-    public open(content) {
-        this.modalService.open(content);
+    public open(content, size) {
+        if (size == 'lg')
+            this.modalService.open(content, {size: size});
+        else
+            this.modalService.open(content);
     }
 
     public successful(response: any): void {
