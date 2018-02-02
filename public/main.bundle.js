@@ -151,12 +151,14 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pipes_find_board_entity_pipe__ = __webpack_require__("../../../../../src/app/pipes/find-board-entity.pipe.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__component_board_board_delete_form_component__ = __webpack_require__("../../../../../src/app/component/board/board-delete-form.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_angular2_markdown__ = __webpack_require__("../../../../angular2-markdown/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29_ngx_loading__ = __webpack_require__("../../../../ngx-loading/ngx-loading/ngx-loading.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -226,6 +228,7 @@ var AppModule = /** @class */ (function () {
                     }
                 }),
                 __WEBPACK_IMPORTED_MODULE_28_angular2_markdown__["a" /* MarkdownModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_29_ngx_loading__["a" /* LoadingModule */]
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_10__services_auth_service__["a" /* AuthService */],
@@ -264,7 +267,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/component/auth/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form-signin\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\" novalidate>\n  <h2 class=\"form-signin-heading\">{{ env.appName }} 로그인</h2>\n\n  <div class=\"alert alert-info\">\n    TEST 이메일: test@test.com<br />\n    비밀번호: 123123\n  </div>\n\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"inputEmail\">이메일</label>\n    <input type=\"email\" id=\"inputEmail\" formControlName=\"email\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.email.invalid && form.submitted,\n              'is-valid': formGroup.controls.email.valid\n            }\"\n           placeholder=\"username@example.com\"\n           autofocus>\n    <div class=\"invalid-feedback\">\n      이메일이 입력되지 않았거나 형식이 올바르지 않습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputPassword\">비밀번호</label>\n    <input type=\"password\" id=\"inputPassword\" formControlName=\"password\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.password.invalid && form.submitted,\n              'is-valid': formGroup.controls.password.valid\n            }\"\n           placeholder=\"your password\">\n    <div class=\"invalid-feedback\">\n      비밀번호가 입력되지 않았습니다.\n   </div>\n  </div>\n  <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">로그인</button>\n</form>"
+module.exports = "<form class=\"form-signin\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\" novalidate>\n  <h2 class=\"form-signin-heading\">{{ env.appName }} 로그인</h2>\n\n  <div class=\"alert alert-info\">\n    TEST 이메일: test@test.com<br />\n    비밀번호: 123123\n  </div>\n\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n\n  <div class=\"form-group\">\n    <label for=\"inputEmail\">이메일</label>\n    <input type=\"email\" id=\"inputEmail\" formControlName=\"email\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.email.invalid && form.submitted,\n              'is-valid': formGroup.controls.email.valid\n            }\"\n           placeholder=\"username@example.com\"\n           autofocus>\n    <div class=\"invalid-feedback\">\n      이메일이 입력되지 않았거나 형식이 올바르지 않습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputPassword\">비밀번호</label>\n    <input type=\"password\" id=\"inputPassword\" formControlName=\"password\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.password.invalid && form.submitted,\n              'is-valid': formGroup.controls.password.valid\n            }\"\n           placeholder=\"your password\">\n    <div class=\"invalid-feedback\">\n      비밀번호가 입력되지 않았습니다.\n   </div>\n  </div>\n  <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">로그인</button>\n</form>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -296,6 +299,7 @@ var LoginComponent = /** @class */ (function () {
     function LoginComponent(router, service) {
         this.router = router;
         this.service = service;
+        this.loading = false;
         this.env = __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */];
         this.formGroup = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormGroup */]({
             'email': new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */]('', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].pattern("[^ @]*@[^ @]*")]),
@@ -310,11 +314,13 @@ var LoginComponent = /** @class */ (function () {
     LoginComponent.prototype.submit = function () {
         var _this = this;
         if (this.formGroup.valid) {
+            this.loading = true;
             this.service.login(this.formGroup.controls.email.value, this.formGroup.controls.password.value)
                 .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('login::submit done.'); });
         }
     };
     LoginComponent.prototype.successful = function (response) {
+        this.loading = false;
         localStorage.setItem('token', response.token);
         var returnUrl = this.service.getReturnUrl();
         if (returnUrl) {
@@ -326,6 +332,7 @@ var LoginComponent = /** @class */ (function () {
         }
     };
     LoginComponent.prototype.failure = function (error) {
+        this.loading = false;
         this.errorResponse = error;
     };
     LoginComponent = __decorate([
@@ -365,7 +372,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/component/auth/register.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form-signin\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\">\n  <h2 class=\"form-signin-heading\">{{ env.appName }} 회원가입</h2>\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputEmail\">이메일</label>\n    <input type=\"email\" id=\"inputEmail\" formControlName=\"Email\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Email.invalid && form.submitted,\n              'is-valid': formGroup.controls.Email.valid\n            }\"\n           placeholder=\"username@example.com\"\n           autofocus>\n    <div class=\"invalid-feedback\">\n      이메일이 입력되지 않았거나 형식이 올바르지 않습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputName\">이름</label>\n    <input type=\"text\" id=\"inputName\" formControlName=\"Name\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Name.invalid && form.submitted,\n              'is-valid': formGroup.controls.Name.valid\n            }\"\n           placeholder=\"username\">\n    <div class=\"invalid-feedback\">\n      이름이 입력되지 않았습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputPassword\">비밀번호</label>\n    <input type=\"password\" id=\"inputPassword\" formControlName=\"Password\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Password.invalid && form.submitted,\n              'is-valid': formGroup.controls.Password.valid\n            }\"\n           placeholder=\"your password\">\n    <div class=\"invalid-feedback\">\n      비밀번호가 입력되지 않았습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputPasswordConfirmation\">비밀번호 확인</label>\n    <input type=\"password\" id=\"inputPasswordConfirmation\" formControlName=\"Password_confirmation\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Password_confirmation.invalid && form.submitted,\n              'is-invalid': formGroup.controls.Password.value !== formGroup.controls.Password_confirmation.value,\n              'is-valid': formGroup.controls.Password_confirmation.valid\n                          && formGroup.controls.Password.value == formGroup.controls.Password_confirmation.value\n            }\"\n           placeholder=\"your password confirmation\">\n    <div class=\"invalid-feedback\">\n      비밀번호가 입력되지 않았거나 일치하지 않습니다.\n    </div>\n  </div>\n  <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">가입하기</button>\n</form>"
+module.exports = "<form class=\"form-signin\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\">\n  <h2 class=\"form-signin-heading\">{{ env.appName }} 회원가입</h2>\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputEmail\">이메일</label>\n    <input type=\"email\" id=\"inputEmail\" formControlName=\"Email\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Email.invalid && form.submitted,\n              'is-valid': formGroup.controls.Email.valid\n            }\"\n           placeholder=\"username@example.com\"\n           autofocus>\n    <div class=\"invalid-feedback\">\n      이메일이 입력되지 않았거나 형식이 올바르지 않습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputName\">이름</label>\n    <input type=\"text\" id=\"inputName\" formControlName=\"Name\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Name.invalid && form.submitted,\n              'is-valid': formGroup.controls.Name.valid\n            }\"\n           placeholder=\"username\">\n    <div class=\"invalid-feedback\">\n      이름이 입력되지 않았습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputPassword\">비밀번호</label>\n    <input type=\"password\" id=\"inputPassword\" formControlName=\"Password\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Password.invalid && form.submitted,\n              'is-valid': formGroup.controls.Password.valid\n            }\"\n           placeholder=\"your password\">\n    <div class=\"invalid-feedback\">\n      비밀번호가 입력되지 않았습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputPasswordConfirmation\">비밀번호 확인</label>\n    <input type=\"password\" id=\"inputPasswordConfirmation\" formControlName=\"Password_confirmation\" class=\"form-control\"\n           [ngClass]=\"{\n              'is-invalid': formGroup.controls.Password_confirmation.invalid && form.submitted,\n              'is-invalid': formGroup.controls.Password.value !== formGroup.controls.Password_confirmation.value,\n              'is-valid': formGroup.controls.Password_confirmation.valid\n                          && formGroup.controls.Password.value == formGroup.controls.Password_confirmation.value\n            }\"\n           placeholder=\"your password confirmation\">\n    <div class=\"invalid-feedback\">\n      비밀번호가 입력되지 않았거나 일치하지 않습니다.\n    </div>\n  </div>\n  <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">가입하기</button>\n</form>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -400,6 +407,7 @@ var RegisterComponent = /** @class */ (function () {
         this.router = router;
         this.service = service;
         this.authService = authService;
+        this.loading = false;
         this.env = __WEBPACK_IMPORTED_MODULE_4__environments_environment__["a" /* environment */];
         this.formGroup = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
             'Email': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].pattern("[^ @]*@[^ @]*")]),
@@ -416,14 +424,17 @@ var RegisterComponent = /** @class */ (function () {
     RegisterComponent.prototype.submit = function () {
         var _this = this;
         if (this.formGroup.valid) {
+            this.loading = true;
             this.service.create(this.formGroup.getRawValue())
                 .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('register::submit done.'); });
         }
     };
     RegisterComponent.prototype.successful = function (response) {
+        this.loading = false;
         this.router.navigate(['/home']);
     };
     RegisterComponent.prototype.failure = function (error) {
+        this.loading = false;
         this.errorResponse = error;
     };
     RegisterComponent = __decorate([
@@ -518,7 +529,7 @@ var BoardCreateFormComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/board/board-delete-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-body\">\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"alert alert-danger\" role=\"alert\">\n    <h5 class=\"alert-heading\">위험!</h5>\n    <p>{{board.User.Name}}({{board.User.Email}}) 님의 글을 삭제할까요?</p>\n    <hr>\n    <p class=\"mb-0 text-danger text-right small\">이 작업은 되돌릴 수 없습니다.</p>\n  </div>\n</div>"
+module.exports = "<div class=\"modal-body\">\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"alert alert-danger\" role=\"alert\">\n    <h5 class=\"alert-heading\">위험!</h5>\n    <p>{{board.User.Name}}({{board.User.Email}}) 님의 글을 삭제할까요?</p>\n    <hr>\n    <p class=\"mb-0 text-danger text-right small\">이 작업은 되돌릴 수 없습니다.</p>\n  </div>\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -547,6 +558,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var BoardDeleteFormComponent = /** @class */ (function () {
     function BoardDeleteFormComponent(service) {
         this.service = service;
+        this.loading = false;
         this.board = new __WEBPACK_IMPORTED_MODULE_3__models_board__["b" /* Board */];
         this.success = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */]();
         this.formGroup = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
@@ -562,15 +574,18 @@ var BoardDeleteFormComponent = /** @class */ (function () {
     BoardDeleteFormComponent.prototype.submit = function () {
         var _this = this;
         if (this.formGroup.valid) {
+            this.loading = true;
             this.service.delete(this.formGroup.getRawValue())
                 .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('board-delete-form::submit done.'); });
         }
     };
     BoardDeleteFormComponent.prototype.successful = function (response) {
+        this.loading = false;
         this.reset();
         this.success.emit(response.data);
     };
     BoardDeleteFormComponent.prototype.failure = function (error) {
+        this.loading = false;
         this.errorResponse = error;
         console.log(this.errorResponse);
     };
@@ -599,7 +614,7 @@ var BoardDeleteFormComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/board/board-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"d-flex align-items-center p-3 mt-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>게시판</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"d-flex p-3 row\">\n  <div class=\"mb-3 col-md-3 pl-0\">\n    <div class=\"p-3 bg-white rounded box-shadow\">\n      <h6 class=\"border-bottom border-gray pb-2 mb-0\">작성자 정보</h6>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">이메일</strong>\n          {{item.User.Email}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">이름</strong>\n          {{item.User.Name}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body mb-0 small lh-150\">\n          <strong class=\"d-block text-gray-dark\">가입일자</strong>\n          {{item.User.CreatedAt}}\n        </p>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"col-md-9 pl-0 pr-0\">\n    <div class=\"p-3 bg-white rounded box-shadow\">\n      <h6 class=\"border-bottom border-gray pb-2 mb-0\">게시판 정보</h6>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">글 유형</strong>\n          {{item.Entity | findBoardEntity: item.Entity}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">제목</strong>\n          {{item.Title}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <div class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">내용</strong>\n          <markdown [data]=\"item.Contents\"></markdown>\n        </div>\n      </div>\n\n      <small class=\"row mt-3\">\n        <div class=\"col-sm-6 text-left\">\n          <button class=\"btn btn-outline-secondary btn-sm\" (click)=\"goToList();\">목록</button>\n        </div>\n        <div class=\"col-sm-6 text-right\">\n          <button class=\"btn btn-outline-primary btn-sm\" (click)=\"open(editBoardModal, 'lg');\">수정</button>\n          <button class=\"btn btn-outline-danger btn-sm\" (click)=\"open(deleteBoardModal, 'sm');\">삭제</button>\n        </div>\n      </small>\n    </div>\n  </div>\n</div>\n\n<ng-template #editBoardModal let-closeModal=\"close\">\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">게시판 글 수정</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <board-edit-form\n          [board]=\"item\"\n          (success)=\"closeModal(); resetItem($event)\"></board-edit-form>\n</ng-template>\n\n<ng-template #deleteBoardModal let-closeModal=\"close\">\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">게시판 글 삭제</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <board-delete-form\n          #deleteModal\n          [board]=\"item\"\n          (success)=\"closeModal(); goToList();\"></board-delete-form>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"closeModal();\">취소</button>\n    <button type=\"button\" class=\"btn btn-danger\" (click)=\"deleteModal.submit();\">삭제</button>\n  </div>\n</ng-template>"
+module.exports = "<div class=\"d-flex align-items-center p-3 mt-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>게시판</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"d-flex p-3 row\">\n  <div class=\"mb-3 col-md-3 pl-0\">\n    <div class=\"p-3 bg-white rounded box-shadow\">\n      <h6 class=\"border-bottom border-gray pb-2 mb-0\">작성자 정보</h6>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">이메일</strong>\n          {{item.User.Email}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">이름</strong>\n          {{item.User.Name}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body mb-0 small lh-150\">\n          <strong class=\"d-block text-gray-dark\">가입일자</strong>\n          {{item.User.CreatedAt}}\n        </p>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"col-md-9 pl-0 pr-0\">\n    <div class=\"p-3 bg-white rounded box-shadow\">\n      <h6 class=\"border-bottom border-gray pb-2 mb-0\">게시판 정보</h6>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">글 유형</strong>\n          {{item.Entity | findBoardEntity: item.Entity}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">제목</strong>\n          {{item.Title}}\n        </p>\n      </div>\n      <div class=\"media text-muted pt-3\">\n        <div class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n          <strong class=\"d-block text-gray-dark\">내용</strong>\n          <markdown [data]=\"item.Contents\"></markdown>\n        </div>\n      </div>\n\n      <small class=\"row mt-3\">\n        <div class=\"col-sm-6 text-left\">\n          <button class=\"btn btn-outline-secondary btn-sm\" (click)=\"goToList();\">목록</button>\n        </div>\n        <div class=\"col-sm-6 text-right\">\n          <button class=\"btn btn-outline-primary btn-sm\" (click)=\"open(editBoardModal, 'lg');\">수정</button>\n          <button class=\"btn btn-outline-danger btn-sm\" (click)=\"open(deleteBoardModal, 'sm');\">삭제</button>\n        </div>\n      </small>\n    </div>\n  </div>\n</div>\n\n<ng-template #editBoardModal let-closeModal=\"close\">\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">게시판 글 수정</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <board-edit-form\n          [board]=\"item\"\n          (success)=\"closeModal(); resetItem($event)\"></board-edit-form>\n</ng-template>\n\n<ng-template #deleteBoardModal let-closeModal=\"close\">\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">게시판 글 삭제</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <board-delete-form\n          #deleteModal\n          [board]=\"item\"\n          (success)=\"closeModal(); goToList();\"></board-delete-form>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"closeModal();\">취소</button>\n    <button type=\"button\" class=\"btn btn-danger\" (click)=\"deleteModal.submit();\">삭제</button>\n  </div>\n</ng-template>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -635,6 +650,7 @@ var BoardDetailComponent = /** @class */ (function () {
         this.router = router;
         this.service = service;
         this.modalService = modalService;
+        this.loading = false;
         this.routerLink = '';
         this.env = __WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */];
         this.item = new __WEBPACK_IMPORTED_MODULE_4__models_board__["b" /* Board */];
@@ -654,6 +670,7 @@ var BoardDetailComponent = /** @class */ (function () {
     };
     BoardDetailComponent.prototype.loadDetail = function (id) {
         var _this = this;
+        this.loading = true;
         this.service.detail(id)
             .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('board-detail::loadDetail done.'); });
     };
@@ -661,9 +678,11 @@ var BoardDetailComponent = /** @class */ (function () {
         this.router.navigate([this.routerLink], { queryParamsHandling: 'merge' });
     };
     BoardDetailComponent.prototype.successful = function (response) {
+        this.loading = false;
         this.item = response.data;
     };
     BoardDetailComponent.prototype.failure = function (error) {
+        this.loading = false;
         this.errorResponse = error;
     };
     BoardDetailComponent.prototype.open = function (content, size) {
@@ -696,7 +715,7 @@ var BoardDetailComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/board/board-edit-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form-group\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\">\n  <div class=\"modal-body\">\n    <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n      {{errorResponse?.message}}\n    </div>\n    <div class=\"form-group\">\n      <label for=\"inputTitle\">제목</label>\n      <input type=\"text\" id=\"inputTitle\" formControlName=\"Title\" class=\"form-control\"\n             [ngClass]=\"{\n            'is-invalid': formGroup.controls.Title.invalid && form.submitted,\n            'is-valid': formGroup.controls.Title.valid\n          }\"\n             placeholder=\"제목을 입력해주세요.\"\n             autofocus>\n      <div class=\"invalid-feedback\">\n        제목이 입력되지 않았습니다.\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"selectEntity\">글 유형</label>\n      <select id=\"selectEntity\" class=\"form-control\" formControlName=\"Entity\"\n              [ngClass]=\"{\n            'is-invalid': formGroup.controls.Entity.invalid && form.submitted,\n            'is-valid': formGroup.controls.Entity.valid\n          }\">\n        <option value=\"\">유형 선택</option>\n        <option *ngFor=\"let board of entities\" value=\"{{board.Value}}\">{{board.Text}}</option>\n      </select>\n      <div class=\"invalid-feedback\">\n        글 유형이 선택되지 않았습니다.\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"inputContents\">글 내용</label>\n      <button type=\"button\" class=\"btn btn-sm btn-primary float-right\" (click)=\"togglePreview();\">\n        <i class=\"fa fa-eye\"></i> 미리보기\n      </button>\n      <textarea id=\"inputContents\" rows=\"17\" formControlName=\"Contents\" class=\"form-control\" *ngIf=\"!toggle\"\n                [ngClass]=\"{\n            'is-invalid': formGroup.controls.Contents.invalid && form.submitted,\n            'is-valid': formGroup.controls.Contents.valid\n          }\"\n                [(ngModel)]=\"board.Contents\"\n                placeholder=\"내용을 입력해주세요. Markdown 사용이 가능합니다.\"></textarea>\n      <markdown [data]=\"board.Contents\" *ngIf=\"toggle\"></markdown>\n      <div class=\"invalid-feedback\">\n        내용이 입력되지 않았습니다.\n      </div>\n    </div>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"submit\" class=\"btn btn-outline-dark\">저장</button>\n  </div>\n</form>"
+module.exports = "<form class=\"form-group\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\">\n  <div class=\"modal-body\">\n    <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n      {{errorResponse?.message}}\n    </div>\n    <div class=\"form-group\">\n      <label for=\"inputTitle\">제목</label>\n      <input type=\"text\" id=\"inputTitle\" formControlName=\"Title\" class=\"form-control\"\n             [ngClass]=\"{\n            'is-invalid': formGroup.controls.Title.invalid && form.submitted,\n            'is-valid': formGroup.controls.Title.valid\n          }\"\n             placeholder=\"제목을 입력해주세요.\"\n             autofocus>\n      <div class=\"invalid-feedback\">\n        제목이 입력되지 않았습니다.\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"selectEntity\">글 유형</label>\n      <select id=\"selectEntity\" class=\"form-control\" formControlName=\"Entity\"\n              [ngClass]=\"{\n            'is-invalid': formGroup.controls.Entity.invalid && form.submitted,\n            'is-valid': formGroup.controls.Entity.valid\n          }\">\n        <option value=\"\">유형 선택</option>\n        <option *ngFor=\"let board of entities\" value=\"{{board.Value}}\">{{board.Text}}</option>\n      </select>\n      <div class=\"invalid-feedback\">\n        글 유형이 선택되지 않았습니다.\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"inputContents\">글 내용</label>\n      <button type=\"button\" class=\"btn btn-sm btn-primary float-right\" (click)=\"togglePreview();\">\n        <i class=\"fa fa-eye\"></i> 미리보기\n      </button>\n      <textarea id=\"inputContents\" rows=\"17\" formControlName=\"Contents\" class=\"form-control\" *ngIf=\"!toggle\"\n                [ngClass]=\"{\n            'is-invalid': formGroup.controls.Contents.invalid && form.submitted,\n            'is-valid': formGroup.controls.Contents.valid\n          }\"\n                [(ngModel)]=\"board.Contents\"\n                placeholder=\"내용을 입력해주세요. Markdown 사용이 가능합니다.\"></textarea>\n      <markdown [data]=\"board.Contents\" *ngIf=\"toggle\"></markdown>\n      <div class=\"invalid-feedback\">\n        내용이 입력되지 않았습니다.\n      </div>\n    </div>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"submit\" class=\"btn btn-outline-dark\">저장</button>\n  </div>\n</form>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -725,6 +744,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var BoardEditFormComponent = /** @class */ (function () {
     function BoardEditFormComponent(service) {
         this.service = service;
+        this.loading = false;
+        this.entities = __WEBPACK_IMPORTED_MODULE_2__models_board__["a" /* BOARD_ENTITY_LIST */];
+        this.toggle = false;
         this.board = new __WEBPACK_IMPORTED_MODULE_2__models_board__["b" /* Board */];
         this.success = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */]();
         this.formGroup = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
@@ -733,8 +755,6 @@ var BoardEditFormComponent = /** @class */ (function () {
             'Title': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
             'Contents': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
         });
-        this.entities = __WEBPACK_IMPORTED_MODULE_2__models_board__["a" /* BOARD_ENTITY_LIST */];
-        this.toggle = false;
     }
     BoardEditFormComponent.prototype.ngOnInit = function () {
         this.reset();
@@ -745,15 +765,18 @@ var BoardEditFormComponent = /** @class */ (function () {
     BoardEditFormComponent.prototype.submit = function () {
         var _this = this;
         if (this.formGroup.valid) {
+            this.loading = true;
             this.service.update(this.formGroup.getRawValue())
                 .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('board-edit-form::submit done.'); });
         }
     };
     BoardEditFormComponent.prototype.successful = function (response) {
+        this.loading = false;
         this.reset();
         this.success.emit(response.data);
     };
     BoardEditFormComponent.prototype.failure = function (error) {
+        this.loading = false;
         this.errorResponse = error;
         console.log(this.errorResponse);
     };
@@ -785,7 +808,7 @@ var BoardEditFormComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/board/board-index.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>게시판</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"my-3 p-3 bg-white rounded box-shadow\">\n  <h6 class=\"pb-2 mb-0\">게시판 목록</h6>\n  <table class=\"table border-bottom border-gray small\">\n    <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">글 유형</th>\n      <th scope=\"col\">제목</th>\n      <th scope=\"col\">작성자</th>\n      <th scope=\"col\">등록일자</th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr *ngFor=\"let item of items\">\n      <td scope=\"row\"><a style=\"cursor: pointer\" routerLink=\"/board/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Id}}</a></td>\n      <td>{{item.Entity | findBoardEntity: item.Entity}}</td>\n      <td><a style=\"cursor: pointer\" routerLink=\"/board/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Title}}</a></td>\n      <td>{{item.User.Name}}</td>\n      <td>{{item.CreatedAt}}</td>\n    </tr>\n    </tbody>\n  </table>\n  <div class=\"text-right\">\n    <button class=\"btn btn-sm btn-outline-primary\" (click)=\"open(createBoardModal);\">글 쓰기</button>\n  </div>\n</div>\n\n<div class=\"d-flex justify-content-center\">\n  <ngb-pagination\n          [(collectionSize)]=\"paginate.nbResults\"\n          [pageSize]=\"limit\"\n          [(page)]=\"paginate.page\"\n          [maxSize]=\"7\"\n          [rotate]=\"true\"\n          (pageChange)=\"loadPage($event?$event:page)\"\n          size=\"sm\"></ngb-pagination>\n</div>\n\n<ng-template #createBoardModal let-closeModal=\"close\">\n    <div class=\"modal-header\">\n        <h4 class=\"modal-title\">글 쓰기</h4>\n        <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n            <span aria-hidden=\"true\">&times;</span>\n        </button>\n    </div>\n    <board-create-form\n            (success)=\"closeModal(); loadPage(1);\"></board-create-form>\n</ng-template>"
+module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>게시판</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"my-3 p-3 bg-white rounded box-shadow\">\n  <h6 class=\"pb-2 mb-0\">게시판 목록</h6>\n  <table class=\"table border-bottom border-gray small\">\n    <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">글 유형</th>\n      <th scope=\"col\">제목</th>\n      <th scope=\"col\">작성자</th>\n      <th scope=\"col\">등록일자</th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr *ngFor=\"let item of items\">\n      <td scope=\"row\"><a style=\"cursor: pointer\" routerLink=\"/board/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Id}}</a></td>\n      <td>{{item.Entity | findBoardEntity: item.Entity}}</td>\n      <td><a style=\"cursor: pointer\" routerLink=\"/board/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Title}}</a></td>\n      <td>{{item.User.Name}}</td>\n      <td>{{item.CreatedAt}}</td>\n    </tr>\n    </tbody>\n  </table>\n  <div class=\"text-right\">\n    <button class=\"btn btn-sm btn-outline-primary\" (click)=\"open(createBoardModal);\">글 쓰기</button>\n  </div>\n</div>\n\n<div class=\"d-flex justify-content-center\">\n  <ngb-pagination\n          [(collectionSize)]=\"paginate.nbResults\"\n          [pageSize]=\"limit\"\n          [(page)]=\"paginate.page\"\n          [maxSize]=\"7\"\n          [rotate]=\"true\"\n          (pageChange)=\"loadPage($event?$event:page)\"\n          size=\"sm\"></ngb-pagination>\n</div>\n\n<ng-template #createBoardModal let-closeModal=\"close\">\n    <div class=\"modal-header\">\n        <h4 class=\"modal-title\">글 쓰기</h4>\n        <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n            <span aria-hidden=\"true\">&times;</span>\n        </button>\n    </div>\n    <board-create-form\n            (success)=\"closeModal(); loadPage(1);\"></board-create-form>\n</ng-template>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -821,6 +844,7 @@ var BoardIndexComponent = /** @class */ (function () {
         this.route = route;
         this.router = router;
         this.modalService = modalService;
+        this.loading = false;
         this.env = __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */];
         this.page = 1;
         this.limit = 7;
@@ -839,6 +863,7 @@ var BoardIndexComponent = /** @class */ (function () {
     };
     BoardIndexComponent.prototype.loadList = function () {
         var _this = this;
+        this.loading = true;
         this.service.index(this.page, this.limit)
             .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('board-index::loadList done.'); });
     };
@@ -856,10 +881,12 @@ var BoardIndexComponent = /** @class */ (function () {
         this.modalService.open(content);
     };
     BoardIndexComponent.prototype.successful = function (response) {
+        this.loading = false;
         this.items = response.data;
         this.paginate = response.paginate;
     };
     BoardIndexComponent.prototype.failure = function (error) {
+        this.loading = false;
         this.errorResponse = error;
     };
     BoardIndexComponent = __decorate([
@@ -924,7 +951,7 @@ var Error404Component = /** @class */ (function () {
 /***/ "../../../../../src/app/component/user/user-delete-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-body\">\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"alert alert-danger\" role=\"alert\">\n    <h5 class=\"alert-heading\">위험!</h5>\n    <p>{{user.Name}}({{user.Email}}) 님의 정보를 삭제할까요?</p>\n    <hr>\n    <p class=\"mb-0 text-danger text-right small\">이 작업은 되돌릴 수 없습니다.</p>\n  </div>\n</div>"
+module.exports = "<div class=\"modal-body\">\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"alert alert-danger\" role=\"alert\">\n    <h5 class=\"alert-heading\">위험!</h5>\n    <p>{{user.Name}}({{user.Email}}) 님의 정보를 삭제할까요?</p>\n    <hr>\n    <p class=\"mb-0 text-danger text-right small\">이 작업은 되돌릴 수 없습니다.</p>\n  </div>\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -953,6 +980,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var UserDeleteFormComponent = /** @class */ (function () {
     function UserDeleteFormComponent(service) {
         this.service = service;
+        this.loading = false;
         this.user = new __WEBPACK_IMPORTED_MODULE_3__models_user__["a" /* User */];
         this.success = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */]();
         this.formGroup = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
@@ -968,15 +996,18 @@ var UserDeleteFormComponent = /** @class */ (function () {
     UserDeleteFormComponent.prototype.submit = function () {
         var _this = this;
         if (this.formGroup.valid) {
+            this.loading = true;
             this.service.delete(this.formGroup.getRawValue())
                 .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('user-delete-form::submit done.'); });
         }
     };
     UserDeleteFormComponent.prototype.successful = function (response) {
+        this.loading = false;
         this.reset();
         this.success.emit(response.data);
     };
     UserDeleteFormComponent.prototype.failure = function (error) {
+        this.loading = false;
         this.errorResponse = error;
         console.log(this.errorResponse);
     };
@@ -1005,7 +1036,7 @@ var UserDeleteFormComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/user/user-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>회원</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"my-3 p-3 bg-white rounded box-shadow\">\n  <h6 class=\"border-bottom border-gray pb-2 mb-0\">회원 정보</h6>\n  <div class=\"media text-muted pt-3\">\n    <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n      <strong class=\"d-block text-gray-dark\">이메일</strong>\n      {{item.Email}}\n    </p>\n  </div>\n  <div class=\"media text-muted pt-3\">\n    <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n      <strong class=\"d-block text-gray-dark\">이름</strong>\n      {{item.Name}}\n    </p>\n  </div>\n  <div class=\"media text-muted pt-3\">\n    <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n      <strong class=\"d-block text-gray-dark\">가입일자</strong>\n      {{item.CreatedAt}}\n    </p>\n  </div>\n\n  <small class=\"row mt-3\">\n    <div class=\"col-sm-6 text-left\">\n      <button class=\"btn btn-outline-secondary btn-sm\" (click)=\"goToList();\">목록</button>\n    </div>\n    <div class=\"col-sm-6 text-right\">\n      <button class=\"btn btn-outline-primary btn-sm\" (click)=\"open(editUserModal);\">수정</button>\n      <button class=\"btn btn-outline-danger btn-sm\" (click)=\"open(deleteUserModal);\">삭제</button>\n    </div>\n  </small>\n</div>\n\n<ng-template #editUserModal let-closeModal=\"close\">\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">회원 정보수정</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <user-edit-form\n          [user]=\"item\"\n          (success)=\"closeModal(); resetItem($event)\"></user-edit-form>\n</ng-template>\n\n<ng-template #deleteUserModal let-closeModal=\"close\">\n    <div class=\"modal-header\">\n        <h4 class=\"modal-title\">회원 삭제</h4>\n        <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n            <span aria-hidden=\"true\">&times;</span>\n        </button>\n    </div>\n    <user-delete-form\n            #deleteModal\n            [user]=\"item\"\n            (success)=\"closeModal(); goToList();\"></user-delete-form>\n    <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"closeModal();\">취소</button>\n        <button type=\"button\" class=\"btn btn-danger\" (click)=\"deleteModal.submit();\">삭제</button>\n    </div>\n</ng-template>"
+module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>회원</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"my-3 p-3 bg-white rounded box-shadow\">\n  <h6 class=\"border-bottom border-gray pb-2 mb-0\">회원 정보</h6>\n  <div class=\"media text-muted pt-3\">\n    <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n      <strong class=\"d-block text-gray-dark\">이메일</strong>\n      {{item.Email}}\n    </p>\n  </div>\n  <div class=\"media text-muted pt-3\">\n    <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n      <strong class=\"d-block text-gray-dark\">이름</strong>\n      {{item.Name}}\n    </p>\n  </div>\n  <div class=\"media text-muted pt-3\">\n    <p class=\"media-body pb-3 mb-0 small lh-150 border-bottom border-gray\">\n      <strong class=\"d-block text-gray-dark\">가입일자</strong>\n      {{item.CreatedAt}}\n    </p>\n  </div>\n\n  <small class=\"row mt-3\">\n    <div class=\"col-sm-6 text-left\">\n      <button class=\"btn btn-outline-secondary btn-sm\" (click)=\"goToList();\">목록</button>\n    </div>\n    <div class=\"col-sm-6 text-right\">\n      <button class=\"btn btn-outline-primary btn-sm\" (click)=\"open(editUserModal);\">수정</button>\n      <button class=\"btn btn-outline-danger btn-sm\" (click)=\"open(deleteUserModal);\">삭제</button>\n    </div>\n  </small>\n</div>\n\n<ng-template #editUserModal let-closeModal=\"close\">\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">회원 정보수정</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <user-edit-form\n          [user]=\"item\"\n          (success)=\"closeModal(); resetItem($event)\"></user-edit-form>\n</ng-template>\n\n<ng-template #deleteUserModal let-closeModal=\"close\">\n    <div class=\"modal-header\">\n        <h4 class=\"modal-title\">회원 삭제</h4>\n        <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"closeModal()\">\n            <span aria-hidden=\"true\">&times;</span>\n        </button>\n    </div>\n    <user-delete-form\n            #deleteModal\n            [user]=\"item\"\n            (success)=\"closeModal(); goToList();\"></user-delete-form>\n    <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"closeModal();\">취소</button>\n        <button type=\"button\" class=\"btn btn-danger\" (click)=\"deleteModal.submit();\">삭제</button>\n    </div>\n</ng-template>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -1041,6 +1072,7 @@ var UserDetailComponent = /** @class */ (function () {
         this.router = router;
         this.service = service;
         this.modalService = modalService;
+        this.loading = false;
         this.routerLink = '';
         this.env = __WEBPACK_IMPORTED_MODULE_4__environments_environment__["a" /* environment */];
         this.item = new __WEBPACK_IMPORTED_MODULE_1__models_user__["a" /* User */];
@@ -1060,6 +1092,7 @@ var UserDetailComponent = /** @class */ (function () {
     };
     UserDetailComponent.prototype.loadDetail = function (id) {
         var _this = this;
+        this.loading = true;
         this.service.detail(id)
             .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('user-detail::loadDetail done.'); });
     };
@@ -1067,9 +1100,11 @@ var UserDetailComponent = /** @class */ (function () {
         this.router.navigate([this.routerLink], { queryParamsHandling: 'merge' });
     };
     UserDetailComponent.prototype.successful = function (response) {
+        this.loading = false;
         this.item = response.data;
     };
     UserDetailComponent.prototype.failure = function (error) {
+        this.loading = false;
         this.errorResponse = error;
     };
     UserDetailComponent.prototype.open = function (content) {
@@ -1098,7 +1133,7 @@ var UserDetailComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/user/user-edit-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form-group\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\">\n<div class=\"modal-body\">\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputEmail\">이메일</label>\n    <input type=\"email\" id=\"inputEmail\" formControlName=\"Email\" class=\"form-control\"\n           [ngClass]=\"{\n            'is-invalid': formGroup.controls.Email.invalid && form.submitted,\n            'is-valid': formGroup.controls.Email.valid\n          }\"\n           placeholder=\"username@example.com\"\n           autofocus>\n    <div class=\"invalid-feedback\">\n      이메일이 입력되지 않았거나 형식이 올바르지 않습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputName\">이름</label>\n    <input type=\"text\" id=\"inputName\" formControlName=\"Name\" class=\"form-control\"\n           [ngClass]=\"{\n            'is-invalid': formGroup.controls.Name.invalid && form.submitted,\n            'is-valid': formGroup.controls.Name.valid\n          }\"\n           placeholder=\"username\">\n    <div class=\"invalid-feedback\">\n      이름이 입력되지 않았습니다.\n    </div>\n  </div>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"submit\" class=\"btn btn-outline-dark\">저장</button>\n</div>\n</form>"
+module.exports = "<form class=\"form-group\" [formGroup]=\"formGroup\" (ngSubmit)=\"submit()\" #form=\"ngForm\">\n<div class=\"modal-body\">\n  <div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n    {{errorResponse?.message}}\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputEmail\">이메일</label>\n    <input type=\"email\" id=\"inputEmail\" formControlName=\"Email\" class=\"form-control\"\n           [ngClass]=\"{\n            'is-invalid': formGroup.controls.Email.invalid && form.submitted,\n            'is-valid': formGroup.controls.Email.valid\n          }\"\n           placeholder=\"username@example.com\"\n           autofocus>\n    <div class=\"invalid-feedback\">\n      이메일이 입력되지 않았거나 형식이 올바르지 않습니다.\n    </div>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"inputName\">이름</label>\n    <input type=\"text\" id=\"inputName\" formControlName=\"Name\" class=\"form-control\"\n           [ngClass]=\"{\n            'is-invalid': formGroup.controls.Name.invalid && form.submitted,\n            'is-valid': formGroup.controls.Name.valid\n          }\"\n           placeholder=\"username\">\n    <div class=\"invalid-feedback\">\n      이름이 입력되지 않았습니다.\n    </div>\n  </div>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"submit\" class=\"btn btn-outline-dark\">저장</button>\n</div>\n</form>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -1127,6 +1162,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var UserEditFormComponent = /** @class */ (function () {
     function UserEditFormComponent(service) {
         this.service = service;
+        this.loading = false;
         this.user = new __WEBPACK_IMPORTED_MODULE_2__models_user__["a" /* User */];
         this.success = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* EventEmitter */]();
         this.formGroup = new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* FormGroup */]({
@@ -1144,15 +1180,18 @@ var UserEditFormComponent = /** @class */ (function () {
     UserEditFormComponent.prototype.submit = function () {
         var _this = this;
         if (this.formGroup.valid) {
+            this.loading = true;
             this.service.update(this.formGroup.getRawValue())
                 .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('user-edit-form::submit done.'); });
         }
     };
     UserEditFormComponent.prototype.successful = function (response) {
+        this.loading = false;
         this.reset();
         this.success.emit(response.data);
     };
     UserEditFormComponent.prototype.failure = function (error) {
+        this.loading = false;
         this.errorResponse = error;
         console.log(this.errorResponse);
     };
@@ -1181,7 +1220,7 @@ var UserEditFormComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/user/user-index.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>회원</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"my-3 p-3 bg-white rounded box-shadow\">\n  <h6 class=\"pb-2 mb-0\">회원 목록</h6>\n  <table class=\"table border-bottom border-gray small\">\n    <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">이름</th>\n      <th scope=\"col\">이메일</th>\n      <th scope=\"col\">가입일자</th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr *ngFor=\"let item of items\">\n      <td scope=\"row\"><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Id}}</a></td>\n      <td><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Name}}</a></td>\n      <td><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Email}}</a></td>\n      <td>{{item.CreatedAt}}</td>\n    </tr>\n    </tbody>\n  </table>\n</div>\n\n<div class=\"d-flex justify-content-center\">\n  <ngb-pagination\n          [(collectionSize)]=\"paginate.nbResults\"\n          [pageSize]=\"limit\"\n          [(page)]=\"paginate.page\"\n          [maxSize]=\"7\"\n          [rotate]=\"true\"\n          (pageChange)=\"loadPage($event?$event:page)\"\n          size=\"sm\"></ngb-pagination>\n</div>"
+module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>회원</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"my-3 p-3 bg-white rounded box-shadow\">\n  <h6 class=\"pb-2 mb-0\">회원 목록</h6>\n  <table class=\"table border-bottom border-gray small\">\n    <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">이름</th>\n      <th scope=\"col\">이메일</th>\n      <th scope=\"col\">가입일자</th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr *ngFor=\"let item of items\">\n      <td scope=\"row\"><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Id}}</a></td>\n      <td><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Name}}</a></td>\n      <td><a style=\"cursor: pointer\" routerLink=\"/user/{{item.Id}}\" queryParamsHandling=\"merge\">{{item.Email}}</a></td>\n      <td>{{item.CreatedAt}}</td>\n    </tr>\n    </tbody>\n  </table>\n</div>\n\n<div class=\"d-flex justify-content-center\">\n  <ngb-pagination\n          [(collectionSize)]=\"paginate.nbResults\"\n          [pageSize]=\"limit\"\n          [(page)]=\"paginate.page\"\n          [maxSize]=\"7\"\n          [rotate]=\"true\"\n          (pageChange)=\"loadPage($event?$event:page)\"\n          size=\"sm\"></ngb-pagination>\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -1214,6 +1253,7 @@ var UserIndexComponent = /** @class */ (function () {
         this.service = service;
         this.route = route;
         this.router = router;
+        this.loading = false;
         this.env = __WEBPACK_IMPORTED_MODULE_4__environments_environment__["a" /* environment */];
         this.page = 1;
         this.limit = 7;
@@ -1232,6 +1272,7 @@ var UserIndexComponent = /** @class */ (function () {
     };
     UserIndexComponent.prototype.loadList = function () {
         var _this = this;
+        this.loading = true;
         this.service.index(this.page, this.limit)
             .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('user-index::loadList done.'); });
     };
@@ -1240,10 +1281,12 @@ var UserIndexComponent = /** @class */ (function () {
         this.router.navigate([routeLink], { queryParams: { page: page, limit: this.limit } });
     };
     UserIndexComponent.prototype.successful = function (response) {
+        this.loading = false;
         this.items = response.data;
         this.paginate = response.paginate;
     };
     UserIndexComponent.prototype.failure = function (error) {
+        this.loading = false;
         this.errorResponse = error;
     };
     UserIndexComponent = __decorate([
@@ -1714,7 +1757,7 @@ var UserService = /** @class */ (function () {
 /***/ "../../../../../src/app/top-nav.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark fixed-top\">\n  <a class=\"navbar-brand\" routerLink=\"/home\">\n    <i class=\"fa fa-gavel\" aria-hidden=\"true\"></i>\n    {{ env.appName }}\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarsExampleDefault\" aria-controls=\"navbarsExampleDefault\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarsExampleDefault\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/home\">홈</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/user\">회원</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/board\">게시판</a>\n      </li>\n    </ul>\n    <ul class=\"navbar-nav ml-md-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/login\">로그인</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/register\">회원가입</a>\n      </li>\n      <li class=\"nav-item text-light\" *ngIf=\"user\">\n        <span class=\"text-warning\">{{ user.Name }}</span><top-timer></top-timer>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div *ngIf=\"errorResponse?.message\" class=\"mx-md-5 alert alert-danger small\">\n  {{errorResponse?.message}}\n</div>"
+module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark fixed-top\">\n  <a class=\"navbar-brand\" routerLink=\"/home\">\n    <i class=\"fa fa-gavel\" aria-hidden=\"true\"></i>\n    {{ env.appName }}\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarsExampleDefault\" aria-controls=\"navbarsExampleDefault\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <ngx-loading [show]=\"loading\"></ngx-loading>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarsExampleDefault\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/home\">홈</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/user\">회원</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\">\n        <a class=\"nav-link\" routerLink=\"/board\">게시판</a>\n      </li>\n    </ul>\n    <ul class=\"navbar-nav ml-md-auto\">\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/login\">로그인</a>\n      </li>\n      <li class=\"nav-item\" routerLinkActive=\"active\" *ngIf=\"!user\">\n        <a class=\"nav-link\" routerLink=\"/register\">회원가입</a>\n      </li>\n      <li class=\"nav-item text-light\" *ngIf=\"user\">\n        <span class=\"text-warning\">{{ user.Name }}</span><top-timer></top-timer>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<div *ngIf=\"errorResponse?.message\" class=\"mx-md-5 alert alert-danger small\">\n  {{errorResponse?.message}}\n</div>"
 
 /***/ }),
 
@@ -1744,11 +1787,13 @@ var TopNavComponent = /** @class */ (function () {
     function TopNavComponent(authService, userService) {
         this.authService = authService;
         this.userService = userService;
+        this.loading = false;
         this.env = __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */];
     }
     TopNavComponent.prototype.ngOnInit = function () {
         var _this = this;
         if (this.authService.isLoggedIn()) {
+            this.loading = true;
             this.userService.profile()
                 .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('top-nav::profile done.'); });
         }
@@ -1758,9 +1803,11 @@ var TopNavComponent = /** @class */ (function () {
         window.location.href = '/home';
     };
     TopNavComponent.prototype.successful = function (response) {
+        this.loading = false;
         this.user = response.data;
     };
     TopNavComponent.prototype.failure = function (error) {
+        this.loading = false;
         this.errorResponse = error;
     };
     TopNavComponent = __decorate([
@@ -1781,7 +1828,7 @@ var TopNavComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/top-timer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<span style=\"padding: .25rem .5rem;\n    font-size: .875rem;\n    line-height: 1.5;\">님 <i class=\"fa fa-clock-o text-warning\" aria-hidden=\"true\"></i> 남은시간 {{timer}}</span>\n<div class=\"btn-group btn-group-sm\" role=\"group\" *ngIf=\"timer\">\n  <button type=\"button\" class=\"btn btn-warning\" (click)=\"refresh()\">시간연장</button>\n  <button type=\"button\" class=\"btn btn-warning\" (click)=\"logout()\">로그아웃</button>\n</div>"
+module.exports = "<span style=\"padding: .25rem .5rem;\n    font-size: .875rem;\n    line-height: 1.5;\">님 <i class=\"fa fa-clock-o text-warning\" aria-hidden=\"true\"></i> 남은시간 {{timer}}</span>\n<div class=\"btn-group btn-group-sm\" role=\"group\" *ngIf=\"timer\">\n  <button type=\"button\" class=\"btn btn-warning\" (click)=\"refresh()\">시간연장</button>\n  <button type=\"button\" class=\"btn btn-warning\" (click)=\"logout()\">로그아웃</button>\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -1807,14 +1854,21 @@ var TopTimerComponent = /** @class */ (function () {
     function TopTimerComponent(authService) {
         var _this = this;
         this.authService = authService;
+        this.loading = false;
         this.authService.tokenExpireTime.subscribe(function (response) {
             _this.timer = response;
         });
     }
     TopTimerComponent.prototype.refresh = function () {
+        var _this = this;
+        this.loading = true;
         this.authService.refresh().subscribe(function (response) {
+            _this.loading = false;
             localStorage.setItem('token', response.token);
-        }, function (error) { return null; }, function () { return console.log('top-timer::refresh done.'); });
+        }, function (error) {
+            _this.loading = false;
+            null;
+        }, function () { return console.log('top-timer::refresh done.'); });
     };
     TopTimerComponent.prototype.logout = function () {
         this.authService.logout();

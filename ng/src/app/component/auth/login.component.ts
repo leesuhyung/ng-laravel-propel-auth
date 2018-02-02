@@ -11,8 +11,10 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
+    loading: boolean = false;
     errorResponse: string;
     env: any = environment;
+
     formGroup: FormGroup = new FormGroup({
         'email': new FormControl('', [Validators.required, Validators.pattern("[^ @]*@[^ @]*")]),
         'password': new FormControl('', Validators.required),
@@ -30,6 +32,7 @@ export class LoginComponent implements OnInit {
 
     public submit() {
         if (this.formGroup.valid) {
+            this.loading = true;
             this.service.login(this.formGroup.controls.email.value, this.formGroup.controls.password.value)
                 .subscribe(
                     response => this.successful(response),
@@ -40,6 +43,7 @@ export class LoginComponent implements OnInit {
     }
 
     public successful(response: any): void {
+        this.loading = false;
         localStorage.setItem('token', response.token);
 
         let returnUrl = this.service.getReturnUrl();
@@ -54,6 +58,7 @@ export class LoginComponent implements OnInit {
     }
 
     public failure(error: any): void {
+        this.loading = false;
         this.errorResponse = error;
     }
 

@@ -9,6 +9,9 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class UserEditFormComponent implements OnInit {
 
+    loading: boolean = false;
+    errorResponse: string;
+
     @Input('user') user: User = new User;
     @Output() success: EventEmitter<any> = new EventEmitter<any>();
 
@@ -17,8 +20,6 @@ export class UserEditFormComponent implements OnInit {
         'Email': new FormControl('', [Validators.required, Validators.pattern("[^ @]*@[^ @]*")]),
         'Name': new FormControl('', Validators.required),
     });
-
-    errorResponse: string;
 
     constructor(private service: UserService) {
     }
@@ -33,6 +34,7 @@ export class UserEditFormComponent implements OnInit {
 
     public submit() {
         if (this.formGroup.valid) {
+            this.loading = true;
             this.service.update(this.formGroup.getRawValue())
                 .subscribe(
                     response => this.successful(response),
@@ -43,11 +45,13 @@ export class UserEditFormComponent implements OnInit {
     }
 
     public successful(response: any): void {
+        this.loading = false;
         this.reset();
         this.success.emit(response.data);
     }
 
     public failure(error: any): void {
+        this.loading = false;
         this.errorResponse = error;
         console.log(this.errorResponse);
     }

@@ -7,6 +7,7 @@ import {AuthService} from "./services/auth.service";
 })
 export class TopTimerComponent {
 
+    loading: boolean = false;
     timer: any;
 
     constructor(private authService: AuthService) {
@@ -16,11 +17,16 @@ export class TopTimerComponent {
     }
 
     public refresh() {
+        this.loading = true;
         this.authService.refresh().subscribe(
             response => {
+                this.loading = false;
                 localStorage.setItem('token', response.token);
             },
-            error => null,
+            error => {
+                this.loading = false;
+                null;
+            },
             () => console.log('top-timer::refresh done.')
         )
     }

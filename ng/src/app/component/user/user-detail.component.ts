@@ -11,6 +11,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 })
 export class UserDetailComponent implements OnInit {
 
+    loading: boolean = false;
     routerLink: string = '';
     env: any = environment;
     errorResponse: string;
@@ -36,6 +37,7 @@ export class UserDetailComponent implements OnInit {
     }
 
     public loadDetail(id: number) {
+        this.loading = true;
         this.service.detail(id)
             .subscribe(
                 response => this.successful(response),
@@ -49,10 +51,12 @@ export class UserDetailComponent implements OnInit {
     }
 
     public successful(response: any): void {
+        this.loading = false;
         this.item = response.data;
     }
 
     public failure(error: any): void {
+        this.loading = false;
         this.errorResponse = error;
     }
 

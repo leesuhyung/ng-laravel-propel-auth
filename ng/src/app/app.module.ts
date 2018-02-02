@@ -28,6 +28,7 @@ import {UserDeleteFormComponent} from "./component/user/user-delete-form.compone
 import {FindBoardEntityPipe} from "./pipes/find-board-entity.pipe";
 import {BoardDeleteFormComponent} from './component/board/board-delete-form.component';
 import {MarkdownModule} from "angular2-markdown";
+import {LoadingModule} from "ngx-loading";
 
 @NgModule({
     declarations: [
@@ -65,6 +66,7 @@ import {MarkdownModule} from "angular2-markdown";
             }
         }),
         MarkdownModule.forRoot(),
+        LoadingModule
     ],
     providers: [
         AuthService,

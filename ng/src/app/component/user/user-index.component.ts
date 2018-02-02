@@ -11,6 +11,7 @@ import {environment} from "../../../environments/environment";
 })
 export class UserIndexComponent implements OnInit {
 
+    loading: boolean = false;
     env: any = environment;
     errorResponse: string;
     page: number = 1;
@@ -34,6 +35,7 @@ export class UserIndexComponent implements OnInit {
     }
 
     public loadList() {
+        this.loading = true;
         this.service.index(this.page, this.limit)
             .subscribe(
                 response => this.successful(response),
@@ -48,11 +50,13 @@ export class UserIndexComponent implements OnInit {
     }
 
     public successful(response: any): void {
+        this.loading = false;
         this.items = response.data;
         this.paginate = response.paginate;
     }
 
     public failure(error: any): void {
+        this.loading = false;
         this.errorResponse = error;
     }
 }

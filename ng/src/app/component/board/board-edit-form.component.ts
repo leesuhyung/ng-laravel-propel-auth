@@ -9,6 +9,11 @@ import {BoardService} from "../../services/board.service";
 })
 export class BoardEditFormComponent implements OnInit {
 
+    loading: boolean = false;
+    entities: any[] = BOARD_ENTITY_LIST;
+    errorResponse: string;
+    toggle: boolean = false;
+
     @Input('board') board: Board = new Board;
     @Output() success: EventEmitter<any> = new EventEmitter<any>();
 
@@ -18,10 +23,6 @@ export class BoardEditFormComponent implements OnInit {
         'Title': new FormControl('', Validators.required),
         'Contents': new FormControl('', Validators.required),
     });
-
-    entities: any[] = BOARD_ENTITY_LIST;
-    errorResponse: string;
-    toggle: boolean = false;
 
     constructor(private service: BoardService) {
     }
@@ -36,6 +37,7 @@ export class BoardEditFormComponent implements OnInit {
 
     public submit() {
         if (this.formGroup.valid) {
+            this.loading = true;
             this.service.update(this.formGroup.getRawValue())
                 .subscribe(
                     response => this.successful(response),
@@ -46,11 +48,13 @@ export class BoardEditFormComponent implements OnInit {
     }
 
     public successful(response: any): void {
+        this.loading = false;
         this.reset();
         this.success.emit(response.data);
     }
 
     public failure(error: any): void {
+        this.loading = false;
         this.errorResponse = error;
         console.log(this.errorResponse);
     }

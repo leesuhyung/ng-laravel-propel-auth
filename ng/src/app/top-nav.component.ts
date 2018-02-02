@@ -10,6 +10,7 @@ import {UserService} from "./services/user.service";
 })
 export class TopNavComponent implements OnInit {
 
+    loading: boolean = false;
     errorResponse: string;
     env: any = environment;
     user: User;
@@ -20,6 +21,7 @@ export class TopNavComponent implements OnInit {
 
     ngOnInit() {
         if (this.authService.isLoggedIn()) {
+            this.loading = true;
             this.userService.profile()
                 .subscribe(
                     response => this.successful(response),
@@ -35,10 +37,12 @@ export class TopNavComponent implements OnInit {
     }
 
     public successful(response: any): void {
+        this.loading = false;
         this.user = response.data;
     }
 
     public failure(error: any): void {
+        this.loading = false;
         this.errorResponse = error;
     }
 

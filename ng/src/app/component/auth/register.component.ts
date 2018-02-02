@@ -12,8 +12,10 @@ import {AuthService} from "../../services/auth.service";
 })
 export class RegisterComponent implements OnInit {
 
+    loading: boolean = false;
     errorResponse: string;
     env: any = environment;
+
     formGroup: FormGroup = new FormGroup({
         'Email': new FormControl('', [Validators.required, Validators.pattern("[^ @]*@[^ @]*")]),
         'Name': new FormControl('', Validators.required),
@@ -34,6 +36,7 @@ export class RegisterComponent implements OnInit {
 
     public submit() {
         if (this.formGroup.valid) {
+            this.loading = true;
             this.service.create(this.formGroup.getRawValue())
                 .subscribe(
                     response => this.successful(response),
@@ -44,10 +47,12 @@ export class RegisterComponent implements OnInit {
     }
 
     public successful(response: any): void {
+        this.loading = false;
         this.router.navigate(['/home']);
     }
 
     public failure(error: any): void {
+        this.loading = false;
         this.errorResponse = error;
     }
 }

@@ -9,14 +9,15 @@ import {User} from "../../models/user";
 })
 export class UserDeleteFormComponent implements OnInit {
 
+    loading: boolean = false;
+    errorResponse: string;
+
     @Input('user') user: User = new User;
     @Output() success: EventEmitter<any> = new EventEmitter<any>();
 
     formGroup: FormGroup = new FormGroup({
         'Id': new FormControl('', Validators.required),
     });
-
-    errorResponse: string;
 
     constructor(private service: UserService) {
     }
@@ -31,6 +32,7 @@ export class UserDeleteFormComponent implements OnInit {
 
     public submit() {
         if (this.formGroup.valid) {
+            this.loading = true;
             this.service.delete(this.formGroup.getRawValue())
                 .subscribe(
                     response => this.successful(response),
@@ -41,11 +43,13 @@ export class UserDeleteFormComponent implements OnInit {
     }
 
     public successful(response: any): void {
+        this.loading = false;
         this.reset();
         this.success.emit(response.data);
     }
 
     public failure(error: any): void {
+        this.loading = false;
         this.errorResponse = error;
         console.log(this.errorResponse);
     }

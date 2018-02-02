@@ -12,6 +12,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 })
 export class BoardIndexComponent implements OnInit {
 
+    loading: boolean = false;
     env: any = environment;
     errorResponse: string;
     page: number = 1;
@@ -36,6 +37,7 @@ export class BoardIndexComponent implements OnInit {
     }
 
     public loadList() {
+        this.loading = true;
         this.service.index(this.page, this.limit)
             .subscribe(
                 response => this.successful(response),
@@ -59,11 +61,13 @@ export class BoardIndexComponent implements OnInit {
     }
 
     public successful(response: any): void {
+        this.loading = false;
         this.items = response.data;
         this.paginate = response.paginate;
     }
 
     public failure(error: any): void {
+        this.loading = false;
         this.errorResponse = error;
     }
 }
