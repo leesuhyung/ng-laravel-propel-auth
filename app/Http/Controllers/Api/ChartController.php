@@ -15,6 +15,16 @@ class ChartController extends Controller
     use ApiResponse;
 
     /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
+    /**
      * Display a counting of the resource.
      *
      * @param Request $request
@@ -45,43 +55,32 @@ class ChartController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Propel\Runtime\Exception\PropelException
+     * @throws \Exception
      */
     public function data(Request $request)
     {
-        $data = [];
+        $table = $request->get('table');
 
-        $min_date = Carbon::now();
-        $min_date->subDays($request->get('subday'))->setToStringFormat('Y-m-d');
+        if ($table == 'user') {
+            $data = UserQuery::create();
+        } else if ($table == 'board') {
+            $data = BoardQuery::create();
+        } else {
+            throw new \Exception('차트 파라미터 값이 유효하지 않습니다.');
+        }
 
-        $max_date = Carbon::now();
-
-        $users = UserQuery::create()
-            ->filterByCreatedAt(array("min" => $min_date." 00:00:00", "max" => $max_date." 23:59:59"))
-            ->withColumn('count(user.id)', 'user_count')
-            ->withColumn('substring(created_at, 1, 10)', 'dates')
+        $data = $data->withColumn('count(' . $table . '.id)', 'count')
+            ->withColumn('DATE_FORMAT(created_at, "%Y-%m-%d")', 'dates')
             ->groupBy('dates')
-            ->select(array('dates', 'user_count'))
+            ->select(array('dates', 'count'))
+            ->orderBy('dates', 'asc')
+            ->limit($request->get('limit'))
             ->find();
 
-        $data['Users'] = $users;
-
-        $boards = BoardQuery::create()
-            ->filterByCreatedAt(array("min" => $min_date." 00:00:00", "max" => $max_date." 23:59:59"))
-            ->withColumn('count(board.id)', 'board_count', Criteria::CONTAINS_ALL)
-            ->withColumn('substring(created_at, 1, 10)', 'dates')
-            ->groupBy('dates')
-            ->select(array('dates', 'board_count'))
-            ->find();
-
-        $data['Boards'] = $boards;
-
-        return $users."/".$boards;
-
-        // TODO : https://okky.kr/article/350544 참고. row 가 없는 컬럼값은 0 으로 치환할 수 없다.
-
-        /*return $this->successToJson(
+        return $this->successToJson(
             $request,
-            $data
-        );*/
+            $data->toArray()
+        );
+
     }
 }

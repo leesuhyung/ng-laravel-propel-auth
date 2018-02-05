@@ -1,0 +1,15 @@
+<!--<div style="display: block">
+  <canvas baseChart
+    class="chart"
+    [datasets]="datasets"
+    [labels]="labels"
+    [options]="options"
+    [chartType]="'line'">
+  </canvas>
+</div>-->
+
+<div *ngIf="errorResponse?.message" class="alert alert-danger">
+  {{errorResponse?.message}}
+</div>
+
+<ngx-loading [show]="loading"></ngx-loading>

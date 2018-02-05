@@ -31,6 +31,8 @@ import {MarkdownModule} from "angular2-markdown";
 import {LoadingModule} from "ngx-loading";
 import {ChartsComponent} from './component/charts/charts.component';
 import {ChartsService} from "./services/charts.service";
+import {ChartsModule} from "ng2-charts/ng2-charts";
+import {ChartsViewComponent} from './component/charts/charts-view.component';
 
 @NgModule({
     declarations: [
@@ -51,7 +53,8 @@ import {ChartsService} from "./services/charts.service";
         BoardEditFormComponent,
         FindBoardEntityPipe,
         BoardDeleteFormComponent,
-        ChartsComponent
+        ChartsComponent,
+        ChartsViewComponent
     ],
     imports: [
         BrowserModule,
@@ -69,7 +72,8 @@ import {ChartsService} from "./services/charts.service";
             }
         }),
         MarkdownModule.forRoot(),
-        LoadingModule
+        LoadingModule,
+        ChartsModule
     ],
     providers: [
         AuthService,

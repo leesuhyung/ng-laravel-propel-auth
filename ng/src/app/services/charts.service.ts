@@ -16,6 +16,20 @@ export class ChartsService {
             .catch(this.handleError)
     }
 
+    public data(table: string, limit: number): Observable<any> {
+        let params: string[] = [];
+
+        params.push(`table=${table}`);
+
+        if (limit) {
+            params.push(`limit=${limit}`);
+        }
+
+        return this.http.get(this.apiBaseUrl + '/data?' + params.join('&'))
+            .map(response => response)
+            .catch(this.handleError)
+    }
+
     // TODO: where create_at >= '....' User/Board counting
     /*
      * private datasets = [

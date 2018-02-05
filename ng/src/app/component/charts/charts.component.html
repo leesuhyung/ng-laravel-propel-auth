@@ -9,10 +9,30 @@
 <div *ngIf="errorResponse?.message" class="alert alert-danger">
   {{errorResponse?.message}}
 </div>
-<div>
-  {{count}}
+
+<div *ngIf="count">
+  Users count : {{count.Users}}
   <hr>
-  {{count.Users}}
+  Boards count : {{count.Boards}}
   <hr>
-  {{count.Boards}}
 </div>
+
+<div *ngIf="charts">
+  users chart
+  <ul *ngFor="let user of charts.Users">
+    <li>user_count : {{user.user_count}}</li>
+    <li>dates : {{user.dates}}</li>
+  </ul>
+  <hr>
+  boards chart
+  <ul *ngFor="let board of charts.Boards">
+    <li>user_count : {{board.board_count}}</li>
+    <li>dates : {{board.dates}}</li>
+  </ul>
+</div>
+
+<button type="button" class="btn btn-sm btn-outline-warning" (click)="toggleTable('user');">User</button>
+<button type="button" class="btn btn-sm btn-outline-secondary" (click)="toggleTable('board');">Board</button>
+
+<charts-view
+  [table]="table"></charts-view>
