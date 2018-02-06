@@ -1,12 +1,12 @@
-<!--<div style="display: block">
+<div style="display: block" *ngIf="charts.datasets[0] && charts.labels">
   <canvas baseChart
     class="chart"
-    [datasets]="datasets"
-    [labels]="labels"
+    [datasets]="charts.datasets"
+    [labels]="charts.labels"
     [options]="options"
     [chartType]="'line'">
   </canvas>
-</div>-->
+</div>
 
 <div *ngIf="errorResponse?.message" class="alert alert-danger">
   {{errorResponse?.message}}

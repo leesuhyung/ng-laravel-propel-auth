@@ -10,29 +10,32 @@
   {{errorResponse?.message}}
 </div>
 
-<div *ngIf="count">
-  Users count : {{count.Users}}
-  <hr>
-  Boards count : {{count.Boards}}
-  <hr>
+<div class="row mt-1">
+  <div class="col">
+    <h6>총 데이터</h6>
+    <hr>
+    <div class="row align-items-center" *ngIf="count">
+      <div class="col text-center">
+        <h6>회원</h6>
+        <h1>{{count.Users}}</h1>
+      </div>
+
+      <div class="col text-center">
+        <h6>게시판</h6>
+        <h1>{{count.Boards}}</h1>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <h6>그래프</h6>
+    <hr>
+    <div class="btn-group btn-group-sm" role="group">
+      <button type="button" class="btn btn-outline-secondary" (click)="toggleTable('user');">User</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="toggleTable('board');">Board</button>
+    </div>
+
+    <charts-view
+            [table]="table"></charts-view>
+  </div>
 </div>
 
-<div *ngIf="charts">
-  users chart
-  <ul *ngFor="let user of charts.Users">
-    <li>user_count : {{user.user_count}}</li>
-    <li>dates : {{user.dates}}</li>
-  </ul>
-  <hr>
-  boards chart
-  <ul *ngFor="let board of charts.Boards">
-    <li>user_count : {{board.board_count}}</li>
-    <li>dates : {{board.dates}}</li>
-  </ul>
-</div>
-
-<button type="button" class="btn btn-sm btn-outline-warning" (click)="toggleTable('user');">User</button>
-<button type="button" class="btn btn-sm btn-outline-secondary" (click)="toggleTable('board');">Board</button>
-
-<charts-view
-  [table]="table"></charts-view>

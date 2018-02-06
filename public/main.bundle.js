@@ -941,7 +941,7 @@ var BoardIndexComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/charts/charts-view.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"display: block\">\n  <canvas baseChart\n    class=\"chart\"\n    [datasets]=\"datasets\"\n    [labels]=\"labels\"\n    [options]=\"options\"\n    [chartType]=\"'line'\">\n  </canvas>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
+module.exports = "<div style=\"display: block\" *ngIf=\"charts.datasets[0] && charts.labels\">\n  <canvas baseChart\n    class=\"chart\"\n    [datasets]=\"charts.datasets\"\n    [labels]=\"charts.labels\"\n    [options]=\"options\"\n    [chartType]=\"'line'\">\n  </canvas>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
@@ -952,6 +952,7 @@ module.exports = "<div style=\"display: block\">\n  <canvas baseChart\n    class
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChartsViewComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_charts_service__ = __webpack_require__("../../../../../src/app/services/charts.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_charts__ = __webpack_require__("../../../../../src/app/models/charts.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -963,20 +964,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var ChartsViewComponent = /** @class */ (function () {
     function ChartsViewComponent(service) {
         this.service = service;
         this.loading = false;
         this.limit = 7;
-        this.datasets = [
-            {
-                label: "# of Votes",
-                data: [12, 19, 3, 5, 2, 3]
-            }
-        ];
-        this.labels = [
-            'Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'
-        ];
+        this.charts = new __WEBPACK_IMPORTED_MODULE_2__models_charts__["a" /* Charts */]();
+        this.data = [];
         this.options = {
             scales: {
                 yAxes: [{
@@ -987,22 +982,28 @@ var ChartsViewComponent = /** @class */ (function () {
             }
         };
     }
-    ChartsViewComponent.prototype.ngOnInit = function () {
-        console.log(this.table);
+    ChartsViewComponent.prototype.ngOnChanges = function (changes) {
         this.loadCharts();
     };
     ChartsViewComponent.prototype.loadCharts = function () {
         var _this = this;
         this.loading = true;
         this.service.data(this.table, this.limit)
-            .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('charts::loadCharts done.'); });
+            .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('charts::loadCharts(' + _this.table + ') done.'); });
     };
     ChartsViewComponent.prototype.successful = function (response) {
         this.loading = false;
-        console.log(response.data);
-        // TODO: response 로 데이터 가공.
-        // TODO: 1) datasets
-        // TODO: 2) labels
+        this.data = [];
+        this.charts.datasets = [];
+        this.charts.labels = [];
+        for (var _i = 0, _a = response.data; _i < _a.length; _i++) {
+            var data = _a[_i];
+            this.data.push(data.count);
+            this.charts.labels.push(data.dates);
+        }
+        var datasets = Object.assign({}, { label: this.table, data: this.data });
+        this.charts.datasets.push(datasets);
+        console.log(this.charts);
     };
     ChartsViewComponent.prototype.failure = function (error) {
         this.loading = false;
@@ -1555,6 +1556,23 @@ var BOARD_ENTITY_LIST = [
     { Text: '유형2', Value: '2' },
     { Text: '유형3', Value: '3' },
 ];
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/models/charts.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Charts; });
+var Charts = /** @class */ (function () {
+    function Charts() {
+        this.datasets = [];
+        this.labels = [];
+    }
+    return Charts;
+}());
+
 
 
 /***/ }),

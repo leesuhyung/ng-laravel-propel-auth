@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {ChartsService} from "../../services/charts.service";
 import {Charts} from "../../models/charts";
 
@@ -8,20 +8,14 @@ import {Charts} from "../../models/charts";
 })
 export class ChartsViewComponent implements OnChanges {
 
+    @Input() table: string;
     loading: boolean = false;
     errorResponse: string;
     limit: number = 7;
-    @Input() table: string;
+    charts: Charts = new Charts();
+    data: any = [];
+    label: string;
 
-    /*datasets: any = [
-        {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3]
-        }
-    ];
-    labels: any = [
-        'Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'
-    ];*/
     options = {
         scales: {
             yAxes: [{
@@ -31,14 +25,11 @@ export class ChartsViewComponent implements OnChanges {
             }]
         }
     };
-    charts: Charts = new Charts();
-    label: string;
-    data: any = [];
 
     constructor(private service: ChartsService) {
     }
 
-    ngOnChanges() {
+    ngOnChanges(changes: SimpleChanges) {
         this.loadCharts();
     }
 
@@ -54,21 +45,25 @@ export class ChartsViewComponent implements OnChanges {
 
     public successful(response: any): void {
         this.loading = false;
-
-        this.label = this.table;
         this.data = [];
+        this.charts.datasets = [];
+        this.charts.labels = [];
 
         for (let data of response.data) {
-            // this.data.push(data.count);
+            this.data.push(data.count);
             this.charts.labels.push(data.dates);
         }
 
-        Object.assign(this.charts.datasets, this.label, this.data);
+        if (this.table == 'user') {
+            this.label = '가입자 수';
+        } else if (this.table == 'board') {
+            this.label = '글 작성 수';
+        } else {
+            this.label = '';
+        }
 
-        console.log(this.charts);
-        // TODO: datasets 안에 label 과 data 를 객체로 assign 해주기)
-        // TODO: any = [ {aaa:'aa', bbb:'bb'} ] 이 형태가 배열안에 객체인지.. 확인
-
+        let datasets = Object.assign({}, {label: this.label, data: this.data});
+        this.charts.datasets.push(datasets);
     }
 
     public failure(error: any): void {
