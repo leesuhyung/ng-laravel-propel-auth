@@ -66,7 +66,7 @@ class ChartController extends Controller
         } else if ($table == 'board') {
             $data = BoardQuery::create();
         } else {
-            throw new \Exception('차트 파라미터 값이 유효하지 않습니다.');
+            throw new \Exception('차트 스키마 값이 유효하지 않습니다.');
         }
 
         $data = $data->withColumn('count(' . $table . '.id)', 'count')

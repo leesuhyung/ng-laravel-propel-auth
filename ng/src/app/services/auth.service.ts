@@ -32,9 +32,6 @@ export class AuthService {
         let sec_date_set = new Date(sec);
         let timer = sec_date_set.getMinutes()+'분'+sec_date_set.getSeconds()+'초';
 
-        // console.log('토큰 만료 시간 :'+sec/60/1000+'분 남았습니다.');
-        // console.log('토큰 만료시간 : '+timer);
-
         this.tokenExpireTime.emit(timer);
 
         if (sec < 0) {

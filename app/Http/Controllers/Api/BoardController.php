@@ -33,7 +33,6 @@ class BoardController extends Controller
     public function index(Request $request)
     {
         $boards = BoardQuery::create()
-            ->filters($request->get('filters'))
             ->orderById(Criteria::DESC)
             ->paginate($request->get('page', 1), $request->get('limit', env('DEFAULT_LIMIT')));
 

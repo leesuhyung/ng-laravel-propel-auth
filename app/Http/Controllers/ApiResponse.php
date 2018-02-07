@@ -57,7 +57,7 @@ trait ApiResponse
     /**
      * @param Request $request
      * @param array $error
-     * @return \Illuminate\Http\JsonResponse
+     * @return void
      * @throws \Exception
      */
     public function failToJson(Request $request, $error = [])
