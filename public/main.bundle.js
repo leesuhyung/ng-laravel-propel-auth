@@ -1001,9 +1001,17 @@ var ChartsViewComponent = /** @class */ (function () {
             this.data.push(data.count);
             this.charts.labels.push(data.dates);
         }
-        var datasets = Object.assign({}, { label: this.table, data: this.data });
+        if (this.table == 'user') {
+            this.label = '가입자 수';
+        }
+        else if (this.table == 'board') {
+            this.label = '글 작성 수';
+        }
+        else {
+            this.label = '';
+        }
+        var datasets = Object.assign({}, { label: this.label, data: this.data });
         this.charts.datasets.push(datasets);
-        console.log(this.charts);
     };
     ChartsViewComponent.prototype.failure = function (error) {
         this.loading = false;
@@ -1030,7 +1038,7 @@ var ChartsViewComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/charts/charts.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>차트</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div *ngIf=\"count\">\n  Users count : {{count.Users}}\n  <hr>\n  Boards count : {{count.Boards}}\n  <hr>\n</div>\n\n<div *ngIf=\"charts\">\n  users chart\n  <ul *ngFor=\"let user of charts.Users\">\n    <li>user_count : {{user.user_count}}</li>\n    <li>dates : {{user.dates}}</li>\n  </ul>\n  <hr>\n  boards chart\n  <ul *ngFor=\"let board of charts.Boards\">\n    <li>user_count : {{board.board_count}}</li>\n    <li>dates : {{board.dates}}</li>\n  </ul>\n</div>\n\n<button type=\"button\" class=\"btn btn-sm btn-outline-warning\" (click)=\"toggleTable('user');\">User</button>\n<button type=\"button\" class=\"btn btn-sm btn-outline-secondary\" (click)=\"toggleTable('board');\">Board</button>\n\n<charts-view\n  [table]=\"table\"></charts-view>"
+module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>차트</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"row mt-1\">\n  <div class=\"col mb-5\">\n    <h6>총 데이터</h6>\n    <hr>\n    <div class=\"row h-75\" *ngIf=\"count\">\n      <div class=\"col text-center my-auto border-right\">\n        <h6>회원</h6>\n        <h1>{{count.Users}}</h1>\n      </div>\n\n      <div class=\"col text-center my-auto\">\n        <h6>게시판</h6>\n        <h1>{{count.Boards}}</h1>\n      </div>\n    </div>\n  </div>\n  <div class=\"col\">\n    <h6>그래프</h6>\n    <hr>\n    <div class=\"btn-group btn-group-sm\" role=\"group\">\n      <button type=\"button\" class=\"btn btn-outline-secondary\" (click)=\"toggleTable('user');\" [class.active]=\"table == 'user'\">User</button>\n      <button type=\"button\" class=\"btn btn-outline-secondary\" (click)=\"toggleTable('board');\" [class.active]=\"table == 'board'\">Board</button>\n    </div>\n\n    <charts-view\n         [table]=\"table\"></charts-view>\n  </div>\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>\n"
 
 /***/ }),
 
@@ -1061,7 +1069,7 @@ var ChartsComponent = /** @class */ (function () {
         this.env = __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */];
         this.table = 'user';
     }
-    ChartsComponent.prototype.ngAfterViewInit = function () {
+    ChartsComponent.prototype.ngOnInit = function () {
         this.loadCount();
     };
     ChartsComponent.prototype.loadCount = function () {

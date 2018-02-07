@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {ChartsService} from "../../services/charts.service";
 
@@ -6,7 +6,7 @@ import {ChartsService} from "../../services/charts.service";
     selector: 'charts',
     templateUrl: './charts.component.html'
 })
-export class ChartsComponent implements AfterViewInit {
+export class ChartsComponent implements OnInit {
 
     loading: boolean = false;
     env: any = environment;
@@ -17,7 +17,7 @@ export class ChartsComponent implements AfterViewInit {
     constructor(private service: ChartsService) {
     }
 
-    ngAfterViewInit(): void {
+    ngOnInit() {
         this.loadCount();
     }
 
@@ -45,7 +45,4 @@ export class ChartsComponent implements AfterViewInit {
         this.errorResponse = error;
     }
 
-    // TODO: CHART_DIRECTIVES 생성 (selector : [charts] ). 독립된 컴포넌트에 user/board 데이터를 넣는다. (default : user)
-    // TODO: 컨트롤러에서 user, border 를 필터로 받아서 쿼리를 분기한다.
-    // TODO: chartService.ts 인자 수정.
 }

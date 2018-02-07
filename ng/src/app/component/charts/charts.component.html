@@ -11,16 +11,16 @@
 </div>
 
 <div class="row mt-1">
-  <div class="col">
+  <div class="col mb-5">
     <h6>총 데이터</h6>
     <hr>
-    <div class="row align-items-center" *ngIf="count">
-      <div class="col text-center">
+    <div class="row h-75" *ngIf="count">
+      <div class="col text-center my-auto border-right">
         <h6>회원</h6>
         <h1>{{count.Users}}</h1>
       </div>
 
-      <div class="col text-center">
+      <div class="col text-center my-auto">
         <h6>게시판</h6>
         <h1>{{count.Boards}}</h1>
       </div>
@@ -30,12 +30,13 @@
     <h6>그래프</h6>
     <hr>
     <div class="btn-group btn-group-sm" role="group">
-      <button type="button" class="btn btn-outline-secondary" (click)="toggleTable('user');">User</button>
-      <button type="button" class="btn btn-outline-secondary" (click)="toggleTable('board');">Board</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="toggleTable('user');" [class.active]="table == 'user'">User</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="toggleTable('board');" [class.active]="table == 'board'">Board</button>
     </div>
 
     <charts-view
-            [table]="table"></charts-view>
+         [table]="table"></charts-view>
   </div>
 </div>
 
+<ngx-loading [show]="loading"></ngx-loading>
