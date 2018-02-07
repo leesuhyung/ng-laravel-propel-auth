@@ -19,7 +19,7 @@ API
 - barryvdh/laravel-cors
 
 FRONT
-- @auth0/angular-jwt"
+- @auth0/angular-jwt
 - @ng-bootstrap/ng-bootstrap
 - angular2-markdown
 - font-awesome
