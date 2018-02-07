@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {ChartsService} from "../../services/charts.service";
-import {Charts} from "../../models/charts";
+import {Charts, datasets} from "../../models/charts";
 
 @Component({
     selector: 'charts-view',
@@ -13,7 +13,7 @@ export class ChartsViewComponent implements OnChanges {
     errorResponse: string;
     limit: number = 7;
     charts: Charts = new Charts();
-    data: any = [];
+    data: number[];
     label: string;
 
     options = {
@@ -45,9 +45,11 @@ export class ChartsViewComponent implements OnChanges {
 
     public successful(response: any): void {
         this.loading = false;
-        this.data = [];
-        this.charts.datasets = [];
-        this.charts.labels = [];
+        this.setChartsData(response);
+    }
+
+    public setChartsData(response: any) {
+        this.clearChartsArray();
 
         for (let data of response.data) {
             this.data.push(data.count);
@@ -62,8 +64,25 @@ export class ChartsViewComponent implements OnChanges {
             this.label = '';
         }
 
+        // console.log(this.charts.datasets[0]);
+
         let datasets = Object.assign({}, {label: this.label, data: this.data});
         this.charts.datasets.push(datasets);
+
+        // for (let i=0; i < this.charts.datasets.length; i++) {
+        //     console.log(this.charts.datasets[i].data);
+        // }
+
+        // TODO: datasets 배열에 data, label 프로퍼티를 타입선언 말고도 빈값? 으로 초기화 하면
+        // TODO: this.charts.datasets[?].data 식으로 불러올 수 있는듯.
+        // TODO: 초기화가 가능하면 data=[] 에 넣지않아도, Object.assign 하지 않아도 다이렉트로 할당하면 될듯함.
+        // TODO: for (let data of response.data) { this.charts.datasets[0].data.push(data.count) } 이런식으로..?
+    }
+
+    public clearChartsArray() {
+        this.data = [];
+        this.charts.datasets = [];
+        this.charts.labels = [];
     }
 
     public failure(error: any): void {
