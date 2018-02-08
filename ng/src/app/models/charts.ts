@@ -1,9 +1,5 @@
 export class Charts {
-    datasets: datasets[];
-    labels: string[];
-}
-
-export class datasets {
-    data: number[];
+    data: number[] = [];
     label: string;
+    labels: string[] = [];
 }

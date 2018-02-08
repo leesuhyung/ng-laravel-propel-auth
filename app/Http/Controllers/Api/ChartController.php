@@ -69,7 +69,7 @@ class ChartController extends Controller
             throw new \Exception('차트 스키마 값이 유효하지 않습니다.');
         }
 
-        $data = $data->withColumn('count(' . $table . '.id)', 'count')
+        $data = $data->withColumn('count(id)', 'count')
             ->withColumn('DATE_FORMAT(created_at, "%Y-%m-%d")', 'dates')
             ->groupBy('dates')
             ->select(array('dates', 'count'))

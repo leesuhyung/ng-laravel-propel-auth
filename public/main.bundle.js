@@ -159,13 +159,15 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__services_charts_service__ = __webpack_require__("../../../../../src/app/services/charts.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_32_ng2_charts_ng2_charts__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__component_charts_charts_view_component__ = __webpack_require__("../../../../../src/app/component/charts/charts-view.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__component_charts_charts_view_chartjs_component__ = __webpack_require__("../../../../../src/app/component/charts/charts-view-chartjs.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__component_charts_charts_view_highcharts_component__ = __webpack_require__("../../../../../src/app/component/charts/charts-view-highcharts.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -224,7 +226,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_26__pipes_find_board_entity_pipe__["a" /* FindBoardEntityPipe */],
                 __WEBPACK_IMPORTED_MODULE_27__component_board_board_delete_form_component__["a" /* BoardDeleteFormComponent */],
                 __WEBPACK_IMPORTED_MODULE_30__component_charts_charts_component__["a" /* ChartsComponent */],
-                __WEBPACK_IMPORTED_MODULE_33__component_charts_charts_view_component__["a" /* ChartsViewComponent */]
+                __WEBPACK_IMPORTED_MODULE_33__component_charts_charts_view_chartjs_component__["a" /* ChartsViewChartjsComponent */],
+                __WEBPACK_IMPORTED_MODULE_34__component_charts_charts_view_highcharts_component__["a" /* ChartsViewHighchartsComponent */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -938,18 +941,18 @@ var BoardIndexComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/component/charts/charts-view.component.html":
+/***/ "../../../../../src/app/component/charts/charts-view-chartjs.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"display: block\" *ngIf=\"charts.datasets[0] && charts.labels\">\n  <canvas baseChart\n    class=\"chart\"\n    [datasets]=\"charts.datasets\"\n    [labels]=\"charts.labels\"\n    [options]=\"options\"\n    [chartType]=\"'line'\">\n  </canvas>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
+module.exports = "<div style=\"display: block\" *ngIf=\"datasets.length > 0 && charts.labels\">\n  <canvas baseChart\n    class=\"chart\"\n    [datasets]=\"datasets\"\n    [labels]=\"charts.labels\"\n    [options]=\"options\"\n    [chartType]=\"'line'\">\n  </canvas>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
 
 /***/ }),
 
-/***/ "../../../../../src/app/component/charts/charts-view.component.ts":
+/***/ "../../../../../src/app/component/charts/charts-view-chartjs.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChartsViewComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChartsViewChartjsComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_charts_service__ = __webpack_require__("../../../../../src/app/services/charts.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_charts__ = __webpack_require__("../../../../../src/app/models/charts.ts");
@@ -965,13 +968,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var ChartsViewComponent = /** @class */ (function () {
-    function ChartsViewComponent(service) {
+var ChartsViewChartjsComponent = /** @class */ (function () {
+    function ChartsViewChartjsComponent(service) {
         this.service = service;
         this.loading = false;
         this.limit = 7;
         this.charts = new __WEBPACK_IMPORTED_MODULE_2__models_charts__["a" /* Charts */]();
-        this.data = [];
+        this.datasets = [];
         this.options = {
             scales: {
                 yAxes: [{
@@ -982,53 +985,177 @@ var ChartsViewComponent = /** @class */ (function () {
             }
         };
     }
-    ChartsViewComponent.prototype.ngOnChanges = function (changes) {
+    ChartsViewChartjsComponent.prototype.ngOnChanges = function (changes) {
         this.loadCharts();
     };
-    ChartsViewComponent.prototype.loadCharts = function () {
+    ChartsViewChartjsComponent.prototype.loadCharts = function () {
         var _this = this;
         this.loading = true;
         this.service.data(this.table, this.limit)
-            .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('charts::loadCharts(' + _this.table + ') done.'); });
+            .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('charts-view-chartjs::loadCharts(' + _this.table + ') done.'); });
     };
-    ChartsViewComponent.prototype.successful = function (response) {
+    ChartsViewChartjsComponent.prototype.successful = function (response) {
         this.loading = false;
-        this.data = [];
-        this.charts.datasets = [];
-        this.charts.labels = [];
+        this.setData(response);
+    };
+    ChartsViewChartjsComponent.prototype.setData = function (response) {
+        this.clearData();
         for (var _i = 0, _a = response.data; _i < _a.length; _i++) {
             var data = _a[_i];
-            this.data.push(data.count);
             this.charts.labels.push(data.dates);
+            this.charts.data.push(data.count);
         }
         if (this.table == 'user') {
-            this.label = '가입자 수';
+            this.charts.label = '가입자 수';
         }
         else if (this.table == 'board') {
-            this.label = '글 작성 수';
+            this.charts.label = '글 작성 수';
         }
         else {
-            this.label = '';
+            this.charts.label = '';
         }
-        var datasets = Object.assign({}, { label: this.label, data: this.data });
-        this.charts.datasets.push(datasets);
+        var datasets = Object.assign({}, { label: this.charts.label, data: this.charts.data });
+        this.datasets.push(datasets);
     };
-    ChartsViewComponent.prototype.failure = function (error) {
+    ChartsViewChartjsComponent.prototype.clearData = function () {
+        this.datasets = [];
+        this.charts.labels = [];
+        this.charts.data = [];
+    };
+    ChartsViewChartjsComponent.prototype.failure = function (error) {
         this.loading = false;
         this.errorResponse = error;
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
         __metadata("design:type", String)
-    ], ChartsViewComponent.prototype, "table", void 0);
-    ChartsViewComponent = __decorate([
+    ], ChartsViewChartjsComponent.prototype, "table", void 0);
+    ChartsViewChartjsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'charts-view',
-            template: __webpack_require__("../../../../../src/app/component/charts/charts-view.component.html")
+            selector: 'charts-view-chartjs',
+            template: __webpack_require__("../../../../../src/app/component/charts/charts-view-chartjs.component.html")
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_charts_service__["a" /* ChartsService */]])
-    ], ChartsViewComponent);
-    return ChartsViewComponent;
+    ], ChartsViewChartjsComponent);
+    return ChartsViewChartjsComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/component/charts/charts-view-highcharts.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div #chartTarget></div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/component/charts/charts-view-highcharts.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChartsViewHighchartsComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_charts_service__ = __webpack_require__("../../../../../src/app/services/charts.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_highcharts__ = __webpack_require__("../../../../highcharts/highcharts.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_highcharts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_highcharts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_charts__ = __webpack_require__("../../../../../src/app/models/charts.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ChartsViewHighchartsComponent = /** @class */ (function () {
+    function ChartsViewHighchartsComponent(service) {
+        this.service = service;
+        this.loading = false;
+        this.limit = 7;
+        this.charts = new __WEBPACK_IMPORTED_MODULE_3__models_charts__["a" /* Charts */]();
+    }
+    ChartsViewHighchartsComponent.prototype.ngOnChanges = function (changes) {
+        this.loadCharts();
+    };
+    ChartsViewHighchartsComponent.prototype.createChart = function () {
+        var options = {
+            title: {
+                text: ''
+            },
+            xAxis: {
+                categories: this.charts.labels
+            },
+            yAxis: {
+                title: {
+                    text: this.charts.label
+                }
+            },
+            series: [{
+                    name: this.charts.label,
+                    data: this.charts.data
+                }]
+        };
+        this.highchart = Object(__WEBPACK_IMPORTED_MODULE_2_highcharts__["chart"])(this.chartTarget.nativeElement, options);
+    };
+    ChartsViewHighchartsComponent.prototype.loadCharts = function () {
+        var _this = this;
+        this.loading = true;
+        this.service.data(this.table, this.limit)
+            .subscribe(function (response) { return _this.successful(response); }, function (error) { return _this.failure(error); }, function () { return console.log('charts-view-highcharts::loadCharts(' + _this.table + ') done.'); });
+    };
+    ChartsViewHighchartsComponent.prototype.successful = function (response) {
+        this.loading = false;
+        this.setData(response);
+        this.createChart();
+    };
+    ChartsViewHighchartsComponent.prototype.setData = function (response) {
+        this.clearData();
+        for (var _i = 0, _a = response.data; _i < _a.length; _i++) {
+            var data = _a[_i];
+            this.charts.labels.push(data.dates);
+            this.charts.data.push(data.count);
+        }
+        if (this.table == 'user') {
+            this.charts.label = '가입자 수';
+        }
+        else if (this.table == 'board') {
+            this.charts.label = '글 작성 수';
+        }
+        else {
+            this.charts.label = '';
+        }
+    };
+    ChartsViewHighchartsComponent.prototype.clearData = function () {
+        this.charts.labels = [];
+        this.charts.data = [];
+    };
+    ChartsViewHighchartsComponent.prototype.failure = function (error) {
+        this.loading = false;
+        this.errorResponse = error;
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", String)
+    ], ChartsViewHighchartsComponent.prototype, "table", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('chartTarget'),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"])
+    ], ChartsViewHighchartsComponent.prototype, "chartTarget", void 0);
+    ChartsViewHighchartsComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'charts-view-highcharts',
+            template: __webpack_require__("../../../../../src/app/component/charts/charts-view-highcharts.component.html")
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_charts_service__["a" /* ChartsService */]])
+    ], ChartsViewHighchartsComponent);
+    return ChartsViewHighchartsComponent;
 }());
 
 
@@ -1038,7 +1165,7 @@ var ChartsViewComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/component/charts/charts.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>차트</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"row mt-1\">\n  <div class=\"col mb-5\">\n    <h6>총 데이터</h6>\n    <hr>\n    <div class=\"row h-75\" *ngIf=\"count\">\n      <div class=\"col text-center my-auto border-right\">\n        <h6>회원</h6>\n        <h1>{{count.Users}}</h1>\n      </div>\n\n      <div class=\"col text-center my-auto\">\n        <h6>게시판</h6>\n        <h1>{{count.Boards}}</h1>\n      </div>\n    </div>\n  </div>\n  <div class=\"col\">\n    <h6>그래프</h6>\n    <hr>\n    <div class=\"btn-group btn-group-sm\" role=\"group\">\n      <button type=\"button\" class=\"btn btn-outline-secondary\" (click)=\"toggleTable('user');\" [class.active]=\"table == 'user'\">User</button>\n      <button type=\"button\" class=\"btn btn-outline-secondary\" (click)=\"toggleTable('board');\" [class.active]=\"table == 'board'\">Board</button>\n    </div>\n\n    <charts-view\n         [table]=\"table\"></charts-view>\n  </div>\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>\n"
+module.exports = "<div class=\"d-flex align-items-center p-3 mt-3 text-white-50 bg-purple rounded box-shadow\">\n  <i class=\"fa fa-gavel fa-2x mr-3 text-white\" aria-hidden=\"true\"></i>\n  <div class=\"lh-100\">\n    <h6 class=\"mb-0 text-white lh-100\">{{ env.appName }}</h6>\n    <small>차트</small>\n  </div>\n</div>\n\n<div *ngIf=\"errorResponse?.message\" class=\"alert alert-danger\">\n  {{errorResponse?.message}}\n</div>\n\n<div class=\"d-flex p-3 row\">\n  <div class=\"mb-3 col-md-4 pl-0\">\n    <div class=\"p-3 bg-white rounded box-shadow\">\n      <h6 class=\"border-bottom border-gray pb-2 mb-0\">총 데이터</h6>\n      <div class=\"row mt-3\" *ngIf=\"count\">\n        <div class=\"col text-center my-auto border-right\">\n          <h6>회원</h6>\n          <h1>{{count.Users}}</h1>\n        </div>\n\n        <div class=\"col text-center my-auto\">\n          <h6>게시판</h6>\n          <h1>{{count.Boards}}</h1>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"col-md-8 pl-0 pr-0\">\n    <div class=\"p-3 bg-white rounded box-shadow\">\n      <h6 class=\"border-bottom border-gray pb-2 mb-0\">그래프</h6>\n      <div class=\"row my-3\">\n        <div class=\"col text-left\">\n          <div class=\"btn-group btn-group-sm\" role=\"group\">\n            <button type=\"button\" class=\"btn btn-outline-secondary\"\n                    (click)=\"toggleTable('user');\"\n                    [class.active]=\"table == 'user'\">User</button>\n            <button type=\"button\" class=\"btn btn-outline-secondary\"\n                    (click)=\"toggleTable('board');\"\n                    [class.active]=\"table == 'board'\">Board</button>\n          </div>\n        </div>\n\n        <div class=\"col text-right\">\n          <div class=\"btn-group btn-group-sm\" role=\"group\">\n            <button type=\"button\" class=\"btn btn-primary\"\n                    (click)=\"toggleChart('chartjs');\"\n                    [class.active]=\"charts == 'chartjs'\">Chart.js</button>\n            <button type=\"button\" class=\"btn btn-primary\"\n                    (click)=\"toggleChart('highcharts');\"\n                    [class.active]=\"charts == 'highcharts'\">Highcharts</button>\n          </div>\n        </div>\n      </div>\n\n      <charts-view-chartjs *ngIf=\"charts == 'chartjs'\"\n           [table]=\"table\"></charts-view-chartjs>\n\n      <charts-view-highcharts *ngIf=\"charts == 'highcharts'\"\n           [table]=\"table\"></charts-view-highcharts>\n    </div>\n  </div>\n</div>\n\n<ngx-loading [show]=\"loading\"></ngx-loading>\n"
 
 /***/ }),
 
@@ -1068,6 +1195,7 @@ var ChartsComponent = /** @class */ (function () {
         this.loading = false;
         this.env = __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */];
         this.table = 'user';
+        this.charts = 'chartjs';
     }
     ChartsComponent.prototype.ngOnInit = function () {
         this.loadCount();
@@ -1081,6 +1209,9 @@ var ChartsComponent = /** @class */ (function () {
     ChartsComponent.prototype.toggleTable = function (table) {
         this.table = table;
     };
+    ChartsComponent.prototype.toggleChart = function (charts) {
+        this.charts = charts;
+    };
     ChartsComponent.prototype.successful = function (response) {
         this.loading = false;
         this.count = response.data;
@@ -1092,7 +1223,8 @@ var ChartsComponent = /** @class */ (function () {
     ChartsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'charts',
-            template: __webpack_require__("../../../../../src/app/component/charts/charts.component.html")
+            template: __webpack_require__("../../../../../src/app/component/charts/charts.component.html"),
+            styles: ['@media (max-width: 767.98px) {.col-md-4 {padding-right: 0px;}}']
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_charts_service__["a" /* ChartsService */]])
     ], ChartsComponent);
@@ -1575,7 +1707,7 @@ var BOARD_ENTITY_LIST = [
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Charts; });
 var Charts = /** @class */ (function () {
     function Charts() {
-        this.datasets = [];
+        this.data = [];
         this.labels = [];
     }
     return Charts;

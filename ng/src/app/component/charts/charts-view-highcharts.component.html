@@ -1,0 +1,7 @@
+<div #chartTarget></div>
+
+<div *ngIf="errorResponse?.message" class="alert alert-danger">
+  {{errorResponse?.message}}
+</div>
+
+<ngx-loading [show]="loading"></ngx-loading>

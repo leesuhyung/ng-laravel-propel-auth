@@ -32,7 +32,9 @@ import {LoadingModule} from "ngx-loading";
 import {ChartsComponent} from './component/charts/charts.component';
 import {ChartsService} from "./services/charts.service";
 import {ChartsModule} from "ng2-charts/ng2-charts";
-import {ChartsViewComponent} from './component/charts/charts-view.component';
+import {ChartsViewChartjsComponent} from './component/charts/charts-view-chartjs.component';
+import {ChartsViewHighchartsComponent} from "./component/charts/charts-view-highcharts.component";
+
 
 @NgModule({
     declarations: [
@@ -54,7 +56,8 @@ import {ChartsViewComponent} from './component/charts/charts-view.component';
         FindBoardEntityPipe,
         BoardDeleteFormComponent,
         ChartsComponent,
-        ChartsViewComponent
+        ChartsViewChartjsComponent,
+        ChartsViewHighchartsComponent
     ],
     imports: [
         BrowserModule,

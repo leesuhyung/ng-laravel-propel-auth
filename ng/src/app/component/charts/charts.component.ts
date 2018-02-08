@@ -4,7 +4,8 @@ import {ChartsService} from "../../services/charts.service";
 
 @Component({
     selector: 'charts',
-    templateUrl: './charts.component.html'
+    templateUrl: './charts.component.html',
+    styles: ['@media (max-width: 767.98px) {.col-md-4 {padding-right: 0px;}}']
 })
 export class ChartsComponent implements OnInit {
 
@@ -13,6 +14,7 @@ export class ChartsComponent implements OnInit {
     errorResponse: string;
     count: any;
     table: string = 'user';
+    charts: string = 'chartjs';
 
     constructor(private service: ChartsService) {
     }
@@ -33,6 +35,10 @@ export class ChartsComponent implements OnInit {
 
     public toggleTable(table: string) {
         this.table = table;
+    }
+
+    public toggleChart(charts: string) {
+        this.charts = charts;
     }
 
     public successful(response: any): void {
